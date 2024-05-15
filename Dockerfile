@@ -1,3 +1,4 @@
+# Utiliza una imagen base de Maven para compilar el proyecto
 FROM maven:3.8.4-openjdk-17-slim AS build
 WORKDIR /app
 COPY pom.xml .
@@ -18,6 +19,7 @@ RUN envsubst < /app/src/main/resources/application.yml > /app/application-substi
 
 # Move the substituted properties file to replace the original
 RUN mv /app/application-substituted.yml /app/src/main/resources/application.yml
+RUN cat /app/src/main/resources/application.yml
 
 RUN mvn package
 
