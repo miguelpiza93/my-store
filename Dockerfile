@@ -20,7 +20,7 @@ RUN envsubst < /app/src/main/resources/application.yml > /app/application-substi
 # Move the substituted properties file to replace the original
 RUN mv /app/application-substituted.yml /app/src/main/resources/application.yml
 
-mvn package -DskipTests
+RUN mvn package -DskipTests
 
 # Utiliza una imagen base de Java 17
 FROM openjdk:17-jdk-slim
