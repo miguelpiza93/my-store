@@ -4,29 +4,12 @@ WORKDIR /app
 COPY pom.xml .
 COPY src ./src
 
-# Set Arg Values
-ARG SPRING_DATASOURCE_URL
-ARG POSTGRES_USER
-ARG POSTGRES_PASSWORD
-ARG ALLOWED_ORIGIN
-
-# Set environment variables
-ENV SPRING_DATASOURCE_URL=$SPRING_DATASOURCE_URL
-ENV POSTGRES_USER=$POSTGRES_USER
-ENV POSTGRES_PASSWORD=$POSTGRES_PASSWORD
-ENV ALLOWED_ORIGIN=$ALLOWED_ORIGIN
-
-RUN apt-get update && apt-get install -y gettext-base
-RUN envsubst < /app/src/main/resources/application.yml > /app/application-substituted.yml
-
-# Move the substituted properties file to replace the original
-RUN mv /app/application-substituted.yml /app/src/main/resources/application.yml
-
-RUN mvn package -DskipTests
+RUN mvn package -DskipTests -P prod
 
 # Utiliza una imagen base de Java 17
 FROM openjdk:17-jdk-slim
 
 WORKDIR /app
 COPY --from=build /app/target/my-store-0.0.1-SNAPSHOT.jar app.jar
+EXPOSE 8080
 CMD ["java", "-jar", "app.jar"]
