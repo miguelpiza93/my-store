@@ -19,6 +19,6 @@ server:
     context-path: /api
 
 cors:
-    allowed-origins: "http://localhost:3000"
+    allowed-origins: ${ALLOWED_ORIGIN}
     allowed-methods: "*"
     allowed-headers: "*"

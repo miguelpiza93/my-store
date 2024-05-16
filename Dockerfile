@@ -8,11 +8,13 @@ COPY src ./src
 ARG SPRING_DATASOURCE_URL
 ARG POSTGRES_USER
 ARG POSTGRES_PASSWORD
+ARG ALLOWED_ORIGIN
 
 # Set environment variables
 ENV SPRING_DATASOURCE_URL=$SPRING_DATASOURCE_URL
 ENV POSTGRES_USER=$POSTGRES_USER
 ENV POSTGRES_PASSWORD=$POSTGRES_PASSWORD
+ENV ALLOWED_ORIGIN=$ALLOWED_ORIGIN
 
 RUN apt-get update && apt-get install -y gettext-base
 RUN envsubst < /app/src/main/resources/application.yml > /app/application-substituted.yml
