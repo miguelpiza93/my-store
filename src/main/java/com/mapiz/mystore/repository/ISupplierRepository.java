@@ -1,9 +1,9 @@
 package com.mapiz.mystore.repository;
 
 import com.mapiz.mystore.entity.Supplier;
-import org.springframework.data.repository.CrudRepository;
+import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface ISupplierRepository extends CrudRepository<Supplier, Integer> {
+public interface ISupplierRepository extends JpaRepository<Supplier, Integer> {
 }
