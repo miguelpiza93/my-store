@@ -12,6 +12,7 @@ import com.mapiz.mystore.repository.ISupplierRepository;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.stream.StreamSupport;
@@ -25,11 +26,13 @@ public class SupplierProductService {
     private final IProductRepository productRepository;
     private final ISupplierProductRepository supplierProductRepository;
 
+    @Transactional(rollbackFor = Exception.class)
     public Iterable<SupplierProduct> addProductsToSupplier(AddProductToSupplierRequest request) throws SupplierNotFoundException, ProductNotFoundException {
         final Supplier supplier = supplierRepository.findById(request.getSupplierId())
                 .orElseThrow(() -> SupplierNotFoundException.builder().build());
 
         Iterable<Product> products = productRepository.findAllById(request.getProducts().keySet());
+        supplierProductRepository.deleteAll(supplierProductRepository.findBySupplierId(request.getSupplierId()));
 
         List<SupplierProduct> supplierProducts = StreamSupport.stream(
                         products.spliterator(), false)
