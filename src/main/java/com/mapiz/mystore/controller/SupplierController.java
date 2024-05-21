@@ -1,8 +1,7 @@
 package com.mapiz.mystore.controller;
 
-import com.mapiz.mystore.dto.AddProductToSupplierRequest;
+import com.mapiz.mystore.dto.SupplierDTO;
 import com.mapiz.mystore.entity.Supplier;
-import com.mapiz.mystore.entity.SupplierProduct;
 import com.mapiz.mystore.exception.SupplierNotFoundException;
 import com.mapiz.mystore.service.SupplierService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,6 +20,11 @@ public class SupplierController {
     @GetMapping
     public Iterable<Supplier> getSuppliers() {
         return supplierService.getSuppliers();
+    }
+
+    @GetMapping(value = "/{id}")
+    public SupplierDTO getSupplierById(@PathVariable Integer id) throws SupplierNotFoundException {
+        return supplierService.getById(id);
     }
 
     @PostMapping

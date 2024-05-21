@@ -3,10 +3,11 @@ package com.mapiz.mystore.dto;
 import lombok.Builder;
 import lombok.Data;
 
+import java.util.Map;
+
 @Data
 @Builder
 public class AddProductToSupplierRequest {
-    private Integer productId;
+    private Map<Integer, Double> products;
     private Integer supplierId;
-    private Double price;
 }

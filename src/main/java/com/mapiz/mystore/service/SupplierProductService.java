@@ -13,6 +13,9 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+import java.util.stream.StreamSupport;
+
 @AllArgsConstructor
 @Data
 @Service
@@ -22,19 +25,20 @@ public class SupplierProductService {
     private final IProductRepository productRepository;
     private final ISupplierProductRepository supplierProductRepository;
 
-    public SupplierProduct addProductSupplier(AddProductToSupplierRequest request) throws SupplierNotFoundException, ProductNotFoundException {
-        Supplier supplier = supplierRepository.findById(request.getSupplierId())
-            .orElseThrow(() -> SupplierNotFoundException.builder().build() );
+    public Iterable<SupplierProduct> addProductsToSupplier(AddProductToSupplierRequest request) throws SupplierNotFoundException, ProductNotFoundException {
+        final Supplier supplier = supplierRepository.findById(request.getSupplierId())
+                .orElseThrow(() -> SupplierNotFoundException.builder().build());
 
-        Product product = productRepository.findById(request.getProductId())
-            .orElseThrow(() -> ProductNotFoundException.builder().build() );
+        Iterable<Product> products = productRepository.findAllById(request.getProducts().keySet());
 
-        SupplierProduct supplierProduct = SupplierProduct.builder()
-            .product(product)
-            .supplier(supplier)
-            .price(request.getPrice())
-            .build();
-
-        return supplierProductRepository.save(supplierProduct);
+        List<SupplierProduct> supplierProducts = StreamSupport.stream(
+                        products.spliterator(), false)
+                .map(product -> SupplierProduct.builder()
+                        .product(product)
+                        .supplier(supplier)
+                        .price(request.getProducts().get(product.getId()))
+                        .build()
+                ).toList();
+        return supplierProductRepository.saveAll(supplierProducts);
     }
 }

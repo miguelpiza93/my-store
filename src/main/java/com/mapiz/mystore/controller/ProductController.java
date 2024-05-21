@@ -24,4 +24,10 @@ public class ProductController {
         Product addedProduct = productService.addProduct(product);
         return ResponseEntity.status(HttpStatus.CREATED).body(addedProduct);
     }
+
+    @DeleteMapping(value = "/{productId}")
+    public @ResponseBody ResponseEntity<Product> deleteProduct(@PathVariable Integer productId) {
+        productService.deleteProduct(productId);
+        return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
+    }
 }

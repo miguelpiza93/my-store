@@ -16,6 +16,6 @@ public class Supplier {
 
     private String name;
 
-    @OneToMany(mappedBy = "supplier")
+    @OneToMany(mappedBy = "supplier", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private Set<SupplierProduct> products;
 }

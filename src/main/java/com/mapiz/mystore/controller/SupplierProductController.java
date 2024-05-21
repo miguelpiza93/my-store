@@ -17,8 +17,8 @@ public class SupplierProductController {
     private SupplierProductService supplierProductService;
 
     @PostMapping
-    public @ResponseBody ResponseEntity<SupplierProduct> addProductToSupplier(@RequestBody AddProductToSupplierRequest request) throws BusinessException {
-        SupplierProduct supplier = supplierProductService.addProductSupplier(request);
-        return ResponseEntity.status(HttpStatus.CREATED).body(supplier);
+    public @ResponseBody ResponseEntity<Iterable<SupplierProduct>> addProductToSupplier(@RequestBody AddProductToSupplierRequest request) throws BusinessException {
+        Iterable<SupplierProduct> result = supplierProductService.addProductsToSupplier(request);
+        return ResponseEntity.status(HttpStatus.CREATED).body(result);
     }
 }

@@ -18,6 +18,6 @@ public class Product {
 
     private String description;
 
-    @OneToMany(mappedBy = "product")
+    @OneToMany(mappedBy = "product", fetch = FetchType.LAZY)
     private Set<SupplierProduct> suppliers;
 }

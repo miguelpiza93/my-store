@@ -18,11 +18,11 @@ public class SupplierProduct {
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "supplier_product_sequence")
     private Integer id;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "supplier_id", nullable = false)
     private Supplier supplier;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "product_id", nullable = false)
     private Product product;
 
