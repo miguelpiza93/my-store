@@ -32,4 +32,10 @@ public class SupplierController {
         Supplier addedSupplier = supplierService.addSupplier(supplier);
         return ResponseEntity.status(HttpStatus.CREATED).body(addedSupplier);
     }
+
+    @PutMapping(value = "/{id}")
+    public @ResponseBody ResponseEntity<Supplier> updateSupplier(@PathVariable Integer id, @RequestBody Supplier supplier) throws SupplierNotFoundException {
+        Supplier updatedSupplier = supplierService.updateSupplier(id, supplier);
+        return ResponseEntity.status(HttpStatus.OK).body(updatedSupplier);
+    }
 }

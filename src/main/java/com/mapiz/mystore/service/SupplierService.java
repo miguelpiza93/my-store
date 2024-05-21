@@ -38,6 +38,7 @@ public class SupplierService {
 
         List<SupplierProductDTO> products = supplierProductRepository.findBySupplierId(supplierId).stream()
                 .map(supplierProduct -> SupplierProductDTO.builder()
+                        .id(supplierProduct.getProduct().getId())
                         .name(supplierProduct.getProduct().getName())
                         .description(supplierProduct.getProduct().getDescription())
                         .price(supplierProduct.getPrice())
@@ -45,5 +46,12 @@ public class SupplierService {
                 )
                 .toList();
         return SupplierDTO.builder().name(supplier.getName()).products(products).build();
+    }
+
+    public Supplier updateSupplier(Integer id, Supplier supplier) {
+        Supplier existingSupplier = supplierRepository.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException("Supplier not found with id: " + id));
+        existingSupplier.setName(supplier.getName());
+        return supplierRepository.save(existingSupplier);
     }
 }
