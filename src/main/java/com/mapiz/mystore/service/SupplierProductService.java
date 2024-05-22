@@ -15,7 +15,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
-import java.util.stream.StreamSupport;
 
 @AllArgsConstructor
 @Data
@@ -27,15 +26,14 @@ public class SupplierProductService {
     private final ISupplierProductRepository supplierProductRepository;
 
     @Transactional(rollbackFor = Exception.class)
-    public Iterable<SupplierProduct> addProductsToSupplier(AddProductToSupplierRequest request) throws SupplierNotFoundException, ProductNotFoundException {
+    public List<SupplierProduct> addProductsToSupplier(AddProductToSupplierRequest request) throws SupplierNotFoundException, ProductNotFoundException {
         final Supplier supplier = supplierRepository.findById(request.getSupplierId())
                 .orElseThrow(() -> SupplierNotFoundException.builder().build());
 
-        Iterable<Product> products = productRepository.findAllById(request.getProducts().keySet());
+        List<Product> products = productRepository.findAllById(request.getProducts().keySet());
         supplierProductRepository.deleteAll(supplierProductRepository.findBySupplierId(request.getSupplierId()));
 
-        List<SupplierProduct> supplierProducts = StreamSupport.stream(
-                        products.spliterator(), false)
+        List<SupplierProduct> supplierProducts = products.stream()
                 .map(product -> SupplierProduct.builder()
                         .product(product)
                         .supplier(supplier)

@@ -5,13 +5,15 @@ import com.mapiz.mystore.repository.IProductRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 public class ProductService {
 
     @Autowired
     private IProductRepository productRepository;
 
-    public Iterable<Product> getProducts() {
+    public List<Product> getProducts() {
         return productRepository.findAll();
     }
 

@@ -11,11 +11,18 @@ spring:
   jpa:
     show-sql: true
     hibernate:
-      ddl-auto: update
+      ddl-auto: validate
       properties:
         hibernate:
           dialect: org.hibernate.dialect.PostgreSQLDialect
           format_sql: true
+  flyway:
+    baseline-on-migrate: true
+    enabled: true
+    username: ${POSTGRES_USER}
+    password: ${POSTGRES_PASSWORD}
+    baseline-description: "init"
+    baseline-version: 0
 
 server:
   servlet:

@@ -10,12 +10,12 @@ import java.util.Set;
 public class Supplier {
 
     @Id
-    @SequenceGenerator(name = "product_supplier_sequence", sequenceName = "product_supplier_sequence", allocationSize = 1)
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "product_supplier_sequence")
+    @SequenceGenerator(name = "supplier_sequence", sequenceName = "supplier_sequence", allocationSize = 1)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "supplier_sequence")
     private Integer id;
 
     private String name;
 
-    @OneToMany(mappedBy = "supplier", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "supplier", cascade = CascadeType.ALL, fetch = FetchType.LAZY, orphanRemoval = true)
     private Set<SupplierProduct> products;
 }

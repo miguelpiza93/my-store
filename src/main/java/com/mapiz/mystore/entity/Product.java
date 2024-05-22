@@ -18,6 +18,6 @@ public class Product {
 
     private String description;
 
-    @OneToMany(mappedBy = "product", fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "product", fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
     private Set<SupplierProduct> suppliers;
 }

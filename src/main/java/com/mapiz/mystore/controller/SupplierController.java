@@ -9,6 +9,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 
 @RestController
 @RequestMapping(value = "/v1/suppliers")
@@ -18,7 +20,7 @@ public class SupplierController {
     private SupplierService supplierService;
 
     @GetMapping
-    public Iterable<Supplier> getSuppliers() {
+    public List<Supplier> getSuppliers() {
         return supplierService.getSuppliers();
     }
 
@@ -37,5 +39,11 @@ public class SupplierController {
     public @ResponseBody ResponseEntity<Supplier> updateSupplier(@PathVariable Integer id, @RequestBody Supplier supplier) throws SupplierNotFoundException {
         Supplier updatedSupplier = supplierService.updateSupplier(id, supplier);
         return ResponseEntity.status(HttpStatus.OK).body(updatedSupplier);
+    }
+
+    @DeleteMapping(value = "/{id}")
+    public ResponseEntity<Supplier> deleteSupplier(@PathVariable Integer id) {
+        supplierService.deleteSupplier(id);
+        return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
     }
 }

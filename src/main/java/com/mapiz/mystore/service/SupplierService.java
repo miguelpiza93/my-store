@@ -24,7 +24,7 @@ public class SupplierService {
     @Autowired
     private ISupplierProductRepository supplierProductRepository;
 
-    public Iterable<Supplier> getSuppliers() {
+    public List<Supplier> getSuppliers() {
         return supplierRepository.findAll();
     }
 
@@ -53,5 +53,9 @@ public class SupplierService {
                 .orElseThrow(() -> new EntityNotFoundException("Supplier not found with id: " + id));
         existingSupplier.setName(supplier.getName());
         return supplierRepository.save(existingSupplier);
+    }
+
+    public void deleteSupplier(Integer id) {
+        supplierRepository.deleteById(id);
     }
 }
