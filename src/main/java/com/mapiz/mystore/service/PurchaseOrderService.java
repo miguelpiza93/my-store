@@ -66,4 +66,8 @@ public class PurchaseOrderService {
 
         return purchaseOrderRepository.save(purchaseOrder);
     }
+
+    public List<PurchaseOrder> findAll() {
+        return purchaseOrderRepository.findAll();
+    }
 }

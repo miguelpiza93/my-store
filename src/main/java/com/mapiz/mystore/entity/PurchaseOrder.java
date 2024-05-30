@@ -1,8 +1,12 @@
 package com.mapiz.mystore.entity;
 
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
+import org.hibernate.annotations.Fetch;
+import org.hibernate.annotations.FetchMode;
 
 import java.sql.Date;
 import java.time.Instant;
@@ -11,6 +15,8 @@ import java.util.List;
 @Builder
 @Data
 @Entity
+@NoArgsConstructor
+@AllArgsConstructor
 public class PurchaseOrder {
 
     @Id
@@ -24,10 +30,11 @@ public class PurchaseOrder {
     @Column(name = "estimated_delivery_date")
     private Date estimatedDeliveryDate;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne
+    @Fetch(value = FetchMode.JOIN)
     @JoinColumn(name = "supplier_id", nullable = false)
     private Supplier supplier;
 
-    @OneToMany(mappedBy = "purchaseOrder", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "purchaseOrder", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private List<PurchaseOrderLine> purchaseOrderLines;
 }
