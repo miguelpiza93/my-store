@@ -31,4 +31,9 @@ public class PurchaseOrderController {
     public @ResponseBody ResponseEntity<List<PurchaseOrderDTO>> findAll() {
         return ResponseEntity.ok(purchaseOrderService.findAll().stream().map(purchaseOrderMapper::toDTO).toList());
     }
+
+    @GetMapping("/{id}")
+    public @ResponseBody ResponseEntity<PurchaseOrderDTO> findById(@PathVariable Integer id) {
+        return ResponseEntity.ok(purchaseOrderMapper.toFullDTO(purchaseOrderService.findById(id)));
+    }
 }

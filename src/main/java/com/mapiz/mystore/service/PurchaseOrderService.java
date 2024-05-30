@@ -70,4 +70,8 @@ public class PurchaseOrderService {
     public List<PurchaseOrder> findAll() {
         return purchaseOrderRepository.findAll();
     }
+
+    public PurchaseOrder findById(Integer id) {
+        return purchaseOrderRepository.findById(id).orElseThrow();
+    }
 }
