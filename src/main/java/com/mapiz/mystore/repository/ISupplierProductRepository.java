@@ -11,5 +11,5 @@ import java.util.Optional;
 public interface ISupplierProductRepository extends JpaRepository<SupplierProduct, Integer> {
 
     List<SupplierProduct> findBySupplierId(Integer supplierId);
-    Optional<SupplierProduct> findBySupplierIdAndProductId(Integer supplierId, Integer productId);
+    List<SupplierProduct> findBySupplierIdAndProductIdIn(Integer supplierId, List<Integer> productIds);
 }

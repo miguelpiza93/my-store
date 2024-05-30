@@ -2,9 +2,10 @@ package com.mapiz.mystore.dto;
 
 import lombok.Data;
 
+import java.util.List;
+
 @Data
 public class PurchaseOrderDTO {
-    private Integer productId;
     private Integer supplierId;
-    private Integer quantity;
+    private List<PurchaseOrderLineDTO> purchaseOrderLines;
 }

@@ -5,8 +5,8 @@ import lombok.Builder;
 import lombok.Data;
 
 import java.sql.Date;
-import java.sql.Timestamp;
 import java.time.Instant;
+import java.util.List;
 
 @Builder
 @Data
@@ -18,11 +18,6 @@ public class PurchaseOrder {
     @GeneratedValue(generator = "purchase_order_sequence", strategy = GenerationType.SEQUENCE)
     private Integer id;
 
-    private int quantity;
-
-    @Column(name = "unit_price")
-    private double unitPrice;
-
     @Column(name = "created_at")
     private Instant createdAt;
 
@@ -33,7 +28,6 @@ public class PurchaseOrder {
     @JoinColumn(name = "supplier_id", nullable = false)
     private Supplier supplier;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "product_id", nullable = false)
-    private Product product;
+    @OneToMany(mappedBy = "purchaseOrder", cascade = CascadeType.ALL)
+    private List<PurchaseOrderLine> purchaseOrderLines;
 }

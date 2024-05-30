@@ -17,7 +17,7 @@ public class PurchaseOrderController {
 
     @PostMapping
     public @ResponseBody ResponseEntity<PurchaseOrder> create(@RequestBody PurchaseOrderDTO purchaseOrderDTO) {
-        PurchaseOrder purchaseOrder =purchaseOrderService.create(purchaseOrderDTO);
-        return ResponseEntity.status(HttpStatus.CREATED).body(purchaseOrder);
+        purchaseOrderService.create(purchaseOrderDTO);
+        return ResponseEntity.status(HttpStatus.CREATED).build();
     }
 }
