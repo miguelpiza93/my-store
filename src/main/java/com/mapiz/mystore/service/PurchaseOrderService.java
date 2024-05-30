@@ -4,35 +4,34 @@ import com.mapiz.mystore.dto.PurchaseOrderDTO;
 import com.mapiz.mystore.entity.Product;
 import com.mapiz.mystore.entity.PurchaseOrder;
 import com.mapiz.mystore.entity.Supplier;
-import com.mapiz.mystore.repository.IProductRepository;
+import com.mapiz.mystore.entity.SupplierProduct;
 import com.mapiz.mystore.repository.IPurchaseOrderRepository;
-import com.mapiz.mystore.repository.ISupplierRepository;
+import com.mapiz.mystore.repository.ISupplierProductRepository;
+import org.hibernate.Hibernate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.sql.Timestamp;
+import java.time.Instant;
 
 @Service
 public class PurchaseOrderService {
 
     @Autowired
-    private IProductRepository productRepository;
-
-    @Autowired
-    private ISupplierRepository  supplierRepository;
+    private ISupplierProductRepository supplierProductRepository;
 
     @Autowired
     private IPurchaseOrderRepository purchaseOrderRepository;
 
     public PurchaseOrder create(PurchaseOrderDTO purchaseOrderDTO) {
-        Product product = productRepository.findById(purchaseOrderDTO.getProductId()).orElseThrow();
-        Supplier  supplier = supplierRepository.findById(purchaseOrderDTO.getSupplierId()).orElseThrow();
+        SupplierProduct  supplierProduct = supplierProductRepository.findBySupplierIdAndProductId(
+                purchaseOrderDTO.getSupplierId(), purchaseOrderDTO.getProductId()
+        ).orElseThrow();
 
         PurchaseOrder purchaseOrder = PurchaseOrder.builder()
-                .createdAt(new Timestamp(System.currentTimeMillis()))
-                .product(product)
-                .supplier(supplier)
-                .unitPrice(purchaseOrderDTO.getUnitPrice())
+                .createdAt(Instant.now())
+                .product(Hibernate.unproxy(supplierProduct.getProduct(), Product.class))
+                .supplier(Hibernate.unproxy(supplierProduct.getSupplier(), Supplier.class))
+                .unitPrice(supplierProduct.getPrice())
                 .quantity(purchaseOrderDTO.getQuantity())
                 .build();
         return purchaseOrderRepository.save(purchaseOrder);

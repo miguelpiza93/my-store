@@ -6,6 +6,7 @@ import lombok.Data;
 
 import java.sql.Date;
 import java.sql.Timestamp;
+import java.time.Instant;
 
 @Builder
 @Data
@@ -23,7 +24,7 @@ public class PurchaseOrder {
     private double unitPrice;
 
     @Column(name = "created_at")
-    private Timestamp createdAt;
+    private Instant createdAt;
 
     @Column(name = "estimated_delivery_date")
     private Date estimatedDeliveryDate;
