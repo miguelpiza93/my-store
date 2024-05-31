@@ -26,6 +26,7 @@ public class PurchaseOrderMapper {
                 .supplierId(purchaseOrder.getSupplier().getId())
                 .supplierName(purchaseOrder.getSupplier().getName())
                 .createdAt(purchaseOrder.getCreatedAt())
+                .estimatedDeliveryDate(purchaseOrder.getEstimatedDeliveryDate())
                 .build();
 
         if(includeLines){
