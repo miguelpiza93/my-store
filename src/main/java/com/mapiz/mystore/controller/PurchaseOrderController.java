@@ -2,6 +2,7 @@ package com.mapiz.mystore.controller;
 
 import com.mapiz.mystore.dto.PurchaseOrderDTO;
 import com.mapiz.mystore.entity.PurchaseOrder;
+import com.mapiz.mystore.exception.BusinessException;
 import com.mapiz.mystore.mapper.PurchaseOrderMapper;
 import com.mapiz.mystore.service.PurchaseOrderService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,7 +23,7 @@ public class PurchaseOrderController {
     private PurchaseOrderService purchaseOrderService;
 
     @PostMapping
-    public @ResponseBody ResponseEntity<PurchaseOrder> create(@RequestBody PurchaseOrderDTO purchaseOrderDTO) {
+    public @ResponseBody ResponseEntity<PurchaseOrder> create(@RequestBody PurchaseOrderDTO purchaseOrderDTO) throws BusinessException {
         purchaseOrderService.create(purchaseOrderDTO);
         return ResponseEntity.status(HttpStatus.CREATED).build();
     }
@@ -33,7 +34,7 @@ public class PurchaseOrderController {
     }
 
     @GetMapping("/{id}")
-    public @ResponseBody ResponseEntity<PurchaseOrderDTO> findById(@PathVariable Integer id) {
+    public @ResponseBody ResponseEntity<PurchaseOrderDTO> findById(@PathVariable Integer id) throws BusinessException {
         return ResponseEntity.ok(purchaseOrderMapper.toFullDTO(purchaseOrderService.findById(id)));
     }
 }

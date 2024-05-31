@@ -1,4 +1,8 @@
 package com.mapiz.mystore.exception;
 
-public abstract class BusinessException extends Exception {
+
+public class BusinessException extends Exception {
+    public BusinessException(String message) {
+        super(message);
+    }
 }

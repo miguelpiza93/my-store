@@ -28,7 +28,7 @@ public class SupplierProductService {
     @Transactional(rollbackFor = Exception.class)
     public List<SupplierProduct> addProductsToSupplier(AddProductToSupplierRequest request) throws SupplierNotFoundException, ProductNotFoundException {
         final Supplier supplier = supplierRepository.findById(request.getSupplierId())
-                .orElseThrow(() -> SupplierNotFoundException.builder().build());
+                .orElseThrow(() -> new SupplierNotFoundException("Supplier not found " + request.getSupplierId()));
 
         List<Product> products = productRepository.findAllById(request.getProducts().keySet());
         supplierProductRepository.deleteAll(supplierProductRepository.findBySupplierId(request.getSupplierId()));

@@ -10,6 +10,7 @@ import org.hibernate.annotations.FetchMode;
 
 import java.sql.Date;
 import java.time.Instant;
+import java.time.LocalDate;
 import java.util.List;
 
 @Builder
@@ -28,7 +29,7 @@ public class PurchaseOrder {
     private Instant createdAt;
 
     @Column(name = "estimated_delivery_date")
-    private Date estimatedDeliveryDate;
+    private LocalDate estimatedDeliveryDate;
 
     @ManyToOne
     @Fetch(value = FetchMode.JOIN)
