@@ -1,4 +1,6 @@
 spring:
+  profiles:
+    active: integration-testing
   application:
     name: My Store
   datasource:

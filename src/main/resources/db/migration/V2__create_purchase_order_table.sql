@@ -11,6 +11,6 @@ CREATE TABLE IF NOT EXISTS purchase_order (
     unit_price DOUBLE PRECISION NOT NULL,
     created_at TIMESTAMP,
     estimated_delivery_date date,
-    CONSTRAINT fk_supplier FOREIGN KEY (supplier_id) REFERENCES Supplier(id),
-    CONSTRAINT fk_product FOREIGN KEY (product_id) REFERENCES Product(id)
+    CONSTRAINT fk_supplier_po FOREIGN KEY (supplier_id) REFERENCES Supplier(id),
+    CONSTRAINT fk_product_po FOREIGN KEY (product_id) REFERENCES Product(id)
 );
