@@ -1,4 +1,4 @@
-package com.mapiz.mystore.product.exception;
+package com.mapiz.mystore.product.application.exception;
 
 import com.mapiz.mystore.shared.ResourceNotFound;
 

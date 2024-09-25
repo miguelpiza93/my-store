@@ -1,7 +1,7 @@
 package com.mapiz.mystore.product.application.usecase.impl;
 
 import com.mapiz.mystore.product.domain.repository.ProductRepository;
-import com.mapiz.mystore.product.exception.ProductNotFoundException;
+import com.mapiz.mystore.product.application.exception.ProductNotFoundException;
 import com.mapiz.mystore.product.application.usecase.DeleteProductUseCase;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;

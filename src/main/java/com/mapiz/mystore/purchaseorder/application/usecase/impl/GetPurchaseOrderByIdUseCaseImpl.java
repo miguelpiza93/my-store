@@ -1,5 +1,6 @@
 package com.mapiz.mystore.purchaseorder.application.usecase.impl;
 
+import com.mapiz.mystore.purchaseorder.application.exception.PurchaseOrderNotFoundException;
 import com.mapiz.mystore.purchaseorder.application.usecase.GetPurchaseOrderByIdUseCase;
 import com.mapiz.mystore.purchaseorder.domain.PurchaseOrder;
 import com.mapiz.mystore.purchaseorder.domain.repository.PurchaseOrderRepository;
@@ -16,6 +17,6 @@ public class GetPurchaseOrderByIdUseCaseImpl implements GetPurchaseOrderByIdUseC
     @Override
     public PurchaseOrder apply(Integer integer) {
         return purchaseOrderRepository.findById(integer)
-                .orElseThrow(() -> new RuntimeException("Vendor not found"));
+                .orElseThrow(() -> new PurchaseOrderNotFoundException("Purchase order not found"));
     }
 }
