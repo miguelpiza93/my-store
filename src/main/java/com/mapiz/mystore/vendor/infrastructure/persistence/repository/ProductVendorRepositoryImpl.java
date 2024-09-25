@@ -2,7 +2,6 @@ package com.mapiz.mystore.vendor.infrastructure.persistence.repository;
 
 import com.mapiz.mystore.vendor.domain.ProductVendor;
 import com.mapiz.mystore.vendor.domain.repository.ProductVendorRepository;
-import com.mapiz.mystore.vendor.infrastructure.persistence.entity.ProductVendorEntity;
 import com.mapiz.mystore.vendor.infrastructure.persistence.mapper.ProductVendorMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
@@ -16,18 +15,21 @@ public class ProductVendorRepositoryImpl implements ProductVendorRepository {
     private final JpaProductVendorRepository jpaRepository;
 
     @Override
-    public List<ProductVendorEntity> findBySupplierId(Integer vendorId) {
-        return jpaRepository.findByVendorId(vendorId);
+    public List<ProductVendor> findBySupplierId(Integer vendorId) {
+        return jpaRepository.findByVendorId(vendorId).stream()
+                .map(ProductVendorMapper.INSTANCE::entityToModel)
+                .toList();
     }
 
     @Override
-    public List<ProductVendorEntity> findBySupplierIdAndProductIdIn(Integer supplierId, List<Integer> productIds) {
-        return jpaRepository.findByVendorIdAndProductIdIn(supplierId, productIds);
+    public List<ProductVendor> findBySupplierIdAndProductIdIn(Integer supplierId, List<Integer> productIds) {
+        return jpaRepository.findByVendorIdAndProductIdIn(supplierId, productIds).stream()
+                .map(ProductVendorMapper.INSTANCE::entityToModel).toList();
     }
 
     @Override
-    public void deleteAll(List<ProductVendorEntity> bySupplierId) {
-        jpaRepository.deleteAll(bySupplierId);
+    public void deleteAll(List<ProductVendor> bySupplierId) {
+        jpaRepository.deleteAllById(bySupplierId.stream().map(ProductVendor::getId).toList());
     }
 
     @Override
