@@ -1,13 +1,18 @@
 package com.mapiz.mystore.vendor.infrastructure.persistence.entity;
 
+import com.mapiz.mystore.product.infrastructure.persistence.ProductEntity;
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 
 @Data
-@Entity
 @Builder
+@AllArgsConstructor
+@NoArgsConstructor
+@Entity(name = "product_vendor")
 public class ProductVendorEntity {
 
     @Id
@@ -19,8 +24,9 @@ public class ProductVendorEntity {
     @JoinColumn(name = "vendor_id", nullable = false)
     private VendorEntity vendor;
 
-    @Column(name = "product_id")
-    private int productId;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "product_id", nullable = false)
+    private ProductEntity product;
 
     private double price;
 }

@@ -1,17 +1,15 @@
 package com.mapiz.mystore.vendor.application.dto;
 
-import com.mapiz.mystore.product.domain.Product;
-import com.mapiz.mystore.vendor.domain.Vendor;
+import com.mapiz.mystore.product.application.dto.ProductResponse;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
-import lombok.Data;
+import lombok.Getter;
 
 @Builder
 @AllArgsConstructor
-@Data
+@Getter
 public class ProductVendorResponse {
     private Integer id;
-    private Vendor vendor;
-    private Product product;
+    private ProductResponse product;
     private double price;
 }

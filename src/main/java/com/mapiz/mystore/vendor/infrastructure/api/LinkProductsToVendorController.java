@@ -19,7 +19,7 @@ public class LinkProductsToVendorController {
 
     private final LinkProductsToVendorUseCase linkProductsToVendorUseCase;
 
-    @PutMapping(value = "/{id}/link-products")
+    @PostMapping(value = "/{id}/link-products")
     public @ResponseBody ResponseEntity<List<ProductVendorResponse>> linkProducts(
             @PathVariable Integer id, @RequestBody LinkProductsToVendorRequest request
     ) {

@@ -1,5 +1,6 @@
-package com.mapiz.mystore.integration;
+package com.mapiz.mystore.integration.vendor;
 
+import com.mapiz.mystore.integration.BaseIntegrationTest;
 import com.mapiz.mystore.shared.ApiError;
 import com.mapiz.mystore.vendor.domain.Vendor;
 import com.mapiz.mystore.vendor.infrastructure.EndpointConstant;
@@ -16,7 +17,7 @@ import static org.mockito.Mockito.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-class CreateVendorControllerIntegrationTest extends BaseIntegrationTest {
+class CreateVendorIntegrationTest extends BaseIntegrationTest {
 
     private static final String VENDOR_NAME = "Vendor 1";
 

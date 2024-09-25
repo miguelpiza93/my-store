@@ -8,8 +8,7 @@ import lombok.NoArgsConstructor;
 @Builder
 @Getter
 @AllArgsConstructor
-@NoArgsConstructor
 public class VendorResponse {
-
+    private Integer id;
     private String name;
 }

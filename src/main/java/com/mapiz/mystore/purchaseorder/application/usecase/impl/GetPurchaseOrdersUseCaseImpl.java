@@ -4,6 +4,7 @@ import com.mapiz.mystore.purchaseorder.application.usecase.GetPurchaseOrdersUseC
 import com.mapiz.mystore.purchaseorder.domain.PurchaseOrder;
 import com.mapiz.mystore.purchaseorder.infrastructure.persistence.mapper.PurchaseOrderMapper;
 import com.mapiz.mystore.purchaseorder.infrastructure.persistence.repository.JpaPurchaseOrderRepository;
+import com.mapiz.mystore.shared.CycleAvoidingMappingContext;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
@@ -18,6 +19,6 @@ public class GetPurchaseOrdersUseCaseImpl implements GetPurchaseOrdersUseCase {
     @Override
     public List<PurchaseOrder> get() {
         var result = purchaseOrderRepository.findAll();
-        return result.stream().map(PurchaseOrderMapper.INSTANCE::entityToModel).toList();
+        return result.stream().map(po -> PurchaseOrderMapper.INSTANCE.entityToModel(po, new CycleAvoidingMappingContext())).toList();
     }
 }

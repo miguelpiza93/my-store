@@ -1,11 +1,11 @@
 package com.mapiz.mystore.purchaseorder.application.dto;
 
-import jakarta.validation.constraints.NotBlank;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.time.Instant;
 import java.time.LocalDate;
 import java.util.List;
 
@@ -13,10 +13,10 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class CreatePurchaseOrderRequest {
-    private Integer supplierId;
+public class PurchaseOrderResponse {
+    private Integer id;
+    private String supplierName;
+    private Instant createdAt;
     private LocalDate estimatedDeliveryDate;
-
-    @NotBlank
-    private List<PurchaseOrderLineRequest> purchaseOrderLines;
+    private List<PurchaseOrderLineResponse> purchaseOrderLines;
 }

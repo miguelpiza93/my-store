@@ -9,6 +9,8 @@ public interface ProductVendorRepository {
 
     List<ProductVendorEntity> findBySupplierId(Integer vendorId);
 
+    List<ProductVendorEntity> findBySupplierIdAndProductIdIn(Integer supplierId, List<Integer> productIds);
+
     void deleteAll(List<ProductVendorEntity> bySupplierId);
 
     List<ProductVendor> saveAll(List<ProductVendor> list);

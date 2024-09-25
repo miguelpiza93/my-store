@@ -21,6 +21,11 @@ public class ProductVendorRepositoryImpl implements ProductVendorRepository {
     }
 
     @Override
+    public List<ProductVendorEntity> findBySupplierIdAndProductIdIn(Integer supplierId, List<Integer> productIds) {
+        return jpaRepository.findByVendorIdAndProductIdIn(supplierId, productIds);
+    }
+
+    @Override
     public void deleteAll(List<ProductVendorEntity> bySupplierId) {
         jpaRepository.deleteAll(bySupplierId);
     }

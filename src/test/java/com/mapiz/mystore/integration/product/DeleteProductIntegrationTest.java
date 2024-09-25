@@ -1,5 +1,6 @@
-package com.mapiz.mystore.integration;
+package com.mapiz.mystore.integration.product;
 
+import com.mapiz.mystore.integration.BaseIntegrationTest;
 import com.mapiz.mystore.shared.ApiError;
 import com.mapiz.mystore.product.infrastructure.EndpointConstant;
 import com.mapiz.mystore.product.infrastructure.persistence.ProductEntity;
@@ -16,7 +17,7 @@ import static org.mockito.Mockito.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-class DeleteProductControllerIntegrationTest extends BaseIntegrationTest {
+class DeleteProductIntegrationTest extends BaseIntegrationTest {
 
     @MockBean
     private JpaProductRepository productRepository;

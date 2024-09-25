@@ -1,12 +1,8 @@
 package com.mapiz.mystore.product.application.usecase.command;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.Data;
 
-@AllArgsConstructor
-@NoArgsConstructor
-@Getter
+@Data
 public class CreateProductCommand {
 
     private String name;

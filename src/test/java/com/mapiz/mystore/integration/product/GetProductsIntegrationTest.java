@@ -1,7 +1,8 @@
-package com.mapiz.mystore.integration;
+package com.mapiz.mystore.integration.product;
 
+import com.mapiz.mystore.integration.BaseIntegrationTest;
+import com.mapiz.mystore.product.application.dto.ProductResponse;
 import com.mapiz.mystore.product.infrastructure.EndpointConstant;
-import com.mapiz.mystore.product.domain.Product;
 import com.mapiz.mystore.product.infrastructure.persistence.ProductEntity;
 import com.mapiz.mystore.product.infrastructure.persistence.repository.JpaProductRepository;
 import org.junit.jupiter.api.Test;
@@ -16,7 +17,7 @@ import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-class GetProductsControllerIntegrationTest extends BaseIntegrationTest {
+class GetProductsIntegrationTest extends BaseIntegrationTest {
 
     @MockBean
     private JpaProductRepository productRepository;
@@ -32,8 +33,8 @@ class GetProductsControllerIntegrationTest extends BaseIntegrationTest {
 
         // Act & Assert
         var expectedProducts = Arrays.asList(
-                Product.builder().id(1).name("Product 1").description("product one").build(),
-                Product.builder().id(2).name("Product 2").description("product two").build()
+                ProductResponse.builder().id(1).name("Product 1").description("product one").build(),
+                ProductResponse.builder().id(2).name("Product 2").description("product two").build()
         );
         mockMvc.perform(MockMvcRequestBuilders.get(EndpointConstant.PRODUCTS_BASE_PATH))
                 .andExpect(status().isOk())

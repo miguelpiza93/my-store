@@ -9,26 +9,26 @@ CREATE TABLE IF NOT EXISTS product (
     description VARCHAR(255)
 );
 
-CREATE SEQUENCE IF NOT EXISTS supplier_sequence
+CREATE SEQUENCE IF NOT EXISTS vendor_sequence
 INCREMENT BY 1
 START WITH 1
 ;
 
-CREATE TABLE IF NOT EXISTS supplier (
-    id INTEGER NOT NULL DEFAULT nextval('supplier_sequence') PRIMARY KEY,
+CREATE TABLE IF NOT EXISTS vendor (
+    id INTEGER NOT NULL DEFAULT nextval('vendor_sequence') PRIMARY KEY,
     name VARCHAR(255) NOT NULL
 );
 
-CREATE SEQUENCE IF NOT EXISTS supplier_product_sequence
+CREATE SEQUENCE IF NOT EXISTS vendor_product_sequence
 INCREMENT BY 1
 START WITH 1
 ;
 
-CREATE TABLE IF NOT EXISTS supplier_product (
-    id INTEGER NOT NULL DEFAULT nextval('supplier_product_sequence') PRIMARY KEY,
-    supplier_id INTEGER NOT NULL,
+CREATE TABLE IF NOT EXISTS product_vendor (
+    id INTEGER NOT NULL DEFAULT nextval('vendor_product_sequence') PRIMARY KEY,
+    vendor_id INTEGER NOT NULL,
     product_id INTEGER NOT NULL,
     price DOUBLE PRECISION NOT NULL,
-    CONSTRAINT fk_supplier FOREIGN KEY (supplier_id) REFERENCES Supplier(id) ON DELETE CASCADE,
+    CONSTRAINT fk_vendor FOREIGN KEY (vendor_id) REFERENCES vendor(id) ON DELETE CASCADE,
     CONSTRAINT fk_product FOREIGN KEY (product_id) REFERENCES Product(id) ON DELETE CASCADE
 );

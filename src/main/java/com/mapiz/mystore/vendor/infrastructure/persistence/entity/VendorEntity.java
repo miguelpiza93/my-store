@@ -1,13 +1,17 @@
 package com.mapiz.mystore.vendor.infrastructure.persistence.entity;
 
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 
 @Data
-@Entity
 @Builder
+@AllArgsConstructor
+@NoArgsConstructor
+@Entity(name = "vendor")
 public class VendorEntity {
 
     @Id

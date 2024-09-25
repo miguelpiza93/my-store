@@ -1,13 +1,17 @@
 package com.mapiz.mystore.product.infrastructure.persistence;
 
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 
 @Data
-@Entity
 @Builder
+@AllArgsConstructor
+@NoArgsConstructor
+@Entity(name = "product")
 public class ProductEntity {
 
     @Id

@@ -15,9 +15,9 @@ import java.util.List;
 
 @Builder
 @Data
-@Entity
 @NoArgsConstructor
 @AllArgsConstructor
+@Entity(name = "purchase_order")
 public class PurchaseOrderEntity {
 
     @Id
@@ -33,7 +33,7 @@ public class PurchaseOrderEntity {
 
     @ManyToOne
     @Fetch(value = FetchMode.JOIN)
-    @JoinColumn(name = "supplier_id", nullable = false)
+    @JoinColumn(name = "vendor_id", nullable = false)
     private VendorEntity supplier;
 
     @OneToMany(mappedBy = "purchaseOrder", fetch = FetchType.LAZY, cascade = CascadeType.ALL)

@@ -9,9 +9,9 @@ import lombok.NoArgsConstructor;
 
 @Builder
 @Data
-@Entity
 @AllArgsConstructor
 @NoArgsConstructor
+@Entity(name = "purchase_order_line")
 public class PurchaseOrderLineEntity {
 
     @Id
