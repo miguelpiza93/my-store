@@ -2,7 +2,7 @@ package com.mapiz.mystore.purchaseorder.application.usecase.impl;
 
 import com.mapiz.mystore.purchaseorder.application.dto.PurchaseOrderLineRequest;
 import com.mapiz.mystore.purchaseorder.application.usecase.CreatePurchaseOrderUseCase;
-import com.mapiz.mystore.purchaseorder.application.usecase.command.CreatePurchaseOrderCommand;
+import com.mapiz.mystore.purchaseorder.application.command.CreatePurchaseOrderCommand;
 import com.mapiz.mystore.purchaseorder.domain.PurchaseOrder;
 import com.mapiz.mystore.purchaseorder.domain.PurchaseOrderLine;
 import com.mapiz.mystore.purchaseorder.domain.repository.PurchaseOrderLineRepository;

@@ -1,4 +1,4 @@
-package com.mapiz.mystore.purchaseorder.application.usecase.command;
+package com.mapiz.mystore.purchaseorder.application.command;
 
 import com.mapiz.mystore.purchaseorder.application.dto.PurchaseOrderLineRequest;
 import lombok.AllArgsConstructor;

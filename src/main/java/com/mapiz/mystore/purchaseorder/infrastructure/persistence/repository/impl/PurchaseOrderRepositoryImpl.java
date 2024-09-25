@@ -1,8 +1,9 @@
-package com.mapiz.mystore.purchaseorder.infrastructure.persistence.repository;
+package com.mapiz.mystore.purchaseorder.infrastructure.persistence.repository.impl;
 
 import com.mapiz.mystore.purchaseorder.domain.PurchaseOrder;
 import com.mapiz.mystore.purchaseorder.domain.repository.PurchaseOrderRepository;
 import com.mapiz.mystore.purchaseorder.infrastructure.persistence.mapper.PurchaseOrderMapper;
+import com.mapiz.mystore.purchaseorder.infrastructure.persistence.repository.JpaPurchaseOrderRepository;
 import com.mapiz.mystore.shared.CycleAvoidingMappingContext;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;

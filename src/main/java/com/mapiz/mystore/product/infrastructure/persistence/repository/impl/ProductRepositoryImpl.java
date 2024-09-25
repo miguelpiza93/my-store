@@ -1,9 +1,10 @@
-package com.mapiz.mystore.product.infrastructure.persistence.repository;
+package com.mapiz.mystore.product.infrastructure.persistence.repository.impl;
 
 import com.mapiz.mystore.product.domain.Product;
 import com.mapiz.mystore.product.domain.repository.ProductRepository;
 import com.mapiz.mystore.product.infrastructure.persistence.ProductEntity;
 import com.mapiz.mystore.product.infrastructure.persistence.mapper.ProductMapper;
+import com.mapiz.mystore.product.infrastructure.persistence.repository.JpaProductRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 

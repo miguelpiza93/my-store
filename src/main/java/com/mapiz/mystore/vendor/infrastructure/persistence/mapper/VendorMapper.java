@@ -3,7 +3,7 @@ package com.mapiz.mystore.vendor.infrastructure.persistence.mapper;
 import com.mapiz.mystore.vendor.application.dto.CreateVendorRequest;
 import com.mapiz.mystore.vendor.application.dto.CreateVendorResponse;
 import com.mapiz.mystore.vendor.application.dto.VendorResponse;
-import com.mapiz.mystore.vendor.application.usecase.command.CreateVendorCommand;
+import com.mapiz.mystore.vendor.application.command.CreateVendorCommand;
 import com.mapiz.mystore.vendor.domain.Vendor;
 import com.mapiz.mystore.vendor.infrastructure.persistence.entity.VendorEntity;
 import org.mapstruct.Mapper;

@@ -1,4 +1,4 @@
-package com.mapiz.mystore.vendor.application.usecase.command;
+package com.mapiz.mystore.vendor.application.command;
 
 import lombok.Builder;
 import lombok.Getter;

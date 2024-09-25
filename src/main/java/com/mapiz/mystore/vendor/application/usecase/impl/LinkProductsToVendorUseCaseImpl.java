@@ -1,7 +1,7 @@
 package com.mapiz.mystore.vendor.application.usecase.impl;
 
 import com.mapiz.mystore.vendor.application.usecase.LinkProductsToVendorUseCase;
-import com.mapiz.mystore.vendor.application.usecase.command.LinkProductsToVendorCommand;
+import com.mapiz.mystore.vendor.application.command.LinkProductsToVendorCommand;
 import com.mapiz.mystore.vendor.application.exception.VendorNotFoundException;
 import com.mapiz.mystore.product.domain.Product;
 import com.mapiz.mystore.vendor.domain.ProductVendor;

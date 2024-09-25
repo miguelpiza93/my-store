@@ -1,6 +1,6 @@
 package com.mapiz.mystore.vendor.application.usecase;
 
-import com.mapiz.mystore.vendor.application.usecase.command.LinkProductsToVendorCommand;
+import com.mapiz.mystore.vendor.application.command.LinkProductsToVendorCommand;
 import com.mapiz.mystore.vendor.domain.ProductVendor;
 
 import java.util.List;

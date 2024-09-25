@@ -1,8 +1,9 @@
-package com.mapiz.mystore.vendor.infrastructure.persistence.repository;
+package com.mapiz.mystore.vendor.infrastructure.persistence.repository.impl;
 
 import com.mapiz.mystore.vendor.domain.Vendor;
 import com.mapiz.mystore.vendor.domain.repository.VendorRepository;
 import com.mapiz.mystore.vendor.infrastructure.persistence.mapper.VendorMapper;
+import com.mapiz.mystore.vendor.infrastructure.persistence.repository.JpaVendorRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 

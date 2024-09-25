@@ -1,7 +1,7 @@
 package com.mapiz.mystore.vendor.application.usecase.impl;
 
 import com.mapiz.mystore.vendor.application.usecase.UpdateVendorUseCase;
-import com.mapiz.mystore.vendor.application.usecase.command.UpdateVendorCommand;
+import com.mapiz.mystore.vendor.application.command.UpdateVendorCommand;
 import com.mapiz.mystore.vendor.application.exception.VendorNotFoundException;
 import com.mapiz.mystore.vendor.domain.Vendor;
 import com.mapiz.mystore.vendor.domain.repository.VendorRepository;

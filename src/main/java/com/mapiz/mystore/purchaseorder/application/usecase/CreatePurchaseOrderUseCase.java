@@ -1,6 +1,6 @@
 package com.mapiz.mystore.purchaseorder.application.usecase;
 
-import com.mapiz.mystore.purchaseorder.application.usecase.command.CreatePurchaseOrderCommand;
+import com.mapiz.mystore.purchaseorder.application.command.CreatePurchaseOrderCommand;
 import com.mapiz.mystore.purchaseorder.domain.PurchaseOrder;
 
 import java.util.function.Function;

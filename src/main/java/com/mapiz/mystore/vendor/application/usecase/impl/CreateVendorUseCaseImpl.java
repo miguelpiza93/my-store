@@ -2,7 +2,7 @@ package com.mapiz.mystore.vendor.application.usecase.impl;
 
 import com.mapiz.mystore.vendor.application.mapper.VendorMapper;
 import com.mapiz.mystore.vendor.application.usecase.CreateVendorUseCase;
-import com.mapiz.mystore.vendor.application.usecase.command.CreateVendorCommand;
+import com.mapiz.mystore.vendor.application.command.CreateVendorCommand;
 import com.mapiz.mystore.vendor.domain.Vendor;
 import com.mapiz.mystore.vendor.domain.repository.VendorRepository;
 import lombok.RequiredArgsConstructor;

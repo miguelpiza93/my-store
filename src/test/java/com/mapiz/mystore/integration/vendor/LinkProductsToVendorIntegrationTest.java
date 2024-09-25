@@ -51,8 +51,8 @@ class LinkProductsToVendorIntegrationTest extends BaseIntegrationTest {
         when(productRepository.findAllById(Set.of(1, 2))).thenReturn(savedProducts);
 
         var linkedProducts = List.of(
-                ProductVendorEntity.builder().vendor(savedVendor).product(savedProducts.get(0)).price(1.0).build(),
-                ProductVendorEntity.builder().vendor(savedVendor).product(savedProducts.get(1)).price(2.0).build()
+                ProductVendorEntity.builder().id(1).vendor(savedVendor).product(savedProducts.get(0)).price(1.0).build(),
+                ProductVendorEntity.builder().id(2).vendor(savedVendor).product(savedProducts.get(1)).price(2.0).build()
         );
         when(productVendorRepository.findByVendorId(vendorId)).thenReturn(linkedProducts);
         when(productVendorRepository.saveAll(any())).thenReturn(List.of(
@@ -63,7 +63,6 @@ class LinkProductsToVendorIntegrationTest extends BaseIntegrationTest {
         // Act & Assert
         var request = LinkProductsToVendorRequest.builder().products(Map.of(1, 10.0, 2, 20.0)).build();
 
-        var vendorResponse = VendorResponse.builder().id(vendorId).name(VENDOR_NAME).build();
         var expectedProductVendors = List.of(
                 ProductVendorResponse.builder().id(1)
                         .product(
@@ -86,6 +85,6 @@ class LinkProductsToVendorIntegrationTest extends BaseIntegrationTest {
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON))
                 .andExpect(content().json(objectMapper.writeValueAsString(expectedProductVendors)));
 
-        verify(productVendorRepository, times(1)).deleteAll(linkedProducts);
+        verify(productVendorRepository, times(1)).deleteAllById(List.of(1, 2));
     }
 }

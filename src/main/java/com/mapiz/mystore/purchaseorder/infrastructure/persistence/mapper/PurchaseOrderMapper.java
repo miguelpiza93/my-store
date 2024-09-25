@@ -2,7 +2,7 @@ package com.mapiz.mystore.purchaseorder.infrastructure.persistence.mapper;
 
 import com.mapiz.mystore.purchaseorder.application.dto.CreatePurchaseOrderRequest;
 import com.mapiz.mystore.purchaseorder.application.dto.PurchaseOrderResponse;
-import com.mapiz.mystore.purchaseorder.application.usecase.command.CreatePurchaseOrderCommand;
+import com.mapiz.mystore.purchaseorder.application.command.CreatePurchaseOrderCommand;
 import com.mapiz.mystore.purchaseorder.domain.PurchaseOrder;
 import com.mapiz.mystore.purchaseorder.infrastructure.persistence.entity.PurchaseOrderEntity;
 import com.mapiz.mystore.shared.CycleAvoidingMappingContext;

@@ -1,4 +1,4 @@
-package com.mapiz.mystore.product.application.usecase.command;
+package com.mapiz.mystore.product.application.command;
 
 import lombok.Data;
 

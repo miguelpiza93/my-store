@@ -2,7 +2,7 @@ package com.mapiz.mystore.vendor.infrastructure.api;
 
 import com.mapiz.mystore.vendor.application.dto.LinkProductsToVendorRequest;
 import com.mapiz.mystore.vendor.application.dto.ProductVendorResponse;
-import com.mapiz.mystore.vendor.application.usecase.command.LinkProductsToVendorCommand;
+import com.mapiz.mystore.vendor.application.command.LinkProductsToVendorCommand;
 import com.mapiz.mystore.vendor.application.usecase.LinkProductsToVendorUseCase;
 import com.mapiz.mystore.vendor.infrastructure.EndpointConstant;
 import com.mapiz.mystore.vendor.infrastructure.persistence.mapper.ProductVendorMapper;

@@ -2,7 +2,7 @@ package com.mapiz.mystore.vendor.infrastructure.api;
 
 import com.mapiz.mystore.vendor.application.dto.UpdateVendorRequest;
 import com.mapiz.mystore.vendor.application.dto.VendorResponse;
-import com.mapiz.mystore.vendor.application.usecase.command.UpdateVendorCommand;
+import com.mapiz.mystore.vendor.application.command.UpdateVendorCommand;
 import com.mapiz.mystore.vendor.infrastructure.persistence.mapper.VendorMapper;
 import com.mapiz.mystore.vendor.application.usecase.UpdateVendorUseCase;
 import lombok.RequiredArgsConstructor;
