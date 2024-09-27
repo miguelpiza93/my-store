@@ -70,7 +70,7 @@ class ReceivePurchaseOrderIntegrationTest extends BaseIntegrationTest {
     var expectedSavedStockItems =
         List.of(
             StockItemEntity.builder()
-                .product(ProductEntity.builder().id(1).build())
+                .product(ProductEntity.builder().id(1).name(PRODUCT_NAME).build())
                 .quantity(PRODUCT_QUANTITY)
                 .build());
 

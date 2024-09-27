@@ -17,6 +17,9 @@ if [ -z "$modified_files" ]; then
     exit 0
 fi
 
+# Limpiar el directorio temporal antes de copiar los archivos
+rm -rf "$TEMP_DIR/*"
+
 # Copiar los archivos modificados al directorio temporal
 for file in $modified_files; do
     if [ -f "$file" ]; then
@@ -26,7 +29,7 @@ for file in $modified_files; do
 done
 
 # Ejecutar PMD solo sobre los archivos modificados en el directorio temporal
-mvn pmd:check -DsourceDirectory="$TEMP_DIR" -Dpmd.rulesets="$PMD_RULESET"
+mvn pmd:check -Dpmd.rulesets="$PMD_RULESET" -DsourceDirectory="$TEMP_DIR" -Dpmd.output.format=csv -Dpmd.outputFile="$PMD_REPORT"
 
 # Capturar el resultado de PMD
 pmd_exit_code=$?

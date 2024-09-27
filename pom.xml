@@ -164,6 +164,9 @@
                 <artifactId>maven-pmd-plugin</artifactId>
                 <version>${maven-pmd-plugin.version}</version>
                 <configuration>
+                    <compileSourceRoots>
+                        <compileSourceRoot>${project.basedir}/pmd_temp</compileSourceRoot>
+                    </compileSourceRoots>
                     <rulesets>
                         <ruleset>pmd/rulesets/basic-rulesets-java.xml</ruleset>
                     </rulesets>
