@@ -19,6 +19,7 @@
         <org.projectlombok.version>1.18.32</org.projectlombok.version>
         <org.hibernate.validator.version>8.0.0.Final</org.hibernate.validator.version>
         <com.tngtech.archunit.version>1.3.0</com.tngtech.archunit.version>
+        <maven-pmd-plugin.version>3.25.0</maven-pmd-plugin.version>
     </properties>
     <dependencies>
         <dependency>
@@ -155,6 +156,28 @@
                             <version>0.2.0</version>
                         </path>
                     </annotationProcessorPaths>
+                </configuration>
+            </plugin>
+            <!-- PMD Plugin Configuration -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-pmd-plugin</artifactId>
+                <version>${maven-pmd-plugin.version}</version>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>check</goal> <!-- Falla la compilación si hay errores -->
+                            <goal>cpd-check</goal> <!-- Compara duplicados (opcional) -->
+                        </goals>
+                        <phase>verify</phase> <!-- Se ejecuta durante la fase de verificación -->
+                    </execution>
+                </executions>
+                <configuration>
+                    <rulesets>
+                        <ruleset>pmd/rulesets/basic-rulesets-java.xml</ruleset>
+                    </rulesets>
+                    <failOnViolation>true</failOnViolation> <!-- Falla si se encuentran violaciones -->
+                    <linkXRef>false</linkXRef>
                 </configuration>
             </plugin>
         </plugins>

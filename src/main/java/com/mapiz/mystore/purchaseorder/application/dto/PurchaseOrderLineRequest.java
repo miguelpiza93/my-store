@@ -10,6 +10,6 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @Builder
 public class PurchaseOrderLineRequest {
-    private Integer productId;
-    private Integer quantity;
+  private Integer productId;
+  private Integer quantity;
 }

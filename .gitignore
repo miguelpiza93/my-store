@@ -4,6 +4,8 @@ target/
 !**/src/main/**/target/
 !**/src/test/**/target/
 .env
+.venv/
+pmd/report/
 
 ### STS ###
 .apt_generated

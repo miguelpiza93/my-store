@@ -7,16 +7,16 @@ import com.mapiz.mystore.purchaseorder.domain.repository.PurchaseOrderRepository
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
-
 @Component
 @RequiredArgsConstructor
 public class GetPurchaseOrderByIdUseCaseImpl implements GetPurchaseOrderByIdUseCase {
 
-    private final PurchaseOrderRepository purchaseOrderRepository;
+  private final PurchaseOrderRepository purchaseOrderRepository;
 
-    @Override
-    public PurchaseOrder apply(Integer integer) {
-        return purchaseOrderRepository.findById(integer)
-                .orElseThrow(() -> new PurchaseOrderNotFoundException("Purchase order not found"));
-    }
+  @Override
+  public PurchaseOrder apply(Integer purchaseOrderId) {
+    return purchaseOrderRepository
+        .findById(purchaseOrderId)
+        .orElseThrow(() -> new PurchaseOrderNotFoundException(purchaseOrderId));
+  }
 }

@@ -1,13 +1,12 @@
 package com.mapiz.mystore.vendor.application.dto;
 
-import lombok.*;
-
 import java.util.Map;
+import lombok.*;
 
 @Data
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
 public class LinkProductsToVendorRequest {
-    private Map<Integer, Double> products;
+  private Map<Integer, Double> products;
 }

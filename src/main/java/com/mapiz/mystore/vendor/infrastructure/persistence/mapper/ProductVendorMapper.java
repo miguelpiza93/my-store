@@ -9,11 +9,11 @@ import org.mapstruct.factory.Mappers;
 @Mapper
 public abstract class ProductVendorMapper {
 
-    public static final ProductVendorMapper INSTANCE = Mappers.getMapper(ProductVendorMapper.class);
+  public static final ProductVendorMapper INSTANCE = Mappers.getMapper(ProductVendorMapper.class);
 
-    public abstract ProductVendor entityToModel(ProductVendorEntity entity);
+  public abstract ProductVendor entityToModel(ProductVendorEntity entity);
 
-    public abstract ProductVendorEntity modelToEntity(ProductVendor model);
+  public abstract ProductVendorEntity modelToEntity(ProductVendor model);
 
-    public abstract ProductVendorResponse modelToProductVendorResponse(ProductVendor productVendor);
+  public abstract ProductVendorResponse modelToProductVendorResponse(ProductVendor productVendor);
 }

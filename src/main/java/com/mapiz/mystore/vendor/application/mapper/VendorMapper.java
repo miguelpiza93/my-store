@@ -8,8 +8,7 @@ import org.mapstruct.factory.Mappers;
 @Mapper
 public abstract class VendorMapper {
 
-    public static final VendorMapper INSTANCE = Mappers.getMapper(VendorMapper.class);
+  public static final VendorMapper INSTANCE = Mappers.getMapper(VendorMapper.class);
 
-    public abstract Vendor commandToModel(CreateVendorCommand command);
-
+  public abstract Vendor commandToModel(CreateVendorCommand command);
 }

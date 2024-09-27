@@ -11,8 +11,8 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @Builder
 public class PurchaseOrderLineResponse {
-    private Integer id;
-    private Product product;
-    private Integer quantity;
-    private Double unitPrice;
+  private Integer id;
+  private Product product;
+  private Integer quantity;
+  private Double unitPrice;
 }

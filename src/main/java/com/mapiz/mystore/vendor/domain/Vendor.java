@@ -8,6 +8,6 @@ import lombok.Data;
 @AllArgsConstructor
 @Data
 public class Vendor {
-    private Integer id;
-    private String name;
+  private Integer id;
+  private String name;
 }

@@ -7,7 +7,6 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-
 @Data
 @Builder
 @AllArgsConstructor
@@ -15,18 +14,21 @@ import lombok.NoArgsConstructor;
 @Entity(name = "product_vendor")
 public class ProductVendorEntity {
 
-    @Id
-    @SequenceGenerator(name = "vendor_product_sequence", sequenceName = "vendor_product_sequence", allocationSize = 1)
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "vendor_product_sequence")
-    private Integer id;
+  @Id
+  @SequenceGenerator(
+      name = "vendor_product_sequence",
+      sequenceName = "vendor_product_sequence",
+      allocationSize = 1)
+  @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "vendor_product_sequence")
+  private Integer id;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "vendor_id", nullable = false)
-    private VendorEntity vendor;
+  @ManyToOne(fetch = FetchType.LAZY)
+  @JoinColumn(name = "vendor_id", nullable = false)
+  private VendorEntity vendor;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "product_id", nullable = false)
-    private ProductEntity product;
+  @ManyToOne(fetch = FetchType.LAZY)
+  @JoinColumn(name = "product_id", nullable = false)
+  private ProductEntity product;
 
-    private double price;
+  private double price;
 }

@@ -9,8 +9,8 @@ import lombok.Data;
 @AllArgsConstructor
 @Data
 public class ProductVendor {
-    private Integer id;
-    private Vendor vendor;
-    private Product product;
-    private double price;
+  private Integer id;
+  private Vendor vendor;
+  private Product product;
+  private double price;
 }

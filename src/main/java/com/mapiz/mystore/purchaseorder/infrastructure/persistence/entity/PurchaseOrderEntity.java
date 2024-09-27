@@ -2,16 +2,15 @@ package com.mapiz.mystore.purchaseorder.infrastructure.persistence.entity;
 
 import com.mapiz.mystore.vendor.infrastructure.persistence.entity.VendorEntity;
 import jakarta.persistence.*;
+import java.time.Instant;
+import java.time.LocalDate;
+import java.util.List;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.Fetch;
 import org.hibernate.annotations.FetchMode;
-
-import java.time.Instant;
-import java.time.LocalDate;
-import java.util.List;
 
 @Builder
 @Data
@@ -20,22 +19,28 @@ import java.util.List;
 @Entity(name = "purchase_order")
 public class PurchaseOrderEntity {
 
-    @Id
-    @SequenceGenerator(name = "purchase_order_sequence", sequenceName = "purchase_order_sequence", allocationSize = 1)
-    @GeneratedValue(generator = "purchase_order_sequence", strategy = GenerationType.SEQUENCE)
-    private Integer id;
+  @Id
+  @SequenceGenerator(
+      name = "purchase_order_sequence",
+      sequenceName = "purchase_order_sequence",
+      allocationSize = 1)
+  @GeneratedValue(generator = "purchase_order_sequence", strategy = GenerationType.SEQUENCE)
+  private Integer id;
 
-    @Column(name = "created_at")
-    private Instant createdAt;
+  @Column(name = "status")
+  private String status;
 
-    @Column(name = "estimated_delivery_date")
-    private LocalDate estimatedDeliveryDate;
+  @Column(name = "created_at")
+  private Instant createdAt;
 
-    @ManyToOne
-    @Fetch(value = FetchMode.JOIN)
-    @JoinColumn(name = "vendor_id", nullable = false)
-    private VendorEntity supplier;
+  @Column(name = "estimated_delivery_date")
+  private LocalDate estimatedDeliveryDate;
 
-    @OneToMany(mappedBy = "purchaseOrder", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    private List<PurchaseOrderLineEntity> purchaseOrderLines;
+  @ManyToOne
+  @Fetch(FetchMode.JOIN)
+  @JoinColumn(name = "vendor_id", nullable = false)
+  private VendorEntity supplier;
+
+  @OneToMany(mappedBy = "purchaseOrder", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+  private List<PurchaseOrderLineEntity> purchaseOrderLines;
 }

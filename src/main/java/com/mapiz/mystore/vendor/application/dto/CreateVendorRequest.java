@@ -12,6 +12,5 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class CreateVendorRequest {
 
-    @NotBlank
-    private String name;
+  @NotBlank private String name;
 }

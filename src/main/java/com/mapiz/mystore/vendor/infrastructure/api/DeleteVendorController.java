@@ -9,14 +9,14 @@ import org.springframework.web.bind.annotation.*;
 
 @RequiredArgsConstructor
 @RestController
-@RequestMapping(value = EndpointConstant.VENDORS_BASE_PATH)
+@RequestMapping(EndpointConstant.VENDORS_BASE_PATH)
 public class DeleteVendorController {
 
-    private final DeleteVendorUseCase deleteVendorUseCase;
+  private final DeleteVendorUseCase deleteVendorUseCase;
 
-    @DeleteMapping(value = "/{vendorId}")
-    public @ResponseBody ResponseEntity<Void> deleteVendor(@PathVariable Integer vendorId) {
-        deleteVendorUseCase.accept(vendorId);
-        return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
-    }
+  @DeleteMapping("/{vendorId}")
+  public @ResponseBody ResponseEntity<Void> deleteVendor(@PathVariable Integer vendorId) {
+    deleteVendorUseCase.accept(vendorId);
+    return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
+  }
 }

@@ -10,6 +10,6 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class CreateVendorResponse {
-    private Integer id;
-    private String name;
+  private Integer id;
+  private String name;
 }

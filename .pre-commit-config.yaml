@@ -1,0 +1,14 @@
+repos:
+  - repo: https://github.com/macisamuele/language-formatters-pre-commit-hooks
+    rev: v2.13.0
+    hooks:
+      - id: pretty-format-java
+        args: [--autofix]
+
+  - repo: local
+    hooks:
+      - id: run-pmd-on-modified
+        name: Run PMD on Modified Files
+        entry: .githooks/pmd-checks.sh
+        language: script
+        stages: [commit]

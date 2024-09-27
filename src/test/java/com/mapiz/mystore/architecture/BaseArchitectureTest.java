@@ -7,15 +7,16 @@ import org.junit.jupiter.api.BeforeEach;
 
 public class BaseArchitectureTest {
 
-    private static final String ROOT_PACKAGE = "com.mapiz.mystore";
+  private static final String ROOT_PACKAGE = "com.mapiz.mystore";
 
-    protected JavaClasses javaClasses;
+  protected JavaClasses javaClasses;
 
-    @BeforeEach
-    void setUp() {
-        this.javaClasses = new ClassFileImporter()
-                .withImportOption(ImportOption.Predefined.DO_NOT_INCLUDE_JARS)
-                .withImportOption(ImportOption.Predefined.DO_NOT_INCLUDE_TESTS)
-                .importPackages(ROOT_PACKAGE);
-    }
+  @BeforeEach
+  void setUp() {
+    this.javaClasses =
+        new ClassFileImporter()
+            .withImportOption(ImportOption.Predefined.DO_NOT_INCLUDE_JARS)
+            .withImportOption(ImportOption.Predefined.DO_NOT_INCLUDE_TESTS)
+            .importPackages(ROOT_PACKAGE);
+  }
 }

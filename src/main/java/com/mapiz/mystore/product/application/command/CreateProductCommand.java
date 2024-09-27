@@ -5,6 +5,6 @@ import lombok.Data;
 @Data
 public class CreateProductCommand {
 
-    private String name;
-    private String description;
+  private String name;
+  private String description;
 }

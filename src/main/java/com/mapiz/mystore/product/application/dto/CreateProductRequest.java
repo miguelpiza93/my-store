@@ -8,9 +8,7 @@ import lombok.Getter;
 @Getter
 public class CreateProductRequest {
 
-    @NotBlank
-    private String name;
+  @NotBlank private String name;
 
-    @NotBlank
-    private String description;
+  @NotBlank private String description;
 }

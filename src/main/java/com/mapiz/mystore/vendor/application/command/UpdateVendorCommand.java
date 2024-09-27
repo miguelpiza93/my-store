@@ -10,6 +10,6 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class UpdateVendorCommand {
-    private Integer id;
-    private String name;
+  private Integer id;
+  private String name;
 }

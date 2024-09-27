@@ -9,7 +9,7 @@ import lombok.Getter;
 @AllArgsConstructor
 @Getter
 public class ProductVendorResponse {
-    private Integer id;
-    private ProductResponse product;
-    private double price;
+  private Integer id;
+  private ProductResponse product;
+  private double price;
 }

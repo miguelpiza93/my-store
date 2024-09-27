@@ -7,9 +7,9 @@ import lombok.Data;
 @Builder
 @Data
 public class PurchaseOrderLine {
-    private Integer id;
-    private Product product;
-    private Integer quantity;
-    private Double unitPrice;
-    private PurchaseOrder purchaseOrder;
+  private Integer id;
+  private Product product;
+  private Integer quantity;
+  private Double unitPrice;
+  private PurchaseOrder purchaseOrder;
 }
