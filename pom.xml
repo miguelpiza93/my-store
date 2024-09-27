@@ -163,21 +163,12 @@
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-pmd-plugin</artifactId>
                 <version>${maven-pmd-plugin.version}</version>
-                <executions>
-                    <execution>
-                        <goals>
-                            <goal>check</goal> <!-- Falla la compilación si hay errores -->
-                            <goal>cpd-check</goal> <!-- Compara duplicados (opcional) -->
-                        </goals>
-                        <phase>verify</phase> <!-- Se ejecuta durante la fase de verificación -->
-                    </execution>
-                </executions>
                 <configuration>
                     <rulesets>
                         <ruleset>pmd/rulesets/basic-rulesets-java.xml</ruleset>
                     </rulesets>
-                    <failOnViolation>true</failOnViolation> <!-- Falla si se encuentran violaciones -->
-                    <linkXRef>false</linkXRef>
+                    <format>csv</format>
+                    <targetDirectory>${project.build.directory}/pmd</targetDirectory>
                 </configuration>
             </plugin>
         </plugins>

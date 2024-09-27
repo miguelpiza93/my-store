@@ -3,6 +3,7 @@
 # Directorio temporal para almacenar archivos modificados
 TEMP_DIR="pmd_temp"
 PMD_RULESET="pmd/rulesets/basic-rulesets-java.xml"
+PMD_REPORT="target/pmd/pmd.csv"
 
 # Crear el directorio temporal si no existe
 mkdir -p "$TEMP_DIR"
@@ -30,14 +31,17 @@ mvn pmd:check -DsourceDirectory="$TEMP_DIR" -Dpmd.rulesets="$PMD_RULESET"
 # Capturar el resultado de PMD
 pmd_exit_code=$?
 
-# Limpiar el directorio temporal
-rm -rf "$TEMP_DIR"
-
-# Verificar el resultado de PMD
 if [ $pmd_exit_code -ne 0 ]; then
-    echo "PMD violations found."
+    echo "PMD violations found:"
+    if [ -f "$PMD_REPORT" ]; then
+        cat "$PMD_REPORT"
+    else
+        echo "No PMD report found."
+    fi
+    rm -rf "$TEMP_DIR"
     exit 1
 else
     echo "No PMD violations found."
+    rm -rf "$TEMP_DIR"
     exit 0
 fi
