@@ -28,4 +28,11 @@ public class StockItemRepositoryImpl implements StockItemRepository {
         .map(StockItemMapper.INSTANCE::entityToModel)
         .toList();
   }
+
+  @Override
+  public List<StockItem> findAll() {
+    return jpaStockItemRepository.findAll().stream()
+        .map(StockItemMapper.INSTANCE::entityToModel)
+        .toList();
+  }
 }

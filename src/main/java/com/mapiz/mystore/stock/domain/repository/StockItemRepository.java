@@ -8,4 +8,6 @@ public interface StockItemRepository {
   void saveAll(List<StockItem> stockItems);
 
   List<StockItem> findByProductIdIn(Collection<Integer> productIds);
+
+  List<StockItem> findAll();
 }
