@@ -28,6 +28,13 @@ public class ErrorHandler {
     return ResponseEntity.status(apiError.status()).body(apiError);
   }
 
+  @ExceptionHandler(BadRequestError.class)
+  public ResponseEntity<ApiError> handleBadRequest(BadRequestError e) {
+    log.warn("handleBadRequest: ", e);
+    ApiError apiError = new ApiError("bad_request", e.getMessage(), BAD_REQUEST.value());
+    return ResponseEntity.status(apiError.status()).body(apiError);
+  }
+
   @ExceptionHandler(MethodArgumentNotValidException.class)
   public ResponseEntity<ApiError> handleRequestValidationException(
       MethodArgumentNotValidException e) {

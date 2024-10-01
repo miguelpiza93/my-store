@@ -10,4 +10,6 @@ public abstract class StockItemMapper {
   public static final StockItemMapper INSTANCE = Mappers.getMapper(StockItemMapper.class);
 
   public abstract StockItemEntity modelToEntity(StockItem stockItem);
+
+  public abstract StockItem entityToModel(StockItemEntity entity);
 }

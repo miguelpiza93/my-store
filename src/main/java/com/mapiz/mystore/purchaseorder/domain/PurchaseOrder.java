@@ -16,4 +16,8 @@ public class PurchaseOrder {
   private Instant createdAt;
   private LocalDate estimatedDeliveryDate;
   private List<PurchaseOrderLine> purchaseOrderLines;
+
+  public boolean wasReceived() {
+    return status == PurchaseOrderStatus.RECEIVED;
+  }
 }

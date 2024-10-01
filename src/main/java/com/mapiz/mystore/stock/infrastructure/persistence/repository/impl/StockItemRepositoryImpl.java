@@ -4,6 +4,7 @@ import com.mapiz.mystore.stock.domain.StockItem;
 import com.mapiz.mystore.stock.domain.repository.StockItemRepository;
 import com.mapiz.mystore.stock.infrastructure.persistence.mapper.StockItemMapper;
 import com.mapiz.mystore.stock.infrastructure.persistence.repository.JpaStockItemRepository;
+import java.util.Collection;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
@@ -19,5 +20,12 @@ public class StockItemRepositoryImpl implements StockItemRepository {
     var stockItemEntities =
         stockItems.stream().map(StockItemMapper.INSTANCE::modelToEntity).toList();
     jpaStockItemRepository.saveAll(stockItemEntities);
+  }
+
+  @Override
+  public List<StockItem> findByProductIdIn(Collection<Integer> productIds) {
+    return jpaStockItemRepository.findByProductIdIn(productIds).stream()
+        .map(StockItemMapper.INSTANCE::entityToModel)
+        .toList();
   }
 }
