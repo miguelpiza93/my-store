@@ -11,8 +11,8 @@ import lombok.NoArgsConstructor;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-@Entity(name = "product_vendor")
-public class ProductVendorEntity {
+@Entity(name = "vendor_products")
+public class VendorProductEntity {
 
   @Id
   @SequenceGenerator(

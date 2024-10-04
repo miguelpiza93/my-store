@@ -16,7 +16,7 @@ import org.hibernate.annotations.FetchMode;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-@Entity(name = "purchase_order")
+@Entity(name = "purchase_orders")
 public class PurchaseOrderEntity {
 
   @Id
@@ -39,7 +39,7 @@ public class PurchaseOrderEntity {
   @ManyToOne
   @Fetch(FetchMode.JOIN)
   @JoinColumn(name = "vendor_id", nullable = false)
-  private VendorEntity supplier;
+  private VendorEntity vendor;
 
   @OneToMany(mappedBy = "purchaseOrder", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
   private List<PurchaseOrderLineEntity> purchaseOrderLines;

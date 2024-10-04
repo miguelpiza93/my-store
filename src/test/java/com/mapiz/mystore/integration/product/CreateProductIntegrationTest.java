@@ -8,11 +8,10 @@ import com.mapiz.mystore.integration.BaseIntegrationTest;
 import com.mapiz.mystore.product.application.dto.CreateProductRequest;
 import com.mapiz.mystore.product.application.dto.ProductResponse;
 import com.mapiz.mystore.product.infrastructure.EndpointConstant;
-import com.mapiz.mystore.product.infrastructure.persistence.ProductEntity;
 import com.mapiz.mystore.product.infrastructure.persistence.repository.JpaProductRepository;
 import com.mapiz.mystore.shared.ApiError;
 import org.junit.jupiter.api.Test;
-import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.boot.test.mock.mockito.SpyBean;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
@@ -20,22 +19,23 @@ import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 class CreateProductIntegrationTest extends BaseIntegrationTest {
 
   private static final String PRODUCT_NAME = "Product 1";
-  private static final String PRODUCT_DESC = "product one";
+  private static final String PRODUCT_DESC = "test product";
+  private static final Long UNIT_ID = 2L;
 
-  @MockBean private JpaProductRepository productRepository;
+  @SpyBean private JpaProductRepository productRepository;
 
   @Test
   void testCreateProduct() throws Exception {
-    // Arrange
-    var savedProduct =
-        ProductEntity.builder().id(1).name(PRODUCT_NAME).description(PRODUCT_DESC).build();
-    when(productRepository.save(any())).thenReturn(savedProduct);
     var request =
-        CreateProductRequest.builder().name(PRODUCT_NAME).description(PRODUCT_DESC).build();
+        CreateProductRequest.builder()
+            .name(PRODUCT_NAME)
+            .description(PRODUCT_DESC)
+            .referenceUnitId(UNIT_ID)
+            .build();
 
     // Act & Assert
     var expectedProduct =
-        ProductResponse.builder().id(1).name(PRODUCT_NAME).description(PRODUCT_DESC).build();
+        ProductResponse.builder().id(3).name(PRODUCT_NAME).description(PRODUCT_DESC).build();
     mockMvc
         .perform(
             MockMvcRequestBuilders.post(EndpointConstant.PRODUCTS_BASE_PATH)
@@ -44,6 +44,8 @@ class CreateProductIntegrationTest extends BaseIntegrationTest {
         .andExpect(status().isCreated())
         .andExpect(content().contentType(MediaType.APPLICATION_JSON))
         .andExpect(content().json(objectMapper.writeValueAsString(expectedProduct)));
+
+    verify(productRepository, times(1)).save(any());
   }
 
   @Test

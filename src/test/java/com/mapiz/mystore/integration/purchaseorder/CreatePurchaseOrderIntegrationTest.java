@@ -16,8 +16,8 @@ import com.mapiz.mystore.purchaseorder.infrastructure.persistence.entity.Purchas
 import com.mapiz.mystore.purchaseorder.infrastructure.persistence.entity.PurchaseOrderLineEntity;
 import com.mapiz.mystore.purchaseorder.infrastructure.persistence.repository.JpaPurchaseOrderLineRepository;
 import com.mapiz.mystore.purchaseorder.infrastructure.persistence.repository.JpaPurchaseOrderRepository;
-import com.mapiz.mystore.vendor.infrastructure.persistence.entity.ProductVendorEntity;
 import com.mapiz.mystore.vendor.infrastructure.persistence.entity.VendorEntity;
+import com.mapiz.mystore.vendor.infrastructure.persistence.entity.VendorProductEntity;
 import com.mapiz.mystore.vendor.infrastructure.persistence.repository.JpaProductVendorRepository;
 import com.mapiz.mystore.vendor.infrastructure.persistence.repository.JpaVendorRepository;
 import java.time.Instant;
@@ -50,7 +50,7 @@ class CreatePurchaseOrderIntegrationTest extends BaseIntegrationTest {
     when(productVendorRepository.findByVendorIdAndProductIdIn(VENDOR_ID, List.of(1)))
         .thenReturn(
             List.of(
-                ProductVendorEntity.builder()
+                VendorProductEntity.builder()
                     .id(1)
                     .product(savedProduct)
                     .vendor(savedVendor)
@@ -64,7 +64,7 @@ class CreatePurchaseOrderIntegrationTest extends BaseIntegrationTest {
         PurchaseOrderEntity.builder()
             .id(1)
             .createdAt(now)
-            .supplier(savedVendor)
+            .vendor(savedVendor)
             .estimatedDeliveryDate(estimatedDeliveryDate)
             .build();
     when(purchaseOrderRepository.save(any(PurchaseOrderEntity.class)))

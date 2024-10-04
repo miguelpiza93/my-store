@@ -11,7 +11,7 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-@Entity(name = "purchase_order_line")
+@Entity(name = "purchase_order_lines")
 public class PurchaseOrderLineEntity {
 
   @Id
@@ -27,11 +27,25 @@ public class PurchaseOrderLineEntity {
   @Column(name = "unit_price")
   private double unitPrice;
 
-  @ManyToOne(fetch = FetchType.LAZY)
+  @ManyToOne(fetch = FetchType.EAGER)
   @JoinColumn(name = "product_id", nullable = false)
   private ProductEntity product;
 
   @ManyToOne(fetch = FetchType.LAZY)
   @JoinColumn(name = "purchase_order_id", nullable = false)
   private PurchaseOrderEntity purchaseOrder;
+
+  @Override
+  public String toString() {
+    return "PurchaseOrderLineEntity{"
+        + "id="
+        + id
+        + ", quantity="
+        + quantity
+        + ", unitPrice="
+        + unitPrice
+        + ", product="
+        + product
+        + '}';
+  }
 }

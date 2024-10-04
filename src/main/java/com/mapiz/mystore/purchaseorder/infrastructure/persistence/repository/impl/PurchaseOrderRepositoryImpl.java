@@ -25,12 +25,10 @@ public class PurchaseOrderRepositoryImpl implements PurchaseOrderRepository {
 
   @Override
   public Optional<PurchaseOrder> findById(Integer id) {
-    return jpaRepository
-        .findById(id)
-        .map(
-            entity ->
-                PurchaseOrderMapper.INSTANCE.entityToModel(
-                    entity, new CycleAvoidingMappingContext()));
+    var res = jpaRepository.findById(id);
+    return res.map(
+        entity ->
+            PurchaseOrderMapper.INSTANCE.entityToModel(entity, new CycleAvoidingMappingContext()));
   }
 
   @Override

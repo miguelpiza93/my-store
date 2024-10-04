@@ -4,8 +4,8 @@ import static com.mapiz.mystore.purchaseorder.infrastructure.EndpointConstant.PU
 
 import com.mapiz.mystore.purchaseorder.application.dto.CreatePurchaseOrderRequest;
 import com.mapiz.mystore.purchaseorder.application.dto.PurchaseOrderResponse;
+import com.mapiz.mystore.purchaseorder.application.mapper.PurchaseOrderMapper;
 import com.mapiz.mystore.purchaseorder.application.usecase.CreatePurchaseOrderUseCase;
-import com.mapiz.mystore.purchaseorder.infrastructure.persistence.mapper.PurchaseOrderMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

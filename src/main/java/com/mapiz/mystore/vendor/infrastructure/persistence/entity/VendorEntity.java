@@ -10,7 +10,7 @@ import lombok.NoArgsConstructor;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-@Entity(name = "vendor")
+@Entity(name = "vendors")
 public class VendorEntity {
 
   @Id

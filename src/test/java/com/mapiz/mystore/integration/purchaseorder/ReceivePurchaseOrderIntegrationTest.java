@@ -1,12 +1,12 @@
 package com.mapiz.mystore.integration.purchaseorder;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.mockito.Mockito.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import com.mapiz.mystore.integration.BaseIntegrationTest;
-import com.mapiz.mystore.product.infrastructure.persistence.ProductEntity;
 import com.mapiz.mystore.purchaseorder.domain.PurchaseOrderStatus;
 import com.mapiz.mystore.purchaseorder.infrastructure.EndpointConstant;
 import com.mapiz.mystore.purchaseorder.infrastructure.persistence.entity.PurchaseOrderEntity;
@@ -15,89 +15,65 @@ import com.mapiz.mystore.purchaseorder.infrastructure.persistence.repository.Jpa
 import com.mapiz.mystore.shared.ApiError;
 import com.mapiz.mystore.stock.infrastructure.persistence.entity.StockItemEntity;
 import com.mapiz.mystore.stock.infrastructure.persistence.repository.JpaStockItemRepository;
-import com.mapiz.mystore.vendor.infrastructure.persistence.entity.VendorEntity;
-import java.util.List;
-import java.util.Optional;
-import org.junit.jupiter.api.BeforeEach;
+import java.util.Map;
+import java.util.stream.Collectors;
 import org.junit.jupiter.api.Test;
-import org.mockito.ArgumentCaptor;
-import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.boot.test.mock.mockito.SpyBean;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
+import org.springframework.transaction.annotation.Transactional;
 
+@Transactional
 class ReceivePurchaseOrderIntegrationTest extends BaseIntegrationTest {
 
-  private static final int PRODUCT_ID = 1;
-  private static final String PRODUCT_NAME = "Product 1";
-  private static final int VENDOR_ID = 1;
-  private static final String VENDOR_NAME = "Vendor 1";
-  private static final int PURCHASE_ORDER_LINE_ID = 1;
-  private static final double PURCHASE_ORDER_LINE_UNIT_PRICE = 10.0;
-  private static final int PRODUCT_QUANTITY = 1;
-  private static final int PURCHASE_ORDER_ID = 1;
-  private static final int EXISTING_STOCK_ID = 65;
-  private static final int EXISTING_STOCK_QUANTITY = 3;
+  private static final int EGG_ID = 1;
+  private static final int UNITS_OF_EGGS_IN_STOCK = 4;
+  private static final int EXPECTED_UNITS_OF_EGGS_ADDED = 120;
 
-  @MockBean private JpaPurchaseOrderRepository purchaseOrderRepository;
+  private static final int MILK_ID = 2;
+  private static final int UNITS_OF_MILK_IN_STOCK = 0;
+  private static final int EXPECTED_UNITS_OF_MILK_ADDED = 12;
 
-  @MockBean private JpaStockItemRepository stockItemRepository;
+  private static final int PURCHASE_ORDER_ID_RECEIVED = 1;
+  private static final int PURCHASE_ORDER_OF_EGGS_ID = 2;
+  private static final int PURCHASE_ORDER_OF_MILK_ID = 3;
 
-  private ProductEntity savedProduct;
-  private VendorEntity savedVendor;
-  private PurchaseOrderEntity savedPurchaseOrder;
+  @SpyBean private JpaPurchaseOrderRepository purchaseOrderRepository;
 
-  @BeforeEach
-  void setUp() {
-    savedProduct = prepareProduct();
-    savedVendor = prepareVendor();
-    savedPurchaseOrder = preparePurchaseOrder();
-  }
+  @SpyBean private JpaStockItemRepository stockItemRepository;
 
   @Test
   void testReceivePurchaseOrderWhenStockIsEmpty() throws Exception {
-    // Arrange
-    when(purchaseOrderRepository.findById(PURCHASE_ORDER_ID))
-        .thenReturn(Optional.of(savedPurchaseOrder));
-    when(stockItemRepository.findByProductIdIn(anyCollection())).thenReturn(List.of());
-
     // Act & Assert
     mockMvc
         .perform(
-            MockMvcRequestBuilders.post(getReceiveUrl()).contentType(MediaType.APPLICATION_JSON))
+            MockMvcRequestBuilders.post(getReceiveUrl(PURCHASE_ORDER_OF_MILK_ID))
+                .contentType(MediaType.APPLICATION_JSON))
         .andExpect(status().isAccepted());
+    Map<Integer, Integer> expectedQuantitiesByProductId =
+        Map.of(MILK_ID, UNITS_OF_MILK_IN_STOCK + EXPECTED_UNITS_OF_MILK_ADDED);
 
-    var expectedSavedStockItems = List.of(createStockItem(PRODUCT_QUANTITY));
-    verifyRepositoriesInteractions(expectedSavedStockItems);
+    verifyDataSaved(PURCHASE_ORDER_OF_MILK_ID, expectedQuantitiesByProductId);
   }
 
   @Test
   void testReceivePurchaseOrderWhenStockIsNotEmpty() throws Exception {
-    // Arrange
-    when(purchaseOrderRepository.findById(PURCHASE_ORDER_ID))
-        .thenReturn(Optional.of(savedPurchaseOrder));
-    when(stockItemRepository.findByProductIdIn(anyCollection()))
-        .thenReturn(List.of(createStockItemWithId(EXISTING_STOCK_ID, EXISTING_STOCK_QUANTITY)));
-
     // Act & Assert
     mockMvc
         .perform(
-            MockMvcRequestBuilders.post(getReceiveUrl()).contentType(MediaType.APPLICATION_JSON))
+            MockMvcRequestBuilders.post(getReceiveUrl(PURCHASE_ORDER_OF_EGGS_ID))
+                .contentType(MediaType.APPLICATION_JSON))
         .andExpect(status().isAccepted());
 
-    var expectedQuantity = PRODUCT_QUANTITY + EXISTING_STOCK_QUANTITY;
-    var expectedSavedStockItems =
-        List.of(createStockItemWithId(EXISTING_STOCK_ID, expectedQuantity));
-    verifyRepositoriesInteractions(expectedSavedStockItems);
+    Map<Integer, Integer> expectedQuantitiesByProductId =
+        Map.of(EGG_ID, UNITS_OF_EGGS_IN_STOCK + EXPECTED_UNITS_OF_EGGS_ADDED);
+
+    verifyDataSaved(PURCHASE_ORDER_OF_EGGS_ID, expectedQuantitiesByProductId);
   }
 
   @Test
   void testReceivePurchaseOrderWhenIsAlreadyReceived() throws Exception {
-    // Arrange
-    savedPurchaseOrder.setStatus(PurchaseOrderStatus.RECEIVED.name());
-    when(purchaseOrderRepository.findById(PURCHASE_ORDER_ID))
-        .thenReturn(Optional.of(savedPurchaseOrder));
-
     // Act & Assert
     var expectedApiError =
         new ApiError(
@@ -106,56 +82,41 @@ class ReceivePurchaseOrderIntegrationTest extends BaseIntegrationTest {
             HttpStatus.BAD_REQUEST.value());
 
     mockMvc
-        .perform(MockMvcRequestBuilders.post(getReceiveUrl()))
+        .perform(MockMvcRequestBuilders.post(getReceiveUrl(PURCHASE_ORDER_ID_RECEIVED)))
         .andExpect(status().isBadRequest())
         .andExpect(content().contentType(MediaType.APPLICATION_JSON))
         .andExpect(content().json(objectMapper.writeValueAsString(expectedApiError)));
   }
 
-  private ProductEntity prepareProduct() {
-    return ProductEntity.builder().id(PRODUCT_ID).name(PRODUCT_NAME).build();
+  private String getReceiveUrl(int purchaseOrderId) {
+    return EndpointConstant.PURCHASE_ORDER_BASE_PATH + "/" + purchaseOrderId + "/receive";
   }
 
-  private VendorEntity prepareVendor() {
-    return VendorEntity.builder().id(VENDOR_ID).name(VENDOR_NAME).build();
-  }
+  private void verifyDataSaved(
+      int purchaseOrderId, Map<Integer, Integer> expectedQuantitiesByProductId) {
+    // 1. Verificar que la orden de compra fue actualizada a estado "RECEIVED"
+    PurchaseOrderEntity savedOrder =
+        purchaseOrderRepository.findById(purchaseOrderId).orElseThrow();
+    assertEquals(PurchaseOrderStatus.RECEIVED.name(), savedOrder.getStatus());
 
-  private PurchaseOrderEntity preparePurchaseOrder() {
-    return PurchaseOrderEntity.builder()
-        .id(PURCHASE_ORDER_ID)
-        .status(PurchaseOrderStatus.PENDING.name())
-        .purchaseOrderLines(List.of(preparePurchaseOrderLine()))
-        .supplier(savedVendor)
-        .build();
-  }
+    var productsId =
+        savedOrder.getPurchaseOrderLines().stream().map(line -> line.getProduct().getId()).toList();
+    Map<Integer, StockItemEntity> stockItemByProductId =
+        stockItemRepository.findByProductIdIn(productsId).stream()
+            .collect(Collectors.toMap(item -> item.getProduct().getId(), item -> item));
 
-  private PurchaseOrderLineEntity preparePurchaseOrderLine() {
-    return PurchaseOrderLineEntity.builder()
-        .id(PURCHASE_ORDER_LINE_ID)
-        .product(savedProduct)
-        .quantity(PRODUCT_QUANTITY)
-        .unitPrice(PURCHASE_ORDER_LINE_UNIT_PRICE)
-        .build();
-  }
+    // 2. Verificar que los items de stock se han actualizado correctamente
+    for (PurchaseOrderLineEntity line : savedOrder.getPurchaseOrderLines()) {
+      StockItemEntity stockItem =
+          stockItemByProductId.getOrDefault(line.getProduct().getId(), null);
+      assertNotNull(stockItem);
+      var expectedQuantity =
+          expectedQuantitiesByProductId.getOrDefault(line.getProduct().getId(), 0);
+      assertEquals(expectedQuantity, stockItem.getQuantity());
+    }
 
-  private StockItemEntity createStockItem(int quantity) {
-    return StockItemEntity.builder().product(savedProduct).quantity(quantity).build();
-  }
-
-  private StockItemEntity createStockItemWithId(int id, int quantity) {
-    return StockItemEntity.builder().id(id).product(savedProduct).quantity(quantity).build();
-  }
-
-  private String getReceiveUrl() {
-    return EndpointConstant.PURCHASE_ORDER_BASE_PATH + "/" + PURCHASE_ORDER_ID + "/receive";
-  }
-
-  private void verifyRepositoriesInteractions(List<StockItemEntity> expectedStockItems) {
-    ArgumentCaptor<PurchaseOrderEntity> purchaseOrderCaptor =
-        ArgumentCaptor.forClass(PurchaseOrderEntity.class);
-    verify(purchaseOrderRepository, times(1)).save(purchaseOrderCaptor.capture());
-    verify(stockItemRepository, times(1)).saveAll(expectedStockItems);
-    var capturedPurchaseOrder = purchaseOrderCaptor.getValue();
-    assertEquals(PurchaseOrderStatus.RECEIVED.name(), capturedPurchaseOrder.getStatus());
+    // También puedes usar `Mockito.verify` si estás espiando las interacciones del repositorio
+    verify(purchaseOrderRepository, atLeastOnce()).save(any(PurchaseOrderEntity.class));
+    verify(stockItemRepository, atLeastOnce()).save(any(StockItemEntity.class));
   }
 }

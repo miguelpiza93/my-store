@@ -12,8 +12,8 @@ import com.mapiz.mystore.product.infrastructure.persistence.repository.JpaProduc
 import com.mapiz.mystore.vendor.application.dto.LinkProductsToVendorRequest;
 import com.mapiz.mystore.vendor.application.dto.ProductVendorResponse;
 import com.mapiz.mystore.vendor.infrastructure.EndpointConstant;
-import com.mapiz.mystore.vendor.infrastructure.persistence.entity.ProductVendorEntity;
 import com.mapiz.mystore.vendor.infrastructure.persistence.entity.VendorEntity;
+import com.mapiz.mystore.vendor.infrastructure.persistence.entity.VendorProductEntity;
 import com.mapiz.mystore.vendor.infrastructure.persistence.repository.JpaProductVendorRepository;
 import com.mapiz.mystore.vendor.infrastructure.persistence.repository.JpaVendorRepository;
 import java.util.*;
@@ -47,13 +47,13 @@ class LinkProductsToVendorIntegrationTest extends BaseIntegrationTest {
 
     var linkedProducts =
         List.of(
-            ProductVendorEntity.builder()
+            VendorProductEntity.builder()
                 .id(1)
                 .vendor(savedVendor)
                 .product(savedProducts.get(0))
                 .price(1.0)
                 .build(),
-            ProductVendorEntity.builder()
+            VendorProductEntity.builder()
                 .id(2)
                 .vendor(savedVendor)
                 .product(savedProducts.get(1))
@@ -63,13 +63,13 @@ class LinkProductsToVendorIntegrationTest extends BaseIntegrationTest {
     when(productVendorRepository.saveAll(any()))
         .thenReturn(
             List.of(
-                ProductVendorEntity.builder()
+                VendorProductEntity.builder()
                     .id(1)
                     .vendor(savedVendor)
                     .product(savedProducts.get(0))
                     .price(10.0)
                     .build(),
-                ProductVendorEntity.builder()
+                VendorProductEntity.builder()
                     .id(2)
                     .vendor(savedVendor)
                     .product(savedProducts.get(1))

@@ -4,7 +4,6 @@ import com.mapiz.mystore.purchaseorder.application.exception.PurchaseOrderNotFou
 import com.mapiz.mystore.purchaseorder.domain.PurchaseOrder;
 import com.mapiz.mystore.purchaseorder.domain.PurchaseOrderLine;
 import com.mapiz.mystore.purchaseorder.domain.repository.PurchaseOrderRepository;
-import com.mapiz.mystore.stock.application.exception.PurchaseOrderWasAlreadyReceivedException;
 import com.mapiz.mystore.stock.application.usecase.AddProductsToStockUseCase;
 import com.mapiz.mystore.stock.domain.StockItem;
 import com.mapiz.mystore.stock.domain.repository.StockItemRepository;
@@ -15,6 +14,7 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
 
 @Component
 @RequiredArgsConstructor
@@ -24,9 +24,9 @@ public class AddProductsToStockUseCaseImpl implements AddProductsToStockUseCase 
   private final StockItemRepository stockItemRepository;
 
   @Override
+  @Transactional
   public void accept(Integer purchaseOrderId) {
     var purchaseOrder = getPurchaseOrder(purchaseOrderId);
-    validatePurchaseOrder(purchaseOrder);
 
     // Obtener y actualizar el stock existente
     var existingStockItems = getExistingStockItemsByProductId(purchaseOrder);
@@ -41,12 +41,6 @@ public class AddProductsToStockUseCaseImpl implements AddProductsToStockUseCase 
             .collect(Collectors.toList());
 
     stockItemRepository.saveAll(allStockItems);
-  }
-
-  private void validatePurchaseOrder(PurchaseOrder purchaseOrder) {
-    if (purchaseOrder.wasReceived()) {
-      throw new PurchaseOrderWasAlreadyReceivedException(purchaseOrder.getId());
-    }
   }
 
   private void incrementStockForExistingItems(
@@ -66,7 +60,7 @@ public class AddProductsToStockUseCaseImpl implements AddProductsToStockUseCase 
   }
 
   private void incrementStockItem(PurchaseOrderLine purchaseOrderLine, StockItem stockItem) {
-    stockItem.incrementQuantity(purchaseOrderLine.getQuantity());
+    stockItem.incrementQuantity(purchaseOrderLine);
   }
 
   private PurchaseOrder getPurchaseOrder(Integer purchaseOrderId) {

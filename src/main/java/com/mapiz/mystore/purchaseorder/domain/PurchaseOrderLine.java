@@ -12,4 +12,20 @@ public class PurchaseOrderLine {
   private Integer quantity;
   private Double unitPrice;
   private PurchaseOrder purchaseOrder;
+
+  @Override
+  public String toString() {
+    return "PurchaseOrderLine{"
+        + "id="
+        + id
+        + ", product="
+        + product
+        + ", quantity="
+        + quantity
+        + ", unitPrice="
+        + unitPrice
+        + ", purchaseOrder="
+        + purchaseOrder.getId()
+        + '}';
+  }
 }

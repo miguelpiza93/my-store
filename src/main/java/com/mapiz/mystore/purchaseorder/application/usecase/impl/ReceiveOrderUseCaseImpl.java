@@ -1,7 +1,9 @@
 package com.mapiz.mystore.purchaseorder.application.usecase.impl;
 
 import com.mapiz.mystore.purchaseorder.application.exception.PurchaseOrderNotFoundException;
+import com.mapiz.mystore.purchaseorder.application.exception.PurchaseOrderWasAlreadyReceivedException;
 import com.mapiz.mystore.purchaseorder.application.usecase.ReceiveOrderUseCase;
+import com.mapiz.mystore.purchaseorder.domain.PurchaseOrder;
 import com.mapiz.mystore.purchaseorder.domain.PurchaseOrderStatus;
 import com.mapiz.mystore.purchaseorder.domain.event.OrderReceivedEvent;
 import com.mapiz.mystore.purchaseorder.domain.repository.PurchaseOrderRepository;
@@ -22,8 +24,15 @@ public class ReceiveOrderUseCaseImpl implements ReceiveOrderUseCase {
         purchaseOrderRepository
             .findById(purchaseOrderId)
             .orElseThrow(() -> new PurchaseOrderNotFoundException(purchaseOrderId));
+    validatePurchaseOrder(purchaseOrder);
     purchaseOrder.setStatus(PurchaseOrderStatus.RECEIVED);
     purchaseOrderRepository.save(purchaseOrder);
     eventPublisher.publishEvent(new OrderReceivedEvent(purchaseOrderId));
+  }
+
+  private void validatePurchaseOrder(PurchaseOrder purchaseOrder) {
+    if (purchaseOrder.wasReceived()) {
+      throw new PurchaseOrderWasAlreadyReceivedException(purchaseOrder.getId());
+    }
   }
 }

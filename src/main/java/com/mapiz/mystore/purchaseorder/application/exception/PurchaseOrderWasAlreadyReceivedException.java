@@ -1,4 +1,4 @@
-package com.mapiz.mystore.stock.application.exception;
+package com.mapiz.mystore.purchaseorder.application.exception;
 
 import com.mapiz.mystore.shared.BadRequestError;
 

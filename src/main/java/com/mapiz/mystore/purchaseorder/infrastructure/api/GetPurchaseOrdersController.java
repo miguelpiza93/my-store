@@ -3,8 +3,8 @@ package com.mapiz.mystore.purchaseorder.infrastructure.api;
 import static com.mapiz.mystore.purchaseorder.infrastructure.EndpointConstant.PURCHASE_ORDER_BASE_PATH;
 
 import com.mapiz.mystore.purchaseorder.application.dto.PurchaseOrderResponse;
+import com.mapiz.mystore.purchaseorder.application.mapper.PurchaseOrderMapper;
 import com.mapiz.mystore.purchaseorder.application.usecase.GetPurchaseOrdersUseCase;
-import com.mapiz.mystore.purchaseorder.infrastructure.persistence.mapper.PurchaseOrderMapper;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;

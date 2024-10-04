@@ -12,15 +12,16 @@ import lombok.Setter;
 public class StockItem {
   private Integer id;
   private Product product;
-  private int quantity;
+  private double quantity;
   private double salePrice;
 
   public StockItem(PurchaseOrderLine purchaseOrderLine) {
     this.product = purchaseOrderLine.getProduct();
-    this.quantity = purchaseOrderLine.getQuantity();
+    this.incrementQuantity(purchaseOrderLine);
   }
 
-  public void incrementQuantity(Integer quantity) {
-    this.quantity += quantity;
+  public void incrementQuantity(PurchaseOrderLine purchaseOrderLine) {
+    var baseConversion = this.getProduct().getReferenceUnit().getBaseConversion();
+    this.quantity += purchaseOrderLine.getQuantity() * baseConversion.getConversionFactor();
   }
 }

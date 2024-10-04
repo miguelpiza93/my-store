@@ -1,2 +1,2 @@
-ALTER TABLE purchase_order
+ALTER TABLE purchase_orders
 ADD COLUMN status VARCHAR(100);

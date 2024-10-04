@@ -14,7 +14,6 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class CreatePurchaseOrderCommand {
   private Integer supplierId;
-  private String supplierName;
   private LocalDate estimatedDeliveryDate;
   private List<PurchaseOrderLineRequest> purchaseOrderLines;
 }

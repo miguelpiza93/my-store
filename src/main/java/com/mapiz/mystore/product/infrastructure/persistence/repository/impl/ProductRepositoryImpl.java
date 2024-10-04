@@ -5,9 +5,11 @@ import com.mapiz.mystore.product.domain.repository.ProductRepository;
 import com.mapiz.mystore.product.infrastructure.persistence.ProductEntity;
 import com.mapiz.mystore.product.infrastructure.persistence.mapper.ProductMapper;
 import com.mapiz.mystore.product.infrastructure.persistence.repository.JpaProductRepository;
+import com.mapiz.mystore.shared.CycleAvoidingMappingContext;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
+import java.util.function.Function;
 import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
@@ -20,20 +22,19 @@ public class ProductRepositoryImpl implements ProductRepository {
 
   @Override
   public Optional<Product> findById(Integer id) {
-    return jpaRepository.findById(id).map(ProductMapper.INSTANCE::toDomain);
+    return jpaRepository.findById(id).map(getMapper());
   }
 
   @Override
   public List<Product> findAll() {
-    return jpaRepository.findAll().stream()
-        .map(ProductMapper.INSTANCE::toDomain)
-        .collect(Collectors.toList());
+    return jpaRepository.findAll().stream().map(getMapper()).collect(Collectors.toList());
   }
 
   @Override
   public Product save(Product product) {
     ProductEntity entity = ProductMapper.INSTANCE.toEntity(product);
-    return ProductMapper.INSTANCE.toDomain(jpaRepository.save(entity));
+    return ProductMapper.INSTANCE.toDomain(
+        jpaRepository.save(entity), new CycleAvoidingMappingContext());
   }
 
   @Override
@@ -43,6 +44,10 @@ public class ProductRepositoryImpl implements ProductRepository {
 
   @Override
   public List<Product> findAllById(Set<Integer> ids) {
-    return jpaRepository.findAllById(ids).stream().map(ProductMapper.INSTANCE::toDomain).toList();
+    return jpaRepository.findAllById(ids).stream().map(getMapper()).toList();
+  }
+
+  private Function<ProductEntity, Product> getMapper() {
+    return product -> ProductMapper.INSTANCE.toDomain(product, new CycleAvoidingMappingContext());
   }
 }
