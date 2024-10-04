@@ -21,7 +21,7 @@ public class GetStockProductsController {
   private final GetProductsInStockUseCase getProductsInStockUseCase;
 
   @GetMapping
-  public @ResponseBody ResponseEntity<List<StockItemResponse>> getProducts() {
+  public @ResponseBody ResponseEntity<List<StockItemResponse>> getStock() {
     var products = getProductsInStockUseCase.get();
     var response = products.stream().map(StockItemMapper.INSTANCE::modelToResponse).toList();
     return ResponseEntity.ok(response);

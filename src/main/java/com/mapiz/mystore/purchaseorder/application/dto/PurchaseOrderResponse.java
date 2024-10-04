@@ -14,6 +14,7 @@ import lombok.NoArgsConstructor;
 @Builder
 public class PurchaseOrderResponse {
   private Integer id;
+  private String status;
   private String supplierName;
   private Instant createdAt;
   private LocalDate estimatedDeliveryDate;

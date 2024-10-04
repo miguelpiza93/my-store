@@ -1,6 +1,6 @@
 package com.mapiz.mystore.purchaseorder.application.dto;
 
-import com.mapiz.mystore.product.domain.Product;
+import com.mapiz.mystore.product.application.dto.ProductResponse;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -12,7 +12,7 @@ import lombok.NoArgsConstructor;
 @Builder
 public class PurchaseOrderLineResponse {
   private Integer id;
-  private Product product;
+  private ProductResponse product;
   private Integer quantity;
   private Double unitPrice;
 }
