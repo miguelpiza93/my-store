@@ -5,7 +5,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import com.mapiz.mystore.integration.BaseIntegrationTest;
-import com.mapiz.mystore.product.domain.Product;
+import com.mapiz.mystore.product.application.dto.ProductResponse;
 import com.mapiz.mystore.product.infrastructure.persistence.ProductEntity;
 import com.mapiz.mystore.purchaseorder.application.dto.CreatePurchaseOrderRequest;
 import com.mapiz.mystore.purchaseorder.application.dto.PurchaseOrderLineRequest;
@@ -100,7 +100,7 @@ class CreatePurchaseOrderIntegrationTest extends BaseIntegrationTest {
                         .id(1)
                         .unitPrice(10.0)
                         .quantity(20)
-                        .product(Product.builder().id(1).name("Product 1").build())
+                        .product(ProductResponse.builder().id(1).name("Product 1").build())
                         .build()))
             .build();
 
