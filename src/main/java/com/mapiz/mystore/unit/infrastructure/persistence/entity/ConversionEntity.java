@@ -40,8 +40,6 @@ public class ConversionEntity {
     return "ConversionEntity{"
         + "id="
         + id
-        + ", fromUnit="
-        + fromUnit.getId()
         + ", toUnit="
         + toUnit.getId()
         + ", conversionFactor="

@@ -22,9 +22,7 @@ import org.springframework.boot.test.mock.mockito.SpyBean;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
-import org.springframework.transaction.annotation.Transactional;
 
-@Transactional
 class ReceivePurchaseOrderIntegrationTest extends BaseIntegrationTest {
 
   private static final int EGG_ID = 1;
@@ -115,8 +113,7 @@ class ReceivePurchaseOrderIntegrationTest extends BaseIntegrationTest {
       assertEquals(expectedQuantity, stockItem.getQuantity());
     }
 
-    // También puedes usar `Mockito.verify` si estás espiando las interacciones del repositorio
-    verify(purchaseOrderRepository, atLeastOnce()).save(any(PurchaseOrderEntity.class));
-    verify(stockItemRepository, atLeastOnce()).save(any(StockItemEntity.class));
+    verify(purchaseOrderRepository, times(1)).save(any(PurchaseOrderEntity.class));
+    verify(stockItemRepository, times(1)).saveAll(anyList());
   }
 }

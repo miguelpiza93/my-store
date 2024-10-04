@@ -8,7 +8,7 @@ import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.factory.Mappers;
 
-@Mapper
+@Mapper(uses = {ConversionMapper.class})
 public abstract class UnitMapper {
   public static final UnitMapper INSTANCE = Mappers.getMapper(UnitMapper.class);
 

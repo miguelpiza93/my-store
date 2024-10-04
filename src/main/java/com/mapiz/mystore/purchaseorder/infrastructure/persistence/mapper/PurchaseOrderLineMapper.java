@@ -14,7 +14,8 @@ public abstract class PurchaseOrderLineMapper {
   public static final PurchaseOrderLineMapper INSTANCE =
       Mappers.getMapper(PurchaseOrderLineMapper.class);
 
-  public abstract PurchaseOrderLineEntity modelToEntity(PurchaseOrderLine purchaseOrderLine);
+  public abstract PurchaseOrderLineEntity modelToEntity(
+      PurchaseOrderLine purchaseOrderLine, @Context CycleAvoidingMappingContext context);
 
   public abstract PurchaseOrderLine entityToModel(
       PurchaseOrderLineEntity save, @Context CycleAvoidingMappingContext context);
