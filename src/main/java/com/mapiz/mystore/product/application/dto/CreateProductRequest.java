@@ -13,5 +13,5 @@ public class CreateProductRequest {
 
   @NotBlank private String description;
 
-  @Positive private Long referenceUnitId;
+  @Positive private long referenceUnitId;
 }
