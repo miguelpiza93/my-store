@@ -21,6 +21,7 @@ public class UpdateVendorUseCaseImpl implements UpdateVendorUseCase {
             .findById(command.getId())
             .orElseThrow(() -> new VendorNotFoundException("Vendor not found"));
     vendor.setName(command.getName());
+    vendor.setPhone(command.getPhone());
     return vendorRepository.save(vendor);
   }
 }

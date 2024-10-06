@@ -11,4 +11,5 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class CreateVendorCommand {
   private String name;
+  private String phone;
 }

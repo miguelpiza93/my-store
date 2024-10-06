@@ -10,4 +10,5 @@ import lombok.Data;
 public class Vendor {
   private Integer id;
   private String name;
+  private String phone;
 }

@@ -10,4 +10,5 @@ import lombok.Getter;
 public class VendorResponse {
   private Integer id;
   private String name;
+  private String phone;
 }

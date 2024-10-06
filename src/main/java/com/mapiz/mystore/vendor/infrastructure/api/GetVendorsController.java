@@ -3,8 +3,8 @@ package com.mapiz.mystore.vendor.infrastructure.api;
 import static com.mapiz.mystore.vendor.infrastructure.EndpointConstant.VENDORS_BASE_PATH;
 
 import com.mapiz.mystore.vendor.application.dto.VendorResponse;
+import com.mapiz.mystore.vendor.application.mapper.VendorMapper;
 import com.mapiz.mystore.vendor.application.usecase.GetVendorsUseCase;
-import com.mapiz.mystore.vendor.infrastructure.persistence.mapper.VendorMapper;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;

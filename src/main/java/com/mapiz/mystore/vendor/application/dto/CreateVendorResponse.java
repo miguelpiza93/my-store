@@ -12,4 +12,5 @@ import lombok.NoArgsConstructor;
 public class CreateVendorResponse {
   private Integer id;
   private String name;
+  private String phone;
 }
