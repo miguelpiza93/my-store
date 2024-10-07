@@ -32,5 +32,5 @@ values
 
 INSERT INTO stock_items(product_id, quantity, sale_price)
 values
-(1, 4, 300.0)
+(1, 4, 0.0)
 ;
