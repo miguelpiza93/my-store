@@ -16,6 +16,7 @@ import com.mapiz.mystore.vendor.infrastructure.persistence.entity.VendorEntity;
 import com.mapiz.mystore.vendor.infrastructure.persistence.entity.VendorProductEntity;
 import com.mapiz.mystore.vendor.infrastructure.persistence.repository.JpaProductVendorRepository;
 import com.mapiz.mystore.vendor.infrastructure.persistence.repository.JpaVendorRepository;
+import java.math.BigDecimal;
 import java.util.*;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.mock.mockito.MockBean;
@@ -77,7 +78,10 @@ class LinkProductsToVendorIntegrationTest extends BaseIntegrationTest {
                     .build()));
 
     // Act & Assert
-    var request = LinkProductsToVendorRequest.builder().products(Map.of(1, 10.0, 2, 20.0)).build();
+    var request =
+        LinkProductsToVendorRequest.builder()
+            .products(Map.of(1, BigDecimal.TEN, 2, BigDecimal.valueOf(20)))
+            .build();
 
     var expectedProductVendors =
         List.of(
@@ -89,7 +93,6 @@ class LinkProductsToVendorIntegrationTest extends BaseIntegrationTest {
                         .name("Product 1")
                         .description("Description 1")
                         .build())
-                // .vendor(vendorResponse)
                 .price(10.0)
                 .build(),
             ProductVendorResponse.builder()
@@ -100,7 +103,6 @@ class LinkProductsToVendorIntegrationTest extends BaseIntegrationTest {
                         .name("Product 2")
                         .description("Description 2")
                         .build())
-                // .vendor(vendorResponse)
                 .price(20.0)
                 .build());
 

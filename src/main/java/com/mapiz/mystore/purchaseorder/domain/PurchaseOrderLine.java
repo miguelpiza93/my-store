@@ -1,6 +1,8 @@
 package com.mapiz.mystore.purchaseorder.domain;
 
 import com.mapiz.mystore.product.domain.Product;
+import java.math.BigDecimal;
+import java.math.RoundingMode;
 import lombok.Builder;
 import lombok.Data;
 
@@ -9,9 +11,15 @@ import lombok.Data;
 public class PurchaseOrderLine {
   private Integer id;
   private Product product;
-  private Integer quantity;
-  private Double unitPrice;
+  private BigDecimal quantity;
+  private BigDecimal unitPrice;
   private PurchaseOrder purchaseOrder;
+
+  public BigDecimal getCostPerBaseUnit() {
+    var baseConversion = product.getReferenceUnit().getBaseConversion();
+    var conversionFactor = baseConversion.getConversionFactor();
+    return this.unitPrice.divide(conversionFactor, RoundingMode.HALF_UP);
+  }
 
   @Override
   public String toString() {

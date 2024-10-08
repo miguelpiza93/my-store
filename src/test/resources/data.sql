@@ -19,13 +19,17 @@ values
 INSERT INTO purchase_orders(status, created_at, estimated_delivery_date, vendor_id)
 values
 ('RECEIVED', NOW(), DATEADD('DAY', 2, NOW()), 1),
+('RECEIVED', NOW(), DATEADD('DAY', 2, NOW()), 1),
+('RECEIVED', NOW(), DATEADD('DAY', 2, NOW()), 1),
 ('PENDING', NOW(), DATEADD('DAY', 2, NOW()), 1),
 ('PENDING', NOW(), DATEADD('DAY', 2, NOW()), 2)
 ;
 
 INSERT INTO purchase_order_lines(quantity, unit_price, product_id, purchase_order_id)
 values
-(2, 8400, 1, 1),
+(1, 9000, 1, 1),
+(1, 12000, 1, 2),
+(2, 15000, 1, 3),
 (4, 8500, 1, 2),
 (2, 30000, 2, 3)
 ;
@@ -33,5 +37,6 @@ values
 INSERT INTO stock_items(purchase_order_line_id, quantity, sale_price)
 values
 (1, 1, 0.0),
-(2, 3, 0.0)
+(2, 1, 0.0),
+(3, 2, 0.0)
 ;

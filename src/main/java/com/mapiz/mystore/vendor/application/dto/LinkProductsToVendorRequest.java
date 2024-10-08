@@ -1,5 +1,6 @@
 package com.mapiz.mystore.vendor.application.dto;
 
+import java.math.BigDecimal;
 import java.util.Map;
 import lombok.*;
 
@@ -8,5 +9,5 @@ import lombok.*;
 @AllArgsConstructor
 @NoArgsConstructor
 public class LinkProductsToVendorRequest {
-  private Map<Integer, Double> products;
+  private Map<Integer, BigDecimal> products;
 }

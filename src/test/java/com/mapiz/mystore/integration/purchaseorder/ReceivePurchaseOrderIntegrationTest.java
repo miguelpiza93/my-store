@@ -33,8 +33,8 @@ class ReceivePurchaseOrderIntegrationTest extends BaseIntegrationTest {
   private static final int EXPECTED_UNITS_OF_MILK_ADDED = 12;
 
   private static final int PURCHASE_ORDER_ID_RECEIVED = 1;
-  private static final int PURCHASE_ORDER_OF_EGGS_ID = 2;
-  private static final int PURCHASE_ORDER_OF_MILK_ID = 3;
+  private static final int PURCHASE_ORDER_OF_EGGS_ID = 4;
+  private static final int PURCHASE_ORDER_OF_MILK_ID = 5;
 
   @SpyBean private JpaPurchaseOrderRepository purchaseOrderRepository;
 

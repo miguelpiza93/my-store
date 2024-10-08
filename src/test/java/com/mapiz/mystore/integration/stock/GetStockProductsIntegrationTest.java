@@ -8,6 +8,7 @@ import com.mapiz.mystore.integration.BaseIntegrationTest;
 import com.mapiz.mystore.stock.application.dto.StockItemSummary;
 import com.mapiz.mystore.stock.infrastructure.EndpointConstant;
 import com.mapiz.mystore.stock.infrastructure.persistence.repository.JpaStockItemRepository;
+import java.math.BigDecimal;
 import java.util.Collections;
 import java.util.List;
 import org.junit.jupiter.api.Test;
@@ -27,8 +28,9 @@ class GetStockProductsIntegrationTest extends BaseIntegrationTest {
             StockItemSummary.builder()
                 .productId(1)
                 .productName("Huevos")
-                .quantity(4)
+                .quantity(BigDecimal.valueOf(4))
                 .salePrice(0.0)
+                .weightedCost(BigDecimal.valueOf(425))
                 .build());
 
     // Act & Assert

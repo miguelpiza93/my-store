@@ -20,6 +20,7 @@ import com.mapiz.mystore.vendor.infrastructure.persistence.entity.VendorEntity;
 import com.mapiz.mystore.vendor.infrastructure.persistence.entity.VendorProductEntity;
 import com.mapiz.mystore.vendor.infrastructure.persistence.repository.JpaProductVendorRepository;
 import com.mapiz.mystore.vendor.infrastructure.persistence.repository.JpaVendorRepository;
+import java.math.BigDecimal;
 import java.time.Instant;
 import java.time.LocalDate;
 import java.util.List;
@@ -84,7 +85,11 @@ class CreatePurchaseOrderIntegrationTest extends BaseIntegrationTest {
             .supplierId(VENDOR_ID)
             .estimatedDeliveryDate(estimatedDeliveryDate)
             .purchaseOrderLines(
-                List.of(PurchaseOrderLineRequest.builder().productId(1).quantity(20).build()))
+                List.of(
+                    PurchaseOrderLineRequest.builder()
+                        .productId(1)
+                        .quantity(BigDecimal.valueOf(20))
+                        .build()))
             .build();
 
     // Act & Assert

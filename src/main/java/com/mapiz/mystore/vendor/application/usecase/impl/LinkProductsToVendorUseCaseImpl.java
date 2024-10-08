@@ -9,6 +9,7 @@ import com.mapiz.mystore.vendor.domain.ProductVendor;
 import com.mapiz.mystore.vendor.domain.Vendor;
 import com.mapiz.mystore.vendor.domain.repository.ProductVendorRepository;
 import com.mapiz.mystore.vendor.domain.repository.VendorRepository;
+import java.math.BigDecimal;
 import java.util.List;
 import java.util.Map;
 import lombok.RequiredArgsConstructor;
@@ -39,7 +40,7 @@ public class LinkProductsToVendorUseCaseImpl implements LinkProductsToVendorUseC
   }
 
   private List<ProductVendor> buildSupplierProducts(
-      Vendor vendor, List<Product> products, Map<Integer, Double> prices) {
+      Vendor vendor, List<Product> products, Map<Integer, BigDecimal> prices) {
     return products.stream()
         .map(
             product ->
