@@ -13,10 +13,10 @@ public class DeleteProductUseCaseImpl implements DeleteProductUseCase {
   private final ProductRepository productRepository;
 
   @Override
-  public void accept(Integer integer) {
+  public void accept(Integer productId) {
     productRepository
-        .findById(integer)
-        .orElseThrow(() -> new ProductNotFoundException("Product not found"));
-    productRepository.deleteById(integer);
+        .findById(productId)
+        .orElseThrow(() -> new ProductNotFoundException(productId));
+    productRepository.deleteById(productId);
   }
 }

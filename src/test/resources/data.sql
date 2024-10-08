@@ -1,7 +1,7 @@
-INSERT INTO products(name, description, reference_unit)
+INSERT INTO products(name, description, reference_unit, sale_price)
 values
-('Huevos', 'Huevos AA', 1),
-('Leche', 'Entera', 7)
+('Huevos', 'Huevos AA', 1, 0.0),
+('Leche', 'Entera', 7, 0.0)
 ;
 
 INSERT INTO vendors(name)
@@ -34,9 +34,9 @@ values
 (2, 30000, 2, 3)
 ;
 
-INSERT INTO stock_items(purchase_order_line_id, quantity, sale_price)
+INSERT INTO stock_items(purchase_order_line_id, quantity)
 values
-(1, 1, 0.0),
-(2, 1, 0.0),
-(3, 2, 0.0)
+(1, 1),
+(2, 1),
+(3, 2)
 ;

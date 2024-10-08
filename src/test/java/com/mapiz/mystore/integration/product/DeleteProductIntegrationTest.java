@@ -44,7 +44,8 @@ class DeleteProductIntegrationTest extends BaseIntegrationTest {
     var idToDelete = 1;
     when(productRepository.findById(idToDelete)).thenReturn(Optional.empty());
     var expectedApiError =
-        new ApiError("resource_not_found", "Product not found", HttpStatus.NOT_FOUND.value());
+        new ApiError(
+            "resource_not_found", "Product with id 1 not found", HttpStatus.NOT_FOUND.value());
 
     // Act & Assert
     mockMvc

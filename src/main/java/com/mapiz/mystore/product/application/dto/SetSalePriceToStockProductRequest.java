@@ -1,6 +1,7 @@
-package com.mapiz.mystore.stock.application.dto;
+package com.mapiz.mystore.product.application.dto;
 
 import jakarta.validation.constraints.Positive;
+import java.math.BigDecimal;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -12,5 +13,5 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class SetSalePriceToStockProductRequest {
 
-  @Positive private int salePrice;
+  @Positive private BigDecimal salePrice;
 }

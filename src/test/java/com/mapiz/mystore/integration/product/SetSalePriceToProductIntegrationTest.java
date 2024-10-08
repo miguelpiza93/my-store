@@ -1,4 +1,4 @@
-package com.mapiz.mystore.integration.stock;
+package com.mapiz.mystore.integration.product;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.ArgumentMatchers.any;
@@ -7,66 +7,63 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import com.mapiz.mystore.integration.BaseIntegrationTest;
+import com.mapiz.mystore.product.application.dto.SetSalePriceToStockProductRequest;
+import com.mapiz.mystore.product.infrastructure.EndpointConstant;
+import com.mapiz.mystore.product.infrastructure.persistence.repository.JpaProductRepository;
 import com.mapiz.mystore.shared.ApiError;
-import com.mapiz.mystore.stock.application.dto.SetSalePriceToStockProductRequest;
-import com.mapiz.mystore.stock.infrastructure.EndpointConstant;
-import com.mapiz.mystore.stock.infrastructure.persistence.repository.JpaStockItemRepository;
+import java.math.BigDecimal;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.mock.mockito.SpyBean;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
-public class SetSalePriceToStockItemIntegrationTest extends BaseIntegrationTest {
+public class SetSalePriceToProductIntegrationTest extends BaseIntegrationTest {
 
-  @SpyBean private JpaStockItemRepository jpaStockItemRepository;
+  @SpyBean private JpaProductRepository jpaProductRepository;
 
   @Test
   void testSetSalePriceToStockItem() throws Exception {
     // Arrange
     var productIdToSetSalePrice = 1;
-    int newSalePrice = 1000;
+    BigDecimal newSalePrice = BigDecimal.valueOf(1000.0);
     var request = SetSalePriceToStockProductRequest.builder().salePrice(newSalePrice).build();
     // Act
     mockMvc
         .perform(
-            MockMvcRequestBuilders.post(
-                    EndpointConstant.STOCK_BASE_PATH + "/products/" + productIdToSetSalePrice)
+            MockMvcRequestBuilders.patch(
+                    EndpointConstant.PRODUCTS_BASE_PATH + "/" + productIdToSetSalePrice)
                 .content(objectMapper.writeValueAsString(request))
                 .contentType(MediaType.APPLICATION_JSON))
         .andExpect(status().isAccepted());
 
     // Assert
-    verify(jpaStockItemRepository, times(1)).saveAll(any());
-    var stockItems = jpaStockItemRepository.findByProductId(productIdToSetSalePrice);
-    for (var stockItem : stockItems) {
-      assertEquals(newSalePrice, stockItem.getSalePrice());
-    }
+    verify(jpaProductRepository, times(1)).save(any());
+    var product = jpaProductRepository.findById(productIdToSetSalePrice).orElseThrow();
+    assertEquals(newSalePrice, product.getSalePrice());
   }
 
   @Test
   void testSetSaleToUnExistingPriceToStockItem() throws Exception {
     // Arrange
-    var stockItemIdToUpdate = 0;
-    int newSalePrice = 1000;
+    var productIdToSetSalePrice = 0;
+    BigDecimal newSalePrice = BigDecimal.valueOf(1000);
     var request = SetSalePriceToStockProductRequest.builder().salePrice(newSalePrice).build();
 
     // Act
     var expectedApiError =
         new ApiError(
-            "resource_not_found",
-            "Stock item for product id 0 not found",
-            HttpStatus.NOT_FOUND.value());
+            "resource_not_found", "Product with id 0 not found", HttpStatus.NOT_FOUND.value());
     mockMvc
         .perform(
-            MockMvcRequestBuilders.post(
-                    EndpointConstant.STOCK_BASE_PATH + "/products/" + stockItemIdToUpdate)
+            MockMvcRequestBuilders.patch(
+                    EndpointConstant.PRODUCTS_BASE_PATH + "/" + productIdToSetSalePrice)
                 .content(objectMapper.writeValueAsString(request))
                 .contentType(MediaType.APPLICATION_JSON))
         .andExpect(status().isNotFound())
         .andExpect(content().json(objectMapper.writeValueAsString(expectedApiError)));
 
     // Assert
-    verify(jpaStockItemRepository, never()).save(any());
+    verify(jpaProductRepository, never()).save(any());
   }
 }

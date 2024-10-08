@@ -1,10 +1,10 @@
-package com.mapiz.mystore.stock.infrastructure.api;
+package com.mapiz.mystore.product.infrastructure.api;
 
-import static com.mapiz.mystore.stock.infrastructure.EndpointConstant.STOCK_BASE_PATH;
+import static com.mapiz.mystore.product.infrastructure.EndpointConstant.PRODUCTS_BASE_PATH;
 
+import com.mapiz.mystore.product.application.dto.SetSalePriceToStockProductRequest;
+import com.mapiz.mystore.product.application.usecase.SetSalePriceToProductUseCase;
 import com.mapiz.mystore.stock.application.command.SetSalePriceToStockProductCommand;
-import com.mapiz.mystore.stock.application.dto.SetSalePriceToStockProductRequest;
-import com.mapiz.mystore.stock.application.usecase.SetSalePriceToStockProductUseCase;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -12,15 +12,15 @@ import org.springframework.web.bind.annotation.*;
 
 @RequiredArgsConstructor
 @RestController
-@RequestMapping(STOCK_BASE_PATH)
-public class SetSalePriceToStockItemController {
+@RequestMapping(PRODUCTS_BASE_PATH)
+public class SetSalePriceToProductController {
 
-  private final SetSalePriceToStockProductUseCase setSalePriceToStockProductUseCase;
+  private final SetSalePriceToProductUseCase setSalePriceToProductUseCase;
 
-  @PostMapping("/products/{id}")
+  @PatchMapping("/{id}")
   public @ResponseBody ResponseEntity<Void> setSalePrice(
       @PathVariable Integer id, @Valid @RequestBody SetSalePriceToStockProductRequest request) {
-    setSalePriceToStockProductUseCase.accept(
+    setSalePriceToProductUseCase.accept(
         SetSalePriceToStockProductCommand.builder()
             .productId(id)
             .salePrice(request.getSalePrice())

@@ -32,7 +32,7 @@ public class GetProductsInStockUseCaseImpl implements GetStockSummaryUseCase {
     return StockItemSummary.builder()
         .productId(item.getPurchaseOrderLine().getProduct().getId())
         .productName(item.getPurchaseOrderLine().getProduct().getName())
-        .salePrice(item.getSalePrice())
+        .salePrice(item.getPurchaseOrderLine().getProduct().getSalePrice())
         .quantity(item.getQuantity())
         .weightedCost(item.getPurchaseOrderLine().getCostPerBaseUnit())
         .build();

@@ -29,7 +29,7 @@ class GetStockProductsIntegrationTest extends BaseIntegrationTest {
                 .productId(1)
                 .productName("Huevos")
                 .quantity(BigDecimal.valueOf(4))
-                .salePrice(0.0)
+                .salePrice(BigDecimal.ZERO)
                 .weightedCost(BigDecimal.valueOf(425))
                 .build());
 

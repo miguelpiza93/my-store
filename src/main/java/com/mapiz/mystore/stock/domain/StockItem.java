@@ -13,7 +13,6 @@ public class StockItem {
   private Integer id;
   private PurchaseOrderLine purchaseOrderLine;
   private BigDecimal quantity;
-  private double salePrice;
 
   public StockItem(PurchaseOrderLine purchaseOrderLine) {
     this.purchaseOrderLine = purchaseOrderLine;

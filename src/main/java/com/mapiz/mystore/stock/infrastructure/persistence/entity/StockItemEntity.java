@@ -27,7 +27,4 @@ public class StockItemEntity {
   private PurchaseOrderLineEntity purchaseOrderLine;
 
   private int quantity;
-
-  @Column(name = "sale_price")
-  private double salePrice;
 }

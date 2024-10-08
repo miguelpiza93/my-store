@@ -6,7 +6,8 @@ START WITH 1
 CREATE TABLE IF NOT EXISTS products (
     id INTEGER NOT NULL DEFAULT nextval('product_sequence') PRIMARY KEY,
     name VARCHAR(255),
-    description VARCHAR(255)
+    description VARCHAR(255),
+    sale_price DECIMAL(10, 2)
 );
 
 CREATE SEQUENCE IF NOT EXISTS vendor_sequence

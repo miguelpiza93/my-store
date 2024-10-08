@@ -17,6 +17,7 @@ public abstract class ProductMapper {
 
   @Mapping(source = "referenceUnitId", target = "referenceUnit.id")
   @Mapping(target = "id", ignore = true)
+  @Mapping(target = "salePrice", ignore = true)
   public abstract Product commandToModel(CreateProductCommand command);
 
   public abstract ProductResponse modelToResponse(Product product);
