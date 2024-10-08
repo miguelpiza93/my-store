@@ -50,7 +50,7 @@ public class CreatePurchaseOrderUseCaseImpl implements CreatePurchaseOrderUseCas
     PurchaseOrder savedPurchaseOrder =
         purchaseOrderRepository.save(buildPurchaseOrder(command, vendor));
     var savedLines =
-        purchaseOrderLineRepository.save(
+        purchaseOrderLineRepository.saveAll(
             buildPurchaseOrderLines(command, productsVendorToOrder, savedPurchaseOrder));
     savedPurchaseOrder.setPurchaseOrderLines(savedLines);
     return savedPurchaseOrder;
