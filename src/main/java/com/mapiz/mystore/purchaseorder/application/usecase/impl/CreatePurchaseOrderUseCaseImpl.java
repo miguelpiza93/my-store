@@ -87,14 +87,7 @@ public class CreatePurchaseOrderUseCaseImpl implements CreatePurchaseOrderUseCas
                 .filter(product -> product.getId().equals(lineRequest.getProductId()))
                 .findFirst()
                 .orElseThrow())
-        .unitPrice(
-            productsVendorToOrder.stream()
-                .filter(
-                    productVendor ->
-                        productVendor.getProduct().getId().equals(lineRequest.getProductId()))
-                .findFirst()
-                .map(ProductVendor::getPrice)
-                .orElseThrow())
+        .unitPrice(lineRequest.getUnitPrice())
         .quantity(lineRequest.getQuantity())
         .purchaseOrder(purchaseOrder)
         .build();

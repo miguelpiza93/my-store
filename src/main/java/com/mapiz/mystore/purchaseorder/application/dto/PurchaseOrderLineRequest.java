@@ -1,5 +1,6 @@
 package com.mapiz.mystore.purchaseorder.application.dto;
 
+import jakarta.validation.constraints.Positive;
 import java.math.BigDecimal;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -12,5 +13,8 @@ import lombok.NoArgsConstructor;
 @Builder
 public class PurchaseOrderLineRequest {
   private Integer productId;
-  private BigDecimal quantity;
+
+  @Positive private BigDecimal quantity;
+
+  @Positive private BigDecimal unitPrice;
 }
