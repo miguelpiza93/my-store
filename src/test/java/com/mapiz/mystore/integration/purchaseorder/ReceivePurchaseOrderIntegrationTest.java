@@ -1,7 +1,6 @@
 package com.mapiz.mystore.integration.purchaseorder;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.mockito.Mockito.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -99,18 +98,22 @@ class ReceivePurchaseOrderIntegrationTest extends BaseIntegrationTest {
 
     var productsId =
         savedOrder.getPurchaseOrderLines().stream().map(line -> line.getProduct().getId()).toList();
-    Map<Integer, StockItemEntity> stockItemByProductId =
-        stockItemRepository.findByProductIdIn(productsId).stream()
-            .collect(Collectors.toMap(item -> item.getProduct().getId(), item -> item));
 
-    // 2. Verificar que los items de stock se han actualizado correctamente
+    Map<Integer, Integer> quantitiesByProductId =
+        stockItemRepository.findAll().stream()
+            .filter(item -> productsId.contains(item.getPurchaseOrderLine().getProduct().getId()))
+            .collect(
+                Collectors.toMap(
+                    item -> item.getPurchaseOrderLine().getProduct().getId(),
+                    StockItemEntity::getQuantity,
+                    Integer::sum));
+
+    // 2. Verificar que los items de stock se han guardado correctamente
     for (PurchaseOrderLineEntity line : savedOrder.getPurchaseOrderLines()) {
-      StockItemEntity stockItem =
-          stockItemByProductId.getOrDefault(line.getProduct().getId(), null);
-      assertNotNull(stockItem);
       var expectedQuantity =
           expectedQuantitiesByProductId.getOrDefault(line.getProduct().getId(), 0);
-      assertEquals(expectedQuantity, stockItem.getQuantity());
+      assertEquals(
+          expectedQuantity, quantitiesByProductId.getOrDefault(line.getProduct().getId(), 0));
     }
 
     verify(purchaseOrderRepository, times(1)).save(any(PurchaseOrderEntity.class));

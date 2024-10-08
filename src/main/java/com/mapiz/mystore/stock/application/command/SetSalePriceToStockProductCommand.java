@@ -6,6 +6,6 @@ import lombok.Getter;
 @Builder
 @Getter
 public class SetSalePriceToStockProductCommand {
-  private int stockId;
+  private int productId;
   private int salePrice;
 }

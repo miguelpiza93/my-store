@@ -24,22 +24,24 @@ public class SetSalePriceToStockItemIntegrationTest extends BaseIntegrationTest 
   @Test
   void testSetSalePriceToStockItem() throws Exception {
     // Arrange
-    var stockItemIdToUpdate = 1;
+    var productIdToSetSalePrice = 1;
     int newSalePrice = 1000;
     var request = SetSalePriceToStockProductRequest.builder().salePrice(newSalePrice).build();
     // Act
     mockMvc
         .perform(
             MockMvcRequestBuilders.post(
-                    EndpointConstant.STOCK_BASE_PATH + "/" + stockItemIdToUpdate)
+                    EndpointConstant.STOCK_BASE_PATH + "/products/" + productIdToSetSalePrice)
                 .content(objectMapper.writeValueAsString(request))
                 .contentType(MediaType.APPLICATION_JSON))
         .andExpect(status().isAccepted());
 
     // Assert
-    verify(jpaStockItemRepository, times(1)).save(any());
-    var stockItem = jpaStockItemRepository.findById(stockItemIdToUpdate).orElseThrow();
-    assertEquals(newSalePrice, stockItem.getSalePrice());
+    verify(jpaStockItemRepository, times(1)).saveAll(any());
+    var stockItems = jpaStockItemRepository.findByProductId(productIdToSetSalePrice);
+    for (var stockItem : stockItems) {
+      assertEquals(newSalePrice, stockItem.getSalePrice());
+    }
   }
 
   @Test
@@ -52,11 +54,13 @@ public class SetSalePriceToStockItemIntegrationTest extends BaseIntegrationTest 
     // Act
     var expectedApiError =
         new ApiError(
-            "resource_not_found", "Stock item with id 0 not found", HttpStatus.NOT_FOUND.value());
+            "resource_not_found",
+            "Stock item for product id 0 not found",
+            HttpStatus.NOT_FOUND.value());
     mockMvc
         .perform(
             MockMvcRequestBuilders.post(
-                    EndpointConstant.STOCK_BASE_PATH + "/" + stockItemIdToUpdate)
+                    EndpointConstant.STOCK_BASE_PATH + "/products/" + stockItemIdToUpdate)
                 .content(objectMapper.writeValueAsString(request))
                 .contentType(MediaType.APPLICATION_JSON))
         .andExpect(status().isNotFound())

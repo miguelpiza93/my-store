@@ -30,7 +30,8 @@ values
 (2, 30000, 2, 3)
 ;
 
-INSERT INTO stock_items(product_id, quantity, sale_price)
+INSERT INTO stock_items(purchase_order_line_id, quantity, sale_price)
 values
-(1, 4, 0.0)
+(1, 1, 0.0),
+(2, 3, 0.0)
 ;

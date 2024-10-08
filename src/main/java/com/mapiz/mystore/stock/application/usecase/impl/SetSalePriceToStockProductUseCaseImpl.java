@@ -15,11 +15,11 @@ public class SetSalePriceToStockProductUseCaseImpl implements SetSalePriceToStoc
 
   @Override
   public void accept(SetSalePriceToStockProductCommand command) {
-    var stockItem =
-        stockItemRepository
-            .findById(command.getStockId())
-            .orElseThrow(() -> new StockItemNotFoundException(command.getStockId()));
-    stockItem.setSalePrice(command.getSalePrice());
-    stockItemRepository.save(stockItem);
+    var stockItems = stockItemRepository.findByProductId(command.getProductId());
+    if (stockItems.isEmpty()) {
+      throw new StockItemNotFoundException(command.getProductId());
+    }
+    stockItems.forEach(stockItem -> stockItem.setSalePrice(command.getSalePrice()));
+    stockItemRepository.saveAll(stockItems);
   }
 }

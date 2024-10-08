@@ -1,6 +1,6 @@
 package com.mapiz.mystore.stock.infrastructure.persistence.entity;
 
-import com.mapiz.mystore.product.infrastructure.persistence.ProductEntity;
+import com.mapiz.mystore.purchaseorder.infrastructure.persistence.entity.PurchaseOrderLineEntity;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -22,9 +22,9 @@ public class StockItemEntity {
   @GeneratedValue(generator = "stock_item_sequence", strategy = GenerationType.SEQUENCE)
   private Integer id;
 
-  @ManyToOne(fetch = FetchType.LAZY)
-  @JoinColumn(name = "product_id", nullable = false)
-  private ProductEntity product;
+  @OneToOne
+  @JoinColumn(name = "purchase_order_line_id", nullable = false)
+  private PurchaseOrderLineEntity purchaseOrderLine;
 
   private int quantity;
 

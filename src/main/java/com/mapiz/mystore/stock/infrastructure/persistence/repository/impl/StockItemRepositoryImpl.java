@@ -6,7 +6,6 @@ import com.mapiz.mystore.stock.domain.repository.StockItemRepository;
 import com.mapiz.mystore.stock.infrastructure.persistence.entity.StockItemEntity;
 import com.mapiz.mystore.stock.infrastructure.persistence.mapper.StockItemMapper;
 import com.mapiz.mystore.stock.infrastructure.persistence.repository.JpaStockItemRepository;
-import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
 import java.util.function.Function;
@@ -22,13 +21,13 @@ public class StockItemRepositoryImpl implements StockItemRepository {
   @Override
   public void saveAll(List<StockItem> stockItems) {
     var stockItemEntities =
-        stockItems.stream().map(StockItemMapper.INSTANCE::modelToEntity).toList();
+        stockItems.stream()
+            .map(
+                stockItem ->
+                    StockItemMapper.INSTANCE.modelToEntity(
+                        stockItem, new CycleAvoidingMappingContext()))
+            .toList();
     jpaStockItemRepository.saveAll(stockItemEntities);
-  }
-
-  @Override
-  public List<StockItem> findByProductIdIn(Collection<Integer> productIds) {
-    return jpaStockItemRepository.findByProductIdIn(productIds).stream().map(getMapper()).toList();
   }
 
   @Override
@@ -43,7 +42,18 @@ public class StockItemRepositoryImpl implements StockItemRepository {
 
   @Override
   public void save(StockItem stockItem) {
-    jpaStockItemRepository.save(StockItemMapper.INSTANCE.modelToEntity(stockItem));
+    jpaStockItemRepository.save(
+        StockItemMapper.INSTANCE.modelToEntity(stockItem, new CycleAvoidingMappingContext()));
+  }
+
+  @Override
+  public List<StockItem> findByProductId(int id) {
+    return jpaStockItemRepository.findByProductId(id).stream().map(getMapper()).toList();
+  }
+
+  @Override
+  public List<StockItem> findAllAvailable() {
+    return jpaStockItemRepository.findAllAvailable().stream().map(getMapper()).toList();
   }
 
   private Function<StockItemEntity, StockItem> getMapper() {

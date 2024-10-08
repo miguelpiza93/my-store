@@ -7,9 +7,13 @@ import lombok.Data;
 @Builder
 @AllArgsConstructor
 @Data
-public class StockItemResponse {
-  private Integer id;
+public class StockItemSummary {
+  private Integer productId;
   private String productName;
-  private int quantity;
+  private double quantity;
   private double salePrice;
+
+  public void sumQuantity(double quantity) {
+    this.quantity += quantity;
+  }
 }
