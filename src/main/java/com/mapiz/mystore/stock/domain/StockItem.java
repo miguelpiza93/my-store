@@ -26,4 +26,10 @@ public class StockItem {
         this.quantity.add(
             purchaseOrderLine.getQuantity().multiply(baseConversion.getConversionFactor()));
   }
+
+  public BigDecimal deductQuantity(BigDecimal quantityToSubtract) {
+    BigDecimal min = quantityToSubtract.min(this.quantity);
+    this.quantity = this.quantity.subtract(min);
+    return min;
+  }
 }

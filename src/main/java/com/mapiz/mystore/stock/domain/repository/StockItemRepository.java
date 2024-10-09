@@ -13,7 +13,7 @@ public interface StockItemRepository {
 
   void save(StockItem stockItem);
 
-  List<StockItem> findByProductId(int id);
+  List<StockItem> findByProductIds(List<Integer> productIds);
 
   List<StockItem> findAllAvailable();
 }

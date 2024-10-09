@@ -1,5 +1,6 @@
 package com.mapiz.mystore.integration.purchaseorder;
 
+import static com.mapiz.mystore.integration.Constants.*;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
@@ -23,18 +24,6 @@ import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
 class ReceivePurchaseOrderIntegrationTest extends BaseIntegrationTest {
-
-  private static final int EGG_ID = 1;
-  private static final int UNITS_OF_EGGS_IN_STOCK = 4;
-  private static final int EXPECTED_UNITS_OF_EGGS_ADDED = 120;
-
-  private static final int MILK_ID = 2;
-  private static final int UNITS_OF_MILK_IN_STOCK = 0;
-  private static final int EXPECTED_UNITS_OF_MILK_ADDED = 12;
-
-  private static final int PURCHASE_ORDER_ID_RECEIVED = 1;
-  private static final int PURCHASE_ORDER_OF_EGGS_ID = 4;
-  private static final int PURCHASE_ORDER_OF_MILK_ID = 5;
 
   @SpyBean private JpaPurchaseOrderRepository purchaseOrderRepository;
 

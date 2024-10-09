@@ -1,5 +1,7 @@
 package com.mapiz.mystore.integration.product;
 
+import static com.mapiz.mystore.integration.Constants.NEXT_AVAILABLE_ID;
+import static com.mapiz.mystore.integration.Constants.UNIT_ID;
 import static org.mockito.Mockito.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -20,7 +22,6 @@ class CreateProductIntegrationTest extends BaseIntegrationTest {
 
   private static final String PRODUCT_NAME = "Product 1";
   private static final String PRODUCT_DESC = "test product";
-  private static final long UNIT_ID = 2L;
 
   @SpyBean private JpaProductRepository productRepository;
 
@@ -35,7 +36,11 @@ class CreateProductIntegrationTest extends BaseIntegrationTest {
 
     // Act & Assert
     var expectedProduct =
-        ProductResponse.builder().id(3).name(PRODUCT_NAME).description(PRODUCT_DESC).build();
+        ProductResponse.builder()
+            .id(NEXT_AVAILABLE_ID)
+            .name(PRODUCT_NAME)
+            .description(PRODUCT_DESC)
+            .build();
     mockMvc
         .perform(
             MockMvcRequestBuilders.post(EndpointConstant.PRODUCTS_BASE_PATH)

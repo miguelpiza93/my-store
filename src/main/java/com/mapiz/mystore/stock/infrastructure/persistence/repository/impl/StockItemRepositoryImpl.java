@@ -47,8 +47,8 @@ public class StockItemRepositoryImpl implements StockItemRepository {
   }
 
   @Override
-  public List<StockItem> findByProductId(int id) {
-    return jpaStockItemRepository.findByProductId(id).stream().map(getMapper()).toList();
+  public List<StockItem> findByProductIds(List<Integer> ids) {
+    return jpaStockItemRepository.findByProductIds(ids).stream().map(getMapper()).toList();
   }
 
   @Override

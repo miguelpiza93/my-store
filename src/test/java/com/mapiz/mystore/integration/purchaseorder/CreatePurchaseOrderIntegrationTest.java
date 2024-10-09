@@ -1,5 +1,6 @@
 package com.mapiz.mystore.integration.purchaseorder;
 
+import static com.mapiz.mystore.integration.Constants.KIKES_ID;
 import static org.mockito.Mockito.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -33,82 +34,33 @@ import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 class CreatePurchaseOrderIntegrationTest extends BaseIntegrationTest {
 
   private static final String VENDOR_NAME = "Vendor 1";
-  private static final int VENDOR_ID = 1;
+  private static final Integer PRODUCT_ID = 1;
+  private static final Integer PURCHASE_ORDER_ID = 1;
+  private static final double PRODUCT_PRICE = 10.0;
+  private static final BigDecimal QUANTITY = BigDecimal.valueOf(20);
+
   @MockBean private JpaVendorRepository vendorRepository;
   @MockBean private JpaPurchaseOrderRepository purchaseOrderRepository;
-
   @MockBean private JpaPurchaseOrderLineRepository purchaseOrderLineRepository;
-
   @MockBean private JpaProductVendorRepository productVendorRepository;
 
   @Test
   void testCreatePurchaseOrder() throws Exception {
     // Arrange
-    var savedProduct = ProductEntity.builder().id(1).name("Product 1").build();
+    var savedVendor = buildVendorEntity();
+    var savedProduct = buildProductEntity();
+    var savedVendorProduct = buildVendorProductEntity(savedProduct, savedVendor);
+    var savedPurchaseOrder = buildPurchaseOrderEntity(savedVendor);
+    var savedPurchaseOrderLine = buildPurchaseOrderLineEntity(savedProduct);
 
-    var savedVendor = VendorEntity.builder().id(VENDOR_ID).name(VENDOR_NAME).build();
-    when(vendorRepository.findById(VENDOR_ID)).thenReturn(Optional.of(savedVendor));
-    when(productVendorRepository.findByVendorIdAndProductIdIn(VENDOR_ID, List.of(1)))
-        .thenReturn(
-            List.of(
-                VendorProductEntity.builder()
-                    .id(1)
-                    .product(savedProduct)
-                    .vendor(savedVendor)
-                    .price(10.0)
-                    .build()));
+    mockRepositories(savedVendor, savedVendorProduct, savedPurchaseOrder, savedPurchaseOrderLine);
 
-    var now = Instant.now();
-    var estimatedDeliveryDate = LocalDate.now().plusDays(5);
+    var request = buildCreatePurchaseOrderRequest();
 
-    var savedPurchaseOrder =
-        PurchaseOrderEntity.builder()
-            .id(1)
-            .createdAt(now)
-            .vendor(savedVendor)
-            .estimatedDeliveryDate(estimatedDeliveryDate)
-            .build();
-    when(purchaseOrderRepository.save(any(PurchaseOrderEntity.class)))
-        .thenReturn(savedPurchaseOrder);
-    when(purchaseOrderLineRepository.saveAll(anyList()))
-        .thenReturn(
-            List.of(
-                PurchaseOrderLineEntity.builder()
-                    .id(1)
-                    .quantity(20)
-                    .unitPrice(10.0)
-                    .product(savedProduct)
-                    .build()));
-
-    var request =
-        CreatePurchaseOrderRequest.builder()
-            .supplierId(VENDOR_ID)
-            .estimatedDeliveryDate(estimatedDeliveryDate)
-            .purchaseOrderLines(
-                List.of(
-                    PurchaseOrderLineRequest.builder()
-                        .productId(1)
-                        .quantity(BigDecimal.valueOf(20))
-                        .build()))
-            .build();
+    var expectedResponse =
+        buildExpectedPurchaseOrderResponse(savedPurchaseOrder, savedPurchaseOrderLine);
 
     // Act & Assert
-    var expectedPurchaseOrder =
-        PurchaseOrderResponse.builder()
-            .id(1)
-            .supplierName(VENDOR_NAME)
-            .createdAt(now)
-            .estimatedDeliveryDate(estimatedDeliveryDate)
-            .purchaseOrderLines(
-                List.of(
-                    PurchaseOrderLineResponse.builder()
-                        .id(1)
-                        .unitPrice(10.0)
-                        .quantity(20)
-                        .product(ProductResponse.builder().id(1).name("Product 1").build())
-                        .build()))
-            .build();
-
     mockMvc
         .perform(
             MockMvcRequestBuilders.post(EndpointConstant.PURCHASE_ORDER_BASE_PATH)
@@ -116,6 +68,84 @@ class CreatePurchaseOrderIntegrationTest extends BaseIntegrationTest {
                 .contentType(MediaType.APPLICATION_JSON))
         .andExpect(status().isCreated())
         .andExpect(content().contentType(MediaType.APPLICATION_JSON))
-        .andExpect(content().json(objectMapper.writeValueAsString(expectedPurchaseOrder)));
+        .andExpect(content().json(objectMapper.writeValueAsString(expectedResponse)));
+  }
+
+  private void mockRepositories(
+      VendorEntity vendor,
+      VendorProductEntity vendorProduct,
+      PurchaseOrderEntity purchaseOrder,
+      PurchaseOrderLineEntity purchaseOrderLine) {
+    when(vendorRepository.findById(KIKES_ID)).thenReturn(Optional.of(vendor));
+    when(productVendorRepository.findByVendorIdAndProductIdIn(KIKES_ID, List.of(PRODUCT_ID)))
+        .thenReturn(List.of(vendorProduct));
+    when(purchaseOrderRepository.save(any(PurchaseOrderEntity.class))).thenReturn(purchaseOrder);
+    when(purchaseOrderLineRepository.saveAll(anyList())).thenReturn(List.of(purchaseOrderLine));
+  }
+
+  private VendorEntity buildVendorEntity() {
+    return VendorEntity.builder().id(KIKES_ID).name(VENDOR_NAME).build();
+  }
+
+  private ProductEntity buildProductEntity() {
+    return ProductEntity.builder().id(PRODUCT_ID).name("Product 1").build();
+  }
+
+  private VendorProductEntity buildVendorProductEntity(ProductEntity product, VendorEntity vendor) {
+    return VendorProductEntity.builder()
+        .id(1)
+        .product(product)
+        .vendor(vendor)
+        .price(PRODUCT_PRICE)
+        .build();
+  }
+
+  private PurchaseOrderEntity buildPurchaseOrderEntity(VendorEntity vendor) {
+    return PurchaseOrderEntity.builder()
+        .id(PURCHASE_ORDER_ID)
+        .createdAt(Instant.now())
+        .vendor(vendor)
+        .estimatedDeliveryDate(LocalDate.now().plusDays(5))
+        .build();
+  }
+
+  private PurchaseOrderLineEntity buildPurchaseOrderLineEntity(ProductEntity product) {
+    return PurchaseOrderLineEntity.builder()
+        .id(PURCHASE_ORDER_ID)
+        .quantity(20)
+        .unitPrice(PRODUCT_PRICE)
+        .product(product)
+        .build();
+  }
+
+  private CreatePurchaseOrderRequest buildCreatePurchaseOrderRequest() {
+    return CreatePurchaseOrderRequest.builder()
+        .supplierId(KIKES_ID)
+        .estimatedDeliveryDate(LocalDate.now().plusDays(5))
+        .purchaseOrderLines(
+            List.of(
+                PurchaseOrderLineRequest.builder()
+                    .productId(PRODUCT_ID)
+                    .quantity(QUANTITY)
+                    .build()))
+        .build();
+  }
+
+  private PurchaseOrderResponse buildExpectedPurchaseOrderResponse(
+      PurchaseOrderEntity purchaseOrder, PurchaseOrderLineEntity purchaseOrderLine) {
+    return PurchaseOrderResponse.builder()
+        .id(purchaseOrder.getId())
+        .supplierName(VENDOR_NAME)
+        .createdAt(purchaseOrder.getCreatedAt())
+        .estimatedDeliveryDate(purchaseOrder.getEstimatedDeliveryDate())
+        .purchaseOrderLines(
+            List.of(
+                PurchaseOrderLineResponse.builder()
+                    .id(purchaseOrderLine.getId())
+                    .unitPrice(purchaseOrderLine.getUnitPrice())
+                    .quantity(purchaseOrderLine.getQuantity())
+                    .product(ProductResponse.builder().id(PRODUCT_ID).name("Product 1").build())
+                    .build()))
+        .build();
   }
 }

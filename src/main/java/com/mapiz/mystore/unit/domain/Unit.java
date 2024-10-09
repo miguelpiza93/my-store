@@ -1,5 +1,6 @@
 package com.mapiz.mystore.unit.domain;
 
+import java.math.BigDecimal;
 import java.util.List;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -7,7 +8,7 @@ import lombok.Getter;
 @Getter
 @AllArgsConstructor
 public class Unit {
-  private Long id;
+  private Integer id;
   private String name;
   private String symbol;
   private boolean isFractional;
@@ -15,6 +16,10 @@ public class Unit {
   private List<Conversion> unitConversions;
 
   public Conversion getBaseConversion() {
+    if (isBaseUnit) {
+      return Conversion.builder().conversionFactor(BigDecimal.ONE).build();
+    }
+
     return unitConversions.stream()
         .filter(conversion -> conversion.getToUnit().isBaseUnit())
         .findFirst()

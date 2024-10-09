@@ -2,6 +2,7 @@ package com.mapiz.mystore.purchaseorder.infrastructure.persistence.entity;
 
 import com.mapiz.mystore.product.infrastructure.persistence.ProductEntity;
 import jakarta.persistence.*;
+import java.time.Instant;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -34,6 +35,9 @@ public class PurchaseOrderLineEntity {
   @ManyToOne(fetch = FetchType.LAZY)
   @JoinColumn(name = "purchase_order_id", nullable = false)
   private PurchaseOrderEntity purchaseOrder;
+
+  @Column(name = "created_at")
+  private Instant createdAt;
 
   @Override
   public String toString() {
