@@ -2,6 +2,7 @@ package com.mapiz.mystore.purchaseorder.infrastructure.persistence.entity;
 
 import com.mapiz.mystore.product.infrastructure.persistence.ProductEntity;
 import jakarta.persistence.*;
+import java.math.BigDecimal;
 import java.time.Instant;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -23,7 +24,7 @@ public class PurchaseOrderLineEntity {
   @GeneratedValue(generator = "purchase_order_line_sequence", strategy = GenerationType.SEQUENCE)
   private Integer id;
 
-  private int quantity;
+  private BigDecimal quantity;
 
   @Column(name = "unit_price")
   private double unitPrice;

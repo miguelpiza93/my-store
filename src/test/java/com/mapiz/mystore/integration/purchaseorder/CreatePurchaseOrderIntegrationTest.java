@@ -112,7 +112,7 @@ class CreatePurchaseOrderIntegrationTest extends BaseIntegrationTest {
   private PurchaseOrderLineEntity buildPurchaseOrderLineEntity(ProductEntity product) {
     return PurchaseOrderLineEntity.builder()
         .id(PURCHASE_ORDER_ID)
-        .quantity(20)
+        .quantity(BigDecimal.valueOf(20))
         .unitPrice(PRODUCT_PRICE)
         .product(product)
         .build();

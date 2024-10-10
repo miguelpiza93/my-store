@@ -6,7 +6,7 @@ START WITH 1
 CREATE TABLE sales (
     id INTEGER NOT NULL DEFAULT nextval('sales_sequence') PRIMARY KEY,
     product_id INT NOT NULL,
-    quantity INT NOT NULL,
+    quantity DECIMAL(10, 2) NOT NULL,
     unit_id INT NOT NULL,
     price DECIMAL(10, 2) NOT NULL,
     total DECIMAL(10, 2) NOT NULL,

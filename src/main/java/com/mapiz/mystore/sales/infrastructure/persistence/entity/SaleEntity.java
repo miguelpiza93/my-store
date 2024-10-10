@@ -26,7 +26,7 @@ public class SaleEntity {
   @JoinColumn(name = "product_id", nullable = false)
   private ProductEntity product;
 
-  private double quantity;
+  private BigDecimal quantity;
 
   @OneToOne
   @JoinColumn(name = "unit_id", nullable = false)
