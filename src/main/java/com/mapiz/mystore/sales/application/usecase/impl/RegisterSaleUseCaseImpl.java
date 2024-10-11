@@ -10,6 +10,7 @@ import com.mapiz.mystore.stock.domain.StockItem;
 import com.mapiz.mystore.stock.domain.repository.StockItemRepository;
 import com.mapiz.mystore.unit.domain.Unit;
 import com.mapiz.mystore.unit.domain.repository.UnitRepository;
+import com.mapiz.mystore.util.BigDecimalUtils;
 import java.math.BigDecimal;
 import java.time.Instant;
 import java.util.List;
@@ -71,10 +72,11 @@ public class RegisterSaleUseCaseImpl implements RegisterSaleUseCase {
     BigDecimal saleQuantity = sale.getBaseQuantity();
     for (var productStock : stockAvailable) {
       var deductedQuantity = productStock.deductQuantity(saleQuantity);
-      totalCost =
-          totalCost.add(
-              deductedQuantity.multiply(productStock.getPurchaseOrderLine().getCostPerBaseUnit()));
-      saleQuantity = saleQuantity.subtract(deductedQuantity);
+      var cost =
+          BigDecimalUtils.multiply(
+              deductedQuantity, productStock.getPurchaseOrderLine().getCostPerBaseUnit());
+      totalCost = BigDecimalUtils.add(totalCost, cost);
+      saleQuantity = BigDecimalUtils.subtract(saleQuantity, deductedQuantity);
       if (saleQuantity.compareTo(BigDecimal.ZERO) <= 0) {
         break;
       }

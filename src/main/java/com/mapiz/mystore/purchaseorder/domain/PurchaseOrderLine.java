@@ -3,6 +3,7 @@ package com.mapiz.mystore.purchaseorder.domain;
 import com.mapiz.mystore.product.domain.Product;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
+import java.time.Instant;
 import lombok.Builder;
 import lombok.Data;
 
@@ -10,6 +11,7 @@ import lombok.Data;
 @Data
 public class PurchaseOrderLine {
   private Integer id;
+  private Instant createdAt;
   private Product product;
   private BigDecimal quantity;
   private BigDecimal unitPrice;

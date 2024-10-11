@@ -4,6 +4,7 @@ import com.mapiz.mystore.sales.domain.Sale;
 import com.mapiz.mystore.sales.domain.repository.SaleRepository;
 import com.mapiz.mystore.sales.infrastructure.persistence.mapper.SaleMapper;
 import com.mapiz.mystore.sales.infrastructure.persistence.repository.JpaSaleRepository;
+import com.mapiz.mystore.shared.CycleAvoidingMappingContext;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
@@ -18,7 +19,7 @@ public class SaleRepositoryImpl implements SaleRepository {
   public List<Sale> saveAll(List<Sale> models) {
     var entities = models.stream().map(SaleMapper.INSTANCE::modelToEntity).toList();
     return jpaSaleRepository.saveAll(entities).stream()
-        .map(SaleMapper.INSTANCE::entityToModel)
+        .map(entity -> SaleMapper.INSTANCE.entityToModel(entity, new CycleAvoidingMappingContext()))
         .toList();
   }
 }

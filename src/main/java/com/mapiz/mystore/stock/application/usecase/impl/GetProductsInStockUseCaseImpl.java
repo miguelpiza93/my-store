@@ -4,8 +4,8 @@ import com.mapiz.mystore.stock.application.dto.StockItemSummary;
 import com.mapiz.mystore.stock.application.usecase.GetStockSummaryUseCase;
 import com.mapiz.mystore.stock.domain.StockItem;
 import com.mapiz.mystore.stock.domain.repository.StockItemRepository;
+import com.mapiz.mystore.util.BigDecimalUtils;
 import java.math.BigDecimal;
-import java.math.RoundingMode;
 import java.util.Collection;
 import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
@@ -40,7 +40,8 @@ public class GetProductsInStockUseCaseImpl implements GetStockSummaryUseCase {
 
   private StockItemSummary mergeStockItemSummaries(
       StockItemSummary existingItem, StockItemSummary newItem) {
-    BigDecimal totalQuantity = existingItem.getQuantity().add(newItem.getQuantity());
+    BigDecimal totalQuantity =
+        BigDecimalUtils.add(existingItem.getQuantity(), newItem.getQuantity());
     BigDecimal weightedCost = calculateWeightedCost(existingItem, newItem, totalQuantity);
 
     existingItem.sumQuantity(newItem.getQuantity());
@@ -50,8 +51,10 @@ public class GetProductsInStockUseCaseImpl implements GetStockSummaryUseCase {
 
   private BigDecimal calculateWeightedCost(
       StockItemSummary existingItem, StockItemSummary newItem, BigDecimal totalQuantity) {
-    BigDecimal existingCost = existingItem.getWeightedCost().multiply(existingItem.getQuantity());
-    BigDecimal newCost = newItem.getWeightedCost().multiply(newItem.getQuantity());
-    return existingCost.add(newCost).divide(totalQuantity, RoundingMode.HALF_UP);
+    BigDecimal existingCost =
+        BigDecimalUtils.multiply(existingItem.getWeightedCost(), existingItem.getQuantity());
+    BigDecimal newCost = BigDecimalUtils.multiply(newItem.getWeightedCost(), newItem.getQuantity());
+    BigDecimal totalCost = BigDecimalUtils.add(existingCost, newCost);
+    return BigDecimalUtils.divide(totalCost, totalQuantity);
   }
 }

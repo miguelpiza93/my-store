@@ -1,5 +1,6 @@
 package com.mapiz.mystore.stock.application.dto;
 
+import com.mapiz.mystore.util.BigDecimalUtils;
 import java.math.BigDecimal;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -16,6 +17,6 @@ public class StockItemSummary {
   private BigDecimal weightedCost;
 
   public void sumQuantity(BigDecimal quantity) {
-    this.quantity = this.quantity.add(quantity);
+    this.quantity = BigDecimalUtils.add(this.quantity, quantity);
   }
 }

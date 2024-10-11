@@ -2,6 +2,7 @@ package com.mapiz.mystore.sales.domain;
 
 import com.mapiz.mystore.product.domain.Product;
 import com.mapiz.mystore.unit.domain.Unit;
+import com.mapiz.mystore.util.BigDecimalUtils;
 import java.math.BigDecimal;
 import java.time.Instant;
 import lombok.AllArgsConstructor;
@@ -33,11 +34,12 @@ public class Sale {
   }
 
   private void calculateTotal() {
-    var baseQuantity = quantity.multiply(this.unit.getBaseConversion().getConversionFactor());
-    this.total = this.price.multiply(baseQuantity);
+    var baseQuantity =
+        BigDecimalUtils.multiply(quantity, this.unit.getBaseConversion().getConversionFactor());
+    this.total = BigDecimalUtils.multiply(baseQuantity, price);
   }
 
   public BigDecimal getBaseQuantity() {
-    return quantity.multiply(this.unit.getBaseConversion().getConversionFactor());
+    return BigDecimalUtils.multiply(quantity, this.unit.getBaseConversion().getConversionFactor());
   }
 }

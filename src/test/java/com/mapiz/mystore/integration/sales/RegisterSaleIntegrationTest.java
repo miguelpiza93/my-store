@@ -16,9 +16,8 @@ import com.mapiz.mystore.sales.infrastructure.persistence.repository.JpaSaleRepo
 import com.mapiz.mystore.shared.ApiError;
 import com.mapiz.mystore.stock.infrastructure.persistence.entity.StockItemEntity;
 import com.mapiz.mystore.stock.infrastructure.persistence.repository.JpaStockItemRepository;
+import com.mapiz.mystore.util.BigDecimalUtils;
 import java.io.UnsupportedEncodingException;
-import java.math.BigDecimal;
-import java.math.RoundingMode;
 import java.util.List;
 import org.assertj.core.api.SoftAssertions;
 import org.junit.jupiter.api.Test;
@@ -134,20 +133,22 @@ class RegisterSaleIntegrationTest extends BaseIntegrationTest {
     var sale = saleRepository.findById(ids.get(0)).orElseThrow();
 
     SoftAssertions softly = new SoftAssertions();
+    softly.assertThat(sale.getUnit().getId()).isEqualTo(unitId);
     softly.assertThat(sale.getProduct().getId()).isEqualTo(productId);
     softly
-        .assertThat(sale.getQuantity().setScale(1, RoundingMode.HALF_UP))
-        .isEqualTo(BigDecimal.valueOf(quantity).setScale(1, RoundingMode.HALF_UP));
-    softly.assertThat(sale.getUnit().getId()).isEqualTo(unitId);
+        .assertThat(BigDecimalUtils.compare(sale.getQuantity(), BigDecimalUtils.valueOf(quantity)))
+        .isEqualTo(0);
     softly
-        .assertThat(sale.getCost().setScale(1, RoundingMode.HALF_UP))
-        .isEqualTo(new BigDecimal(expectedCost).setScale(1, RoundingMode.HALF_UP));
+        .assertThat(BigDecimalUtils.compare(sale.getCost(), BigDecimalUtils.valueOf(expectedCost)))
+        .isEqualTo(0);
     softly
-        .assertThat(sale.getPrice().setScale(1, RoundingMode.HALF_UP))
-        .isEqualTo(new BigDecimal(expectedPrice).setScale(1, RoundingMode.HALF_UP));
+        .assertThat(
+            BigDecimalUtils.compare(sale.getPrice(), BigDecimalUtils.valueOf(expectedPrice)))
+        .isEqualTo(0);
     softly
-        .assertThat(sale.getTotal().setScale(1, RoundingMode.HALF_UP))
-        .isEqualTo(new BigDecimal(expectedTotal).setScale(1, RoundingMode.HALF_UP));
+        .assertThat(
+            BigDecimalUtils.compare(sale.getTotal(), BigDecimalUtils.valueOf(expectedTotal)))
+        .isEqualTo(0);
     softly.assertThat(sale.getCreatedAt()).isNotNull();
     softly.assertAll();
   }

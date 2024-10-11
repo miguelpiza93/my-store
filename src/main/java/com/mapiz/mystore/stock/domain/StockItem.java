@@ -1,6 +1,7 @@
 package com.mapiz.mystore.stock.domain;
 
 import com.mapiz.mystore.purchaseorder.domain.PurchaseOrderLine;
+import com.mapiz.mystore.util.BigDecimalUtils;
 import java.math.BigDecimal;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -22,14 +23,15 @@ public class StockItem {
 
   public void incrementQuantity(PurchaseOrderLine purchaseOrderLine) {
     var baseConversion = this.purchaseOrderLine.getProduct().getReferenceUnit().getBaseConversion();
-    this.quantity =
-        this.quantity.add(
-            purchaseOrderLine.getQuantity().multiply(baseConversion.getConversionFactor()));
+    var baseQuantity =
+        BigDecimalUtils.multiply(
+            this.purchaseOrderLine.getQuantity(), baseConversion.getConversionFactor());
+    this.quantity = BigDecimalUtils.add(this.quantity, baseQuantity);
   }
 
   public BigDecimal deductQuantity(BigDecimal quantityToSubtract) {
-    BigDecimal min = quantityToSubtract.min(this.quantity);
-    this.quantity = this.quantity.subtract(min);
+    BigDecimal min = BigDecimalUtils.min(this.quantity, quantityToSubtract);
+    this.quantity = BigDecimalUtils.subtract(this.quantity, min);
     return min;
   }
 }
