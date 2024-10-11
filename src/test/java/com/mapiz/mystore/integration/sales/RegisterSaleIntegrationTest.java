@@ -18,6 +18,7 @@ import com.mapiz.mystore.stock.infrastructure.persistence.entity.StockItemEntity
 import com.mapiz.mystore.stock.infrastructure.persistence.repository.JpaStockItemRepository;
 import com.mapiz.mystore.util.BigDecimalUtils;
 import java.io.UnsupportedEncodingException;
+import java.math.BigDecimal;
 import java.util.List;
 import org.assertj.core.api.SoftAssertions;
 import org.junit.jupiter.api.Test;
@@ -45,39 +46,44 @@ class RegisterSaleIntegrationTest extends BaseIntegrationTest {
 
   @Test
   void testRegisterSaleFewItemsUsingTheBaseUnit() throws Exception {
-    var quantity = 3;
+    var quantity = BigDecimalUtils.valueOf(3);
     var request = createSaleRequest(EGG_ID, quantity, UNIT_ID);
     var result = executePostRequest(request);
 
     assertSalePersistedWithExpectedValues(
         result, EGG_ID, quantity, UNIT_ID, "900.0", "500.0", "1500.0");
 
-    assertRemainingStockForProduct(EGG_ID, UNITS_OF_EGGS_IN_STOCK - quantity);
+    var expectedRemainingQuantity = BigDecimalUtils.subtract(UNITS_OF_EGGS_IN_STOCK, quantity);
+    assertRemainingStockForProduct(EGG_ID, expectedRemainingQuantity);
   }
 
   @Test
   void testRegisterSaleFewItemsUsingTheReferenceUnit() throws Exception {
-    var quantityOfCartons = 2;
+    var quantityOfCartons = BigDecimalUtils.valueOf(2.0);
     var request = createSaleRequest(EGG_ID, quantityOfCartons, CARTON_ID);
     var result = executePostRequest(request);
 
     assertSalePersistedWithExpectedValues(
         result, EGG_ID, quantityOfCartons, CARTON_ID, "21000.0", "500.0", "30000.0");
 
-    assertRemainingStockForProduct(
-        EGG_ID, UNITS_OF_EGGS_IN_STOCK - quantityOfCartons * UNITS_PER_CARTON);
+    var expectedRemainingQuantity =
+        BigDecimalUtils.subtract(
+            UNITS_OF_EGGS_IN_STOCK, BigDecimalUtils.multiply(quantityOfCartons, UNITS_PER_CARTON));
+
+    assertRemainingStockForProduct(EGG_ID, expectedRemainingQuantity);
   }
 
   @Test
   void testRegisterSaleWithoutEnoughStock() throws Exception {
-    var request = createSaleRequest(SAUSAGE_ID, UNITS_OF_SAUSAGES_IN_STOCK + 1, UNIT_ID);
+    var quantity = BigDecimalUtils.add(UNITS_OF_SAUSAGES_IN_STOCK, BigDecimal.ONE);
+    var request = createSaleRequest(SAUSAGE_ID, quantity, UNIT_ID);
     var expectedApiError =
         new ApiError(
             "bad_request",
             "Product id: "
                 + SAUSAGE_ID
                 + ", Wanted: "
-                + ((double) (UNITS_OF_SAUSAGES_IN_STOCK + 1))
+                + quantity
                 + ", Have: "
                 + UNITS_OF_SAUSAGES_IN_STOCK,
             HttpStatus.BAD_REQUEST.value());
@@ -97,7 +103,7 @@ class RegisterSaleIntegrationTest extends BaseIntegrationTest {
 
   // Métodos auxiliares para simplificar y reutilizar el código
 
-  private RegisterSaleRequest createSaleRequest(int productId, int quantity, int unitId) {
+  private RegisterSaleRequest createSaleRequest(int productId, BigDecimal quantity, int unitId) {
     return RegisterSaleRequest.builder()
         .items(
             List.of(
@@ -122,7 +128,7 @@ class RegisterSaleIntegrationTest extends BaseIntegrationTest {
   private void assertSalePersistedWithExpectedValues(
       MvcResult result,
       int productId,
-      int quantity,
+      BigDecimal quantity,
       int unitId,
       String expectedCost,
       String expectedPrice,
@@ -135,9 +141,7 @@ class RegisterSaleIntegrationTest extends BaseIntegrationTest {
     SoftAssertions softly = new SoftAssertions();
     softly.assertThat(sale.getUnit().getId()).isEqualTo(unitId);
     softly.assertThat(sale.getProduct().getId()).isEqualTo(productId);
-    softly
-        .assertThat(BigDecimalUtils.compare(sale.getQuantity(), BigDecimalUtils.valueOf(quantity)))
-        .isEqualTo(0);
+    softly.assertThat(BigDecimalUtils.compare(sale.getQuantity(), quantity)).isEqualTo(0);
     softly
         .assertThat(BigDecimalUtils.compare(sale.getCost(), BigDecimalUtils.valueOf(expectedCost)))
         .isEqualTo(0);
@@ -161,12 +165,15 @@ class RegisterSaleIntegrationTest extends BaseIntegrationTest {
     assertTrue(availableStock.isEmpty());
   }
 
-  private void assertRemainingStockForProduct(int productId, double expectedRemainingQuantity) {
+  private void assertRemainingStockForProduct(int productId, BigDecimal expectedRemainingQuantity) {
     var availableStock =
         stockItemRepository.findAllAvailable().stream()
             .filter(s -> s.getPurchaseOrderLine().getProduct().getId() == productId)
             .toList();
-    var sumQuantity = availableStock.stream().mapToDouble(StockItemEntity::getQuantity).sum();
+    var sumQuantity =
+        availableStock.stream()
+            .map(StockItemEntity::getQuantity)
+            .reduce(BigDecimal.ZERO, BigDecimalUtils::add);
     assertFalse(availableStock.isEmpty());
     assertEquals(expectedRemainingQuantity, sumQuantity);
   }

@@ -1,5 +1,7 @@
 package com.mapiz.mystore.integration;
 
+import com.mapiz.mystore.util.BigDecimalUtils;
+import java.math.BigDecimal;
 import lombok.experimental.UtilityClass;
 
 @UtilityClass
@@ -9,7 +11,7 @@ public class Constants {
   public static final int UNIT_ID = 2;
 
   // CONVERSION CONSTANTS
-  public static final int UNITS_PER_CARTON = 30;
+  public static final BigDecimal UNITS_PER_CARTON = BigDecimalUtils.valueOf(30);
 
   // VENDOR CONSTANTS
   public static final int KIKES_ID = 1;
@@ -23,14 +25,14 @@ public class Constants {
   public static final int NEXT_AVAILABLE_ID = 4;
 
   // STOCK CONSTANTS
-  public static final int UNITS_OF_MILK_IN_STOCK = 0;
-  public static final int UNITS_OF_EGGS_IN_STOCK = 90;
-  public static final int UNITS_OF_SAUSAGES_IN_STOCK = 5;
+  public static final BigDecimal UNITS_OF_MILK_IN_STOCK = BigDecimal.ZERO;
+  public static final BigDecimal UNITS_OF_EGGS_IN_STOCK = BigDecimalUtils.valueOf(90);
+  public static final BigDecimal UNITS_OF_SAUSAGES_IN_STOCK = BigDecimalUtils.valueOf(5);
 
   // PURCHASE ORDER CONSTANTS
   public static final int PURCHASE_ORDER_ID_RECEIVED = 1;
   public static final int PURCHASE_ORDER_OF_EGGS_ID = 4;
   public static final int PURCHASE_ORDER_OF_MILK_ID = 5;
-  public static final int EXPECTED_UNITS_OF_EGGS_ADDED = 120;
-  public static final int EXPECTED_UNITS_OF_MILK_ADDED = 12;
+  public static final BigDecimal EXPECTED_UNITS_OF_EGGS_ADDED = BigDecimalUtils.valueOf(120);
+  public static final BigDecimal EXPECTED_UNITS_OF_MILK_ADDED = BigDecimalUtils.valueOf(12);
 }

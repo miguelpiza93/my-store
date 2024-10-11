@@ -1,5 +1,6 @@
 package com.mapiz.mystore.sales.application.command;
 
+import java.math.BigDecimal;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 
@@ -7,6 +8,6 @@ import lombok.Getter;
 @Getter
 public class RegisterSaleCommandItem {
   private int productId;
-  private double quantity;
+  private BigDecimal quantity;
   private int unitId;
 }

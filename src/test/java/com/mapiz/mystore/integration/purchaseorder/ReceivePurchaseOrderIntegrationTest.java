@@ -15,6 +15,8 @@ import com.mapiz.mystore.purchaseorder.infrastructure.persistence.repository.Jpa
 import com.mapiz.mystore.shared.ApiError;
 import com.mapiz.mystore.stock.infrastructure.persistence.entity.StockItemEntity;
 import com.mapiz.mystore.stock.infrastructure.persistence.repository.JpaStockItemRepository;
+import com.mapiz.mystore.util.BigDecimalUtils;
+import java.math.BigDecimal;
 import java.util.Map;
 import java.util.stream.Collectors;
 import org.junit.jupiter.api.Test;
@@ -37,8 +39,8 @@ class ReceivePurchaseOrderIntegrationTest extends BaseIntegrationTest {
             MockMvcRequestBuilders.post(getReceiveUrl(PURCHASE_ORDER_OF_MILK_ID))
                 .contentType(MediaType.APPLICATION_JSON))
         .andExpect(status().isAccepted());
-    Map<Integer, Integer> expectedQuantitiesByProductId =
-        Map.of(MILK_ID, UNITS_OF_MILK_IN_STOCK + EXPECTED_UNITS_OF_MILK_ADDED);
+    Map<Integer, BigDecimal> expectedQuantitiesByProductId =
+        Map.of(MILK_ID, BigDecimalUtils.add(UNITS_OF_MILK_IN_STOCK, EXPECTED_UNITS_OF_MILK_ADDED));
 
     verifyDataSaved(PURCHASE_ORDER_OF_MILK_ID, expectedQuantitiesByProductId);
   }
@@ -52,8 +54,8 @@ class ReceivePurchaseOrderIntegrationTest extends BaseIntegrationTest {
                 .contentType(MediaType.APPLICATION_JSON))
         .andExpect(status().isAccepted());
 
-    Map<Integer, Integer> expectedQuantitiesByProductId =
-        Map.of(EGG_ID, UNITS_OF_EGGS_IN_STOCK + EXPECTED_UNITS_OF_EGGS_ADDED);
+    Map<Integer, BigDecimal> expectedQuantitiesByProductId =
+        Map.of(EGG_ID, BigDecimalUtils.add(UNITS_OF_EGGS_IN_STOCK, EXPECTED_UNITS_OF_EGGS_ADDED));
 
     verifyDataSaved(PURCHASE_ORDER_OF_EGGS_ID, expectedQuantitiesByProductId);
   }
@@ -79,7 +81,7 @@ class ReceivePurchaseOrderIntegrationTest extends BaseIntegrationTest {
   }
 
   private void verifyDataSaved(
-      int purchaseOrderId, Map<Integer, Integer> expectedQuantitiesByProductId) {
+      int purchaseOrderId, Map<Integer, BigDecimal> expectedQuantitiesByProductId) {
     // 1. Verificar que la orden de compra fue actualizada a estado "RECEIVED"
     PurchaseOrderEntity savedOrder =
         purchaseOrderRepository.findById(purchaseOrderId).orElseThrow();
@@ -88,21 +90,22 @@ class ReceivePurchaseOrderIntegrationTest extends BaseIntegrationTest {
     var productsId =
         savedOrder.getPurchaseOrderLines().stream().map(line -> line.getProduct().getId()).toList();
 
-    Map<Integer, Integer> quantitiesByProductId =
+    Map<Integer, BigDecimal> quantitiesByProductId =
         stockItemRepository.findAll().stream()
             .filter(item -> productsId.contains(item.getPurchaseOrderLine().getProduct().getId()))
             .collect(
                 Collectors.toMap(
                     item -> item.getPurchaseOrderLine().getProduct().getId(),
                     StockItemEntity::getQuantity,
-                    Integer::sum));
+                    BigDecimalUtils::add));
 
     // 2. Verificar que los items de stock se han guardado correctamente
     for (PurchaseOrderLineEntity line : savedOrder.getPurchaseOrderLines()) {
       var expectedQuantity =
-          expectedQuantitiesByProductId.getOrDefault(line.getProduct().getId(), 0);
+          expectedQuantitiesByProductId.getOrDefault(line.getProduct().getId(), BigDecimal.ZERO);
       assertEquals(
-          expectedQuantity, quantitiesByProductId.getOrDefault(line.getProduct().getId(), 0));
+          expectedQuantity,
+          quantitiesByProductId.getOrDefault(line.getProduct().getId(), BigDecimal.ZERO));
     }
 
     verify(purchaseOrderRepository, times(1)).save(any(PurchaseOrderEntity.class));

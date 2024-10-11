@@ -7,7 +7,7 @@ import org.junit.jupiter.api.BeforeEach;
 
 public class BaseArchitectureTest {
 
-  private static final String ROOT_PACKAGE = "com.mapiz.mystore";
+  private static final String ROOT_PACKAGE = "com.mapiz.mystore.sales";
 
   protected JavaClasses javaClasses;
 

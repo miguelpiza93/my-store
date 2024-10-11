@@ -77,7 +77,7 @@ public class RegisterSaleUseCaseImpl implements RegisterSaleUseCase {
               deductedQuantity, productStock.getPurchaseOrderLine().getCostPerBaseUnit());
       totalCost = BigDecimalUtils.add(totalCost, cost);
       saleQuantity = BigDecimalUtils.subtract(saleQuantity, deductedQuantity);
-      if (saleQuantity.compareTo(BigDecimal.ZERO) <= 0) {
+      if (BigDecimalUtils.compare(saleQuantity, BigDecimal.ZERO) <= 0) {
         break;
       }
     }
@@ -100,7 +100,7 @@ public class RegisterSaleUseCaseImpl implements RegisterSaleUseCase {
   private boolean isStockInsufficient(
       Map<Integer, List<StockItem>> stockItemsByProductId, Sale item) {
     BigDecimal totalStock = getTotalStockForProduct(stockItemsByProductId, item);
-    return totalStock.compareTo(item.getQuantity()) < 0;
+    return BigDecimalUtils.compare(totalStock, item.getQuantity()) < 0;
   }
 
   private String buildInsufficientStockMessage(
@@ -115,7 +115,7 @@ public class RegisterSaleUseCaseImpl implements RegisterSaleUseCase {
       Map<Integer, List<StockItem>> stockItemsByProductId, Sale item) {
     return stockItemsByProductId.get(item.getProduct().getId()).stream()
         .map(StockItem::getQuantity)
-        .reduce(BigDecimal.ZERO, BigDecimal::add);
+        .reduce(BigDecimal.ZERO, BigDecimalUtils::add);
   }
 
   private BigDecimal getSalePriceFromStock(List<StockItem> productStock) {

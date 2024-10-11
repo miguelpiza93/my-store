@@ -1,5 +1,6 @@
 package com.mapiz.mystore.sales.application.dto.request;
 
+import java.math.BigDecimal;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -9,6 +10,6 @@ import lombok.Getter;
 @Builder
 public class SaleItemRequest {
   private int productId;
-  private int quantity;
+  private BigDecimal quantity;
   private int unitId;
 }

@@ -2,6 +2,7 @@ package com.mapiz.mystore.stock.infrastructure.persistence.entity;
 
 import com.mapiz.mystore.purchaseorder.infrastructure.persistence.entity.PurchaseOrderLineEntity;
 import jakarta.persistence.*;
+import java.math.BigDecimal;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -26,5 +27,5 @@ public class StockItemEntity {
   @JoinColumn(name = "purchase_order_line_id", nullable = false)
   private PurchaseOrderLineEntity purchaseOrderLine;
 
-  private int quantity;
+  private BigDecimal quantity;
 }
