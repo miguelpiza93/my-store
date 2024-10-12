@@ -89,6 +89,7 @@ public class CreatePurchaseOrderUseCaseImpl implements CreatePurchaseOrderUseCas
                 .orElseThrow())
         .unitPrice(lineRequest.getUnitPrice())
         .quantity(lineRequest.getQuantity())
+        .createdAt(Instant.now())
         .purchaseOrder(purchaseOrder)
         .build();
   }

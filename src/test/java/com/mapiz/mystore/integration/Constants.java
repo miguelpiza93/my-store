@@ -15,6 +15,7 @@ public class Constants {
 
   // VENDOR CONSTANTS
   public static final int KIKES_ID = 1;
+  public static final String KIKES_NAME = "Kikes";
 
   // PRODUCT CONSTANTS
   public static final int EGG_ID = 1;

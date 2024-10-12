@@ -2,6 +2,7 @@ package com.mapiz.mystore.purchaseorder.application.dto;
 
 import com.mapiz.mystore.product.application.dto.ProductResponse;
 import java.math.BigDecimal;
+import java.time.Instant;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -15,5 +16,6 @@ public class PurchaseOrderLineResponse {
   private Integer id;
   private ProductResponse product;
   private BigDecimal quantity;
-  private Double unitPrice;
+  private BigDecimal unitPrice;
+  private Instant createdAt;
 }
