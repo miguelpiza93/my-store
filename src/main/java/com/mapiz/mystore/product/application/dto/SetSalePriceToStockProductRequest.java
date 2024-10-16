@@ -13,5 +13,6 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class SetSalePriceToStockProductRequest {
 
+  @Positive private Integer unitId;
   @Positive private BigDecimal salePrice;
 }

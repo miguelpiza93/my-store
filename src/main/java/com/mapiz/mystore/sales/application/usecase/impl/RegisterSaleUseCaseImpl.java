@@ -1,5 +1,6 @@
 package com.mapiz.mystore.sales.application.usecase.impl;
 
+import com.mapiz.mystore.product.domain.repository.ProductPriceRepository;
 import com.mapiz.mystore.sales.application.command.RegisterSaleCommand;
 import com.mapiz.mystore.sales.application.exception.NotEnoughStockException;
 import com.mapiz.mystore.sales.application.mapper.SaleMapper;
@@ -25,6 +26,7 @@ public class RegisterSaleUseCaseImpl implements RegisterSaleUseCase {
 
   private final SaleRepository saleRepository;
   private final StockItemRepository stockItemRepository;
+  private final ProductPriceRepository productPriceRepository;
   private final UnitRepository unitRepository;
 
   @Override
@@ -60,7 +62,7 @@ public class RegisterSaleUseCaseImpl implements RegisterSaleUseCase {
     sale.setUnit(unit);
     var productStock = stockItemsByProductId.get(sale.getProduct().getId());
     var totalCost = calculateTotalCost(productStock, sale);
-    var price = getSalePriceFromStock(productStock);
+    var price = getSalePriceFromStock(productStock, unit);
     sale.setCost(totalCost);
     sale.setPrice(price);
     sale.setCreatedAt(Instant.now());
@@ -118,8 +120,11 @@ public class RegisterSaleUseCaseImpl implements RegisterSaleUseCase {
         .reduce(BigDecimal.ZERO, BigDecimalUtils::add);
   }
 
-  private BigDecimal getSalePriceFromStock(List<StockItem> productStock) {
-    return productStock.get(0).getPurchaseOrderLine().getProduct().getSalePrice();
+  private BigDecimal getSalePriceFromStock(List<StockItem> productStock, Unit unit) {
+    var productId = productStock.get(0).getPurchaseOrderLine().getProduct().getId();
+    var productPrice =
+        productPriceRepository.findByProductIdAndUnitId(productId, unit.getId()).orElseThrow();
+    return productPrice.getSalePrice();
   }
 
   private Map<Integer, List<StockItem>> getStockItemsByProductId(List<Sale> items) {

@@ -34,9 +34,7 @@ public class Sale {
   }
 
   private void calculateTotal() {
-    var baseQuantity =
-        BigDecimalUtils.multiply(quantity, this.unit.getBaseConversion().getConversionFactor());
-    this.total = BigDecimalUtils.multiply(baseQuantity, price);
+    this.total = BigDecimalUtils.multiply(quantity, price);
   }
 
   public BigDecimal getBaseQuantity() {

@@ -8,5 +8,6 @@ import lombok.Getter;
 @Getter
 public class SetSalePriceToStockProductCommand {
   private int productId;
+  private int unitId;
   private BigDecimal salePrice;
 }

@@ -45,6 +45,10 @@ public class BigDecimalUtils {
     return setScale(new BigDecimal(value));
   }
 
+  public static BigDecimal valueOf(BigDecimal value) {
+    return setScale(value);
+  }
+
   public static int compare(BigDecimal a, BigDecimal b) {
     return setScale(a).compareTo(setScale(b));
   }

@@ -23,6 +23,7 @@ public class SetSalePriceToProductController {
     setSalePriceToProductUseCase.accept(
         SetSalePriceToStockProductCommand.builder()
             .productId(id)
+            .unitId(request.getUnitId())
             .salePrice(request.getSalePrice())
             .build());
     return ResponseEntity.accepted().build();

@@ -2,7 +2,6 @@ package com.mapiz.mystore.product.infrastructure.persistence;
 
 import com.mapiz.mystore.unit.infrastructure.persistence.entity.UnitEntity;
 import jakarta.persistence.*;
-import java.math.BigDecimal;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -33,7 +32,4 @@ public class ProductEntity {
   @Fetch(FetchMode.JOIN)
   @JoinColumn(name = "reference_unit", nullable = false)
   private UnitEntity referenceUnit;
-
-  @Column(name = "sale_price")
-  private BigDecimal salePrice;
 }

@@ -13,7 +13,6 @@ public class StockItemSummary {
   private Integer productId;
   private String productName;
   private BigDecimal quantity;
-  private BigDecimal salePrice;
   private BigDecimal weightedCost;
 
   public void sumQuantity(BigDecimal quantity) {

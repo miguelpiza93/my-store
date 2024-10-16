@@ -29,14 +29,12 @@ class GetStockProductsIntegrationTest extends BaseIntegrationTest {
                 .productId(EGG_ID)
                 .productName(EGG_NAME)
                 .quantity(UNITS_OF_EGGS_IN_STOCK)
-                .salePrice(BigDecimal.valueOf(500.0))
                 .weightedCost(BigDecimal.valueOf(400))
                 .build(),
             StockItemSummary.builder()
                 .productId(SAUSAGE_ID)
                 .productName(SAUSAGE_NAME)
                 .quantity(UNITS_OF_SAUSAGES_IN_STOCK)
-                .salePrice(BigDecimal.valueOf(3000.0))
                 .weightedCost(BigDecimal.valueOf(2500.0))
                 .build());
 

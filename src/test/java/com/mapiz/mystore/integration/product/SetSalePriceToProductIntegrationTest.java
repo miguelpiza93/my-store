@@ -1,5 +1,6 @@
 package com.mapiz.mystore.integration.product;
 
+import static com.mapiz.mystore.integration.Constants.*;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
@@ -9,7 +10,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import com.mapiz.mystore.integration.BaseIntegrationTest;
 import com.mapiz.mystore.product.application.dto.SetSalePriceToStockProductRequest;
 import com.mapiz.mystore.product.infrastructure.EndpointConstant;
-import com.mapiz.mystore.product.infrastructure.persistence.repository.JpaProductRepository;
+import com.mapiz.mystore.product.infrastructure.persistence.repository.JpaProductPriceRepository;
 import com.mapiz.mystore.shared.ApiError;
 import java.math.BigDecimal;
 import org.junit.jupiter.api.Test;
@@ -20,14 +21,15 @@ import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
 public class SetSalePriceToProductIntegrationTest extends BaseIntegrationTest {
 
-  @SpyBean private JpaProductRepository jpaProductRepository;
+  @SpyBean private JpaProductPriceRepository jpaProductPriceRepository;
 
   @Test
   void testSetSalePriceToStockItem() throws Exception {
     // Arrange
-    var productIdToSetSalePrice = 1;
+    var productIdToSetSalePrice = EGG_ID;
     BigDecimal newSalePrice = BigDecimal.valueOf(1000.0);
-    var request = SetSalePriceToStockProductRequest.builder().salePrice(newSalePrice).build();
+    var request =
+        SetSalePriceToStockProductRequest.builder().salePrice(newSalePrice).unitId(UNIT_ID).build();
     // Act
     mockMvc
         .perform(
@@ -38,9 +40,12 @@ public class SetSalePriceToProductIntegrationTest extends BaseIntegrationTest {
         .andExpect(status().isAccepted());
 
     // Assert
-    verify(jpaProductRepository, times(1)).save(any());
-    var product = jpaProductRepository.findById(productIdToSetSalePrice).orElseThrow();
-    assertEquals(newSalePrice, product.getSalePrice());
+    verify(jpaProductPriceRepository, times(1)).save(any());
+    var productPrice =
+        jpaProductPriceRepository
+            .findByProductIdAndUnitId(productIdToSetSalePrice, UNIT_ID)
+            .orElseThrow();
+    assertEquals(newSalePrice, productPrice.getSalePrice());
   }
 
   @Test
@@ -48,7 +53,8 @@ public class SetSalePriceToProductIntegrationTest extends BaseIntegrationTest {
     // Arrange
     var productIdToSetSalePrice = 0;
     BigDecimal newSalePrice = BigDecimal.valueOf(1000);
-    var request = SetSalePriceToStockProductRequest.builder().salePrice(newSalePrice).build();
+    var request =
+        SetSalePriceToStockProductRequest.builder().unitId(UNIT_ID).salePrice(newSalePrice).build();
 
     // Act
     var expectedApiError =
@@ -64,6 +70,6 @@ public class SetSalePriceToProductIntegrationTest extends BaseIntegrationTest {
         .andExpect(content().json(objectMapper.writeValueAsString(expectedApiError)));
 
     // Assert
-    verify(jpaProductRepository, never()).save(any());
+    verify(jpaProductPriceRepository, never()).save(any());
   }
 }

@@ -20,7 +20,6 @@ import com.mapiz.mystore.util.BigDecimalUtils;
 import java.io.UnsupportedEncodingException;
 import java.math.BigDecimal;
 import java.util.List;
-import org.assertj.core.api.SoftAssertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.mock.mockito.SpyBean;
 import org.springframework.http.HttpStatus;
@@ -64,7 +63,7 @@ class RegisterSaleIntegrationTest extends BaseIntegrationTest {
     var result = executePostRequest(request);
 
     assertSalePersistedWithExpectedValues(
-        result, EGG_ID, quantityOfCartons, CARTON_ID, "21000.0", "500.0", "30000.0");
+        result, EGG_ID, quantityOfCartons, CARTON_ID, "21000.0", "12000.0", "24000.0");
 
     var expectedRemainingQuantity =
         BigDecimalUtils.subtract(
@@ -138,23 +137,13 @@ class RegisterSaleIntegrationTest extends BaseIntegrationTest {
     var ids = getSavedIds(result);
     var sale = saleRepository.findById(ids.get(0)).orElseThrow();
 
-    SoftAssertions softly = new SoftAssertions();
-    softly.assertThat(sale.getUnit().getId()).isEqualTo(unitId);
-    softly.assertThat(sale.getProduct().getId()).isEqualTo(productId);
-    softly.assertThat(BigDecimalUtils.compare(sale.getQuantity(), quantity)).isEqualTo(0);
-    softly
-        .assertThat(BigDecimalUtils.compare(sale.getCost(), BigDecimalUtils.valueOf(expectedCost)))
-        .isEqualTo(0);
-    softly
-        .assertThat(
-            BigDecimalUtils.compare(sale.getPrice(), BigDecimalUtils.valueOf(expectedPrice)))
-        .isEqualTo(0);
-    softly
-        .assertThat(
-            BigDecimalUtils.compare(sale.getTotal(), BigDecimalUtils.valueOf(expectedTotal)))
-        .isEqualTo(0);
-    softly.assertThat(sale.getCreatedAt()).isNotNull();
-    softly.assertAll();
+    assertEquals(sale.getUnit().getId(), unitId);
+    assertEquals(sale.getProduct().getId(), productId);
+    assertEquals(sale.getQuantity(), quantity);
+    assertEquals(BigDecimalUtils.valueOf(sale.getCost()), BigDecimalUtils.valueOf(expectedCost));
+    assertEquals(BigDecimalUtils.valueOf(sale.getPrice()), BigDecimalUtils.valueOf(expectedPrice));
+    assertEquals(BigDecimalUtils.valueOf(sale.getTotal()), BigDecimalUtils.valueOf(expectedTotal));
+    assertNotNull(sale.getCreatedAt());
   }
 
   private void assertStockIsEmptyForProduct(int productId) {
