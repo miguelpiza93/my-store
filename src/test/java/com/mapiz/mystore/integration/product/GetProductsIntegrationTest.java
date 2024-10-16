@@ -35,7 +35,7 @@ class GetProductsIntegrationTest extends BaseIntegrationTest {
             ProductResponse.builder().id(1).name("Product 1").description("product one").build(),
             ProductResponse.builder().id(2).name("Product 2").description("product two").build());
     mockMvc
-        .perform(MockMvcRequestBuilders.get(EndpointConstant.PRODUCTS_BASE_PATH))
+        .perform(MockMvcRequestBuilders.get(EndpointConstant.BASE_PATH))
         .andExpect(status().isOk())
         .andExpect(content().contentType(MediaType.APPLICATION_JSON))
         .andExpect(content().json(objectMapper.writeValueAsString(expectedProducts)));
@@ -48,7 +48,7 @@ class GetProductsIntegrationTest extends BaseIntegrationTest {
 
     // Act & Assert
     mockMvc
-        .perform(MockMvcRequestBuilders.get(EndpointConstant.PRODUCTS_BASE_PATH))
+        .perform(MockMvcRequestBuilders.get(EndpointConstant.BASE_PATH))
         .andExpect(status().isOk())
         .andExpect(content().contentType(MediaType.APPLICATION_JSON))
         .andExpect(content().json("[]"));

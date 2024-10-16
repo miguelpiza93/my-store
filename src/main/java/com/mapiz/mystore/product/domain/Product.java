@@ -2,6 +2,8 @@ package com.mapiz.mystore.product.domain;
 
 import com.mapiz.mystore.unit.domain.Conversion;
 import com.mapiz.mystore.unit.domain.Unit;
+import java.math.BigDecimal;
+import java.util.List;
 import java.util.Optional;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -15,6 +17,7 @@ public class Product {
   private String name;
   private String description;
   private Unit referenceUnit;
+  private List<ProductPrice> prices;
 
   public Optional<Unit> getDerivedUnit(int unitId) {
     if (referenceUnit.getId() == unitId) {
@@ -25,5 +28,24 @@ public class Product {
         .filter(conversion -> conversion.getToUnit().getId() == unitId)
         .map(Conversion::getToUnit)
         .findFirst();
+  }
+
+  public List<ProductPrice> getPrices() {
+    if (prices.isEmpty()) {
+      initPrices();
+    }
+
+    return prices;
+  }
+
+  private void initPrices() {
+    this.referenceUnit
+        .getUnitConversions()
+        .forEach(conversion -> addPriceForUnit(conversion.getToUnit()));
+    addPriceForUnit(this.referenceUnit);
+  }
+
+  private void addPriceForUnit(Unit unit) {
+    prices.add(ProductPrice.builder().unit(unit).product(this).salePrice(BigDecimal.ZERO).build());
   }
 }

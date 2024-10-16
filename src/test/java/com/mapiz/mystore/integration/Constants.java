@@ -8,7 +8,11 @@ import lombok.experimental.UtilityClass;
 public class Constants {
   // UNIT CONSTANTS
   public static final int CARTON_ID = 1;
+  public static final String CARTON_NAME = "Carton";
   public static final int UNIT_ID = 2;
+  public static final String UNIT_NAME = "Unit";
+  public static final int MILK_PACK_ID = 7;
+  public static final String MILK_PACK_NAME = "Milk Pack";
 
   // CONVERSION CONSTANTS
   public static final BigDecimal UNITS_PER_CARTON = BigDecimalUtils.valueOf(30);
@@ -20,7 +24,10 @@ public class Constants {
   // PRODUCT CONSTANTS
   public static final int EGG_ID = 1;
   public static final String EGG_NAME = "Huevos";
+  public static final String EGG_DESCRIPTION = "AA";
   public static final int MILK_ID = 2;
+  public static final String MILK_NAME = "Leche";
+  public static final String MILK_DESCRIPTION = "Entera";
   public static final int SAUSAGE_ID = 3;
   public static final String SAUSAGE_NAME = "Salchicha";
   public static final int NEXT_AVAILABLE_ID = 4;

@@ -1,6 +1,6 @@
 INSERT INTO products(name, description, reference_unit)
 values
-('Huevos', 'Huevos AA', 1),
+('Huevos', 'AA', 1),
 ('Leche', 'Entera', 7),
 ('Salchicha', 'x6', 2)
 ;

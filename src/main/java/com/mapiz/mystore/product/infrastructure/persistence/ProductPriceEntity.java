@@ -37,4 +37,18 @@ public class ProductPriceEntity {
 
   @Column(name = "sale_price")
   private BigDecimal salePrice;
+
+  @Override
+  public String toString() {
+    return "ProductPriceEntity{"
+        + "id="
+        + id
+        + ", product="
+        + product.getId()
+        + ", unit="
+        + unit
+        + ", salePrice="
+        + salePrice
+        + '}';
+  }
 }

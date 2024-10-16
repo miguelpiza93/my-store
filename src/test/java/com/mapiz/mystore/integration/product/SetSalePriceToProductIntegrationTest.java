@@ -33,8 +33,7 @@ public class SetSalePriceToProductIntegrationTest extends BaseIntegrationTest {
     // Act
     mockMvc
         .perform(
-            MockMvcRequestBuilders.patch(
-                    EndpointConstant.PRODUCTS_BASE_PATH + "/" + productIdToSetSalePrice)
+            MockMvcRequestBuilders.patch(EndpointConstant.BASE_PATH + "/" + productIdToSetSalePrice)
                 .content(objectMapper.writeValueAsString(request))
                 .contentType(MediaType.APPLICATION_JSON))
         .andExpect(status().isAccepted());
@@ -62,8 +61,7 @@ public class SetSalePriceToProductIntegrationTest extends BaseIntegrationTest {
             "resource_not_found", "Product with id 0 not found", HttpStatus.NOT_FOUND.value());
     mockMvc
         .perform(
-            MockMvcRequestBuilders.patch(
-                    EndpointConstant.PRODUCTS_BASE_PATH + "/" + productIdToSetSalePrice)
+            MockMvcRequestBuilders.patch(EndpointConstant.BASE_PATH + "/" + productIdToSetSalePrice)
                 .content(objectMapper.writeValueAsString(request))
                 .contentType(MediaType.APPLICATION_JSON))
         .andExpect(status().isNotFound())

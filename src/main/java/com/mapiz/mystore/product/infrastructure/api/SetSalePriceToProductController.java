@@ -1,6 +1,6 @@
 package com.mapiz.mystore.product.infrastructure.api;
 
-import static com.mapiz.mystore.product.infrastructure.EndpointConstant.PRODUCTS_BASE_PATH;
+import static com.mapiz.mystore.product.infrastructure.EndpointConstant.BASE_PATH;
 
 import com.mapiz.mystore.product.application.dto.SetSalePriceToStockProductRequest;
 import com.mapiz.mystore.product.application.usecase.SetSalePriceToProductUseCase;
@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.*;
 
 @RequiredArgsConstructor
 @RestController
-@RequestMapping(PRODUCTS_BASE_PATH)
+@RequestMapping(BASE_PATH)
 public class SetSalePriceToProductController {
 
   private final SetSalePriceToProductUseCase setSalePriceToProductUseCase;

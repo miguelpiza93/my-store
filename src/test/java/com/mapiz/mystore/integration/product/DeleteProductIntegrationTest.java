@@ -30,8 +30,7 @@ class DeleteProductIntegrationTest extends BaseIntegrationTest {
 
     // Act & Assert
     mockMvc
-        .perform(
-            MockMvcRequestBuilders.delete(EndpointConstant.PRODUCTS_BASE_PATH + "/" + idToDelete))
+        .perform(MockMvcRequestBuilders.delete(EndpointConstant.BASE_PATH + "/" + idToDelete))
         .andExpect(status().isNoContent());
 
     // verify repository deleteById call
@@ -49,8 +48,7 @@ class DeleteProductIntegrationTest extends BaseIntegrationTest {
 
     // Act & Assert
     mockMvc
-        .perform(
-            MockMvcRequestBuilders.delete(EndpointConstant.PRODUCTS_BASE_PATH + "/" + idToDelete))
+        .perform(MockMvcRequestBuilders.delete(EndpointConstant.BASE_PATH + "/" + idToDelete))
         .andExpect(status().isNotFound())
         .andExpect(content().contentType(MediaType.APPLICATION_JSON))
         .andExpect(content().json(objectMapper.writeValueAsString(expectedApiError)));

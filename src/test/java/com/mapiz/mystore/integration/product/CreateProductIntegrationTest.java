@@ -43,7 +43,7 @@ class CreateProductIntegrationTest extends BaseIntegrationTest {
             .build();
     mockMvc
         .perform(
-            MockMvcRequestBuilders.post(EndpointConstant.PRODUCTS_BASE_PATH)
+            MockMvcRequestBuilders.post(EndpointConstant.BASE_PATH)
                 .content(objectMapper.writeValueAsString(request))
                 .contentType(MediaType.APPLICATION_JSON))
         .andExpect(status().isCreated())
@@ -68,7 +68,7 @@ class CreateProductIntegrationTest extends BaseIntegrationTest {
     // Act & Assert
     mockMvc
         .perform(
-            MockMvcRequestBuilders.post(EndpointConstant.PRODUCTS_BASE_PATH)
+            MockMvcRequestBuilders.post(EndpointConstant.BASE_PATH)
                 .content(objectMapper.writeValueAsString(request))
                 .contentType(MediaType.APPLICATION_JSON))
         .andExpect(status().isBadRequest())
@@ -96,7 +96,7 @@ class CreateProductIntegrationTest extends BaseIntegrationTest {
     // Act & Assert
     mockMvc
         .perform(
-            MockMvcRequestBuilders.post(EndpointConstant.PRODUCTS_BASE_PATH)
+            MockMvcRequestBuilders.post(EndpointConstant.BASE_PATH)
                 .content(objectMapper.writeValueAsString(request))
                 .contentType(MediaType.APPLICATION_JSON))
         .andExpect(status().isBadRequest())
@@ -120,7 +120,7 @@ class CreateProductIntegrationTest extends BaseIntegrationTest {
     // Act & Assert
     mockMvc
         .perform(
-            MockMvcRequestBuilders.post(EndpointConstant.PRODUCTS_BASE_PATH)
+            MockMvcRequestBuilders.post(EndpointConstant.BASE_PATH)
                 .content(objectMapper.writeValueAsString(request))
                 .contentType(MediaType.APPLICATION_JSON))
         .andExpect(status().isBadRequest())
