@@ -6,7 +6,6 @@ import com.mapiz.mystore.product.infrastructure.persistence.ProductPriceEntity;
 import com.mapiz.mystore.product.infrastructure.persistence.mapper.ProductPriceMapper;
 import com.mapiz.mystore.product.infrastructure.persistence.repository.JpaProductPriceRepository;
 import com.mapiz.mystore.shared.CycleAvoidingMappingContext;
-import java.util.List;
 import java.util.Optional;
 import java.util.function.Function;
 import lombok.RequiredArgsConstructor;
@@ -28,11 +27,6 @@ public class ProductPriceRepositoryImpl implements ProductPriceRepository {
   @Override
   public Optional<ProductPrice> findByProductIdAndUnitId(Integer productId, Integer unitId) {
     return jpaProductPriceRepository.findByProductIdAndUnitId(productId, unitId).map(getMapper());
-  }
-
-  @Override
-  public List<ProductPrice> findByProductId(Integer productId) {
-    return jpaProductPriceRepository.findByProductId(productId).stream().map(getMapper()).toList();
   }
 
   private static Function<ProductPriceEntity, ProductPrice> getMapper() {

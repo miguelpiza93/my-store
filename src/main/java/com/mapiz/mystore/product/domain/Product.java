@@ -2,6 +2,7 @@ package com.mapiz.mystore.product.domain;
 
 import com.mapiz.mystore.unit.domain.Conversion;
 import com.mapiz.mystore.unit.domain.Unit;
+import com.mapiz.mystore.util.BigDecimalUtils;
 import java.math.BigDecimal;
 import java.util.List;
 import java.util.Optional;
@@ -49,6 +50,9 @@ public class Product {
       return;
     }
     this.prices.add(
-        ProductPrice.builder().unit(unit).product(this).salePrice(BigDecimal.ZERO).build());
+        ProductPrice.builder()
+            .unit(unit)
+            .salePrice(BigDecimalUtils.valueOf(BigDecimal.ZERO))
+            .build());
   }
 }

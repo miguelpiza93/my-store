@@ -29,7 +29,9 @@ class GetProductIntegrationTest extends BaseIntegrationTest {
                 List.of(
                     new ProductPriceDetail(UNIT_ID, UNIT_NAME, BigDecimalUtils.valueOf("500.0")),
                     new ProductPriceDetail(
-                        CARTON_ID, CARTON_NAME, BigDecimalUtils.valueOf("12000.0"))))
+                        CARTON_ID, CARTON_NAME, BigDecimalUtils.valueOf("12000.0")),
+                    new ProductPriceDetail(
+                        HALF_CARTON_ID, HALF_CARTON_NAME, BigDecimalUtils.valueOf("0.0"))))
             .build();
     // Act & Assert
     mockMvc

@@ -11,6 +11,8 @@ public class Constants {
   public static final String CARTON_NAME = "Carton";
   public static final int UNIT_ID = 2;
   public static final String UNIT_NAME = "Unit";
+  public static final int HALF_CARTON_ID = 3;
+  public static final String HALF_CARTON_NAME = "Half Carton";
   public static final int MILK_PACK_ID = 7;
   public static final String MILK_PACK_NAME = "Milk Pack";
 

@@ -14,4 +14,9 @@ public class ProductPrice {
   private Product product;
   private Unit unit;
   private BigDecimal salePrice;
+
+  @Override
+  public String toString() {
+    return "ProductPrice{" + ", unit=" + unit + ", salePrice=" + salePrice + '}';
+  }
 }

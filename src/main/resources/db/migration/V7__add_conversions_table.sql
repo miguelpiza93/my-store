@@ -16,6 +16,7 @@ CREATE TABLE IF NOT EXISTS conversions (
 INSERT INTO conversions (from_unit_id, to_unit_id, conversion_factor)
 VALUES
 (1, 2, 30.00),      -- 1 carton = 30 units
+(1, 3, 2.00),       -- 1 carton = 2 half cartons
 (3, 2, 15.00),      -- 1 half carton = 15 units
 (7, 2, 6.00),       -- 1 milk pack = 6 units
 (5, 4, 1000.00),    -- 1 kilogram = 1000 grams
