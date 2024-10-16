@@ -3,7 +3,6 @@ package com.mapiz.mystore.product.domain;
 import com.mapiz.mystore.unit.domain.Conversion;
 import com.mapiz.mystore.unit.domain.Unit;
 import java.math.BigDecimal;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import lombok.AllArgsConstructor;
@@ -32,24 +31,23 @@ public class Product {
   }
 
   public List<ProductPrice> getPrices() {
-    if (prices == null || prices.isEmpty()) {
-      initPrices();
-    }
-
+    initPrices();
     return prices;
   }
 
   private void initPrices() {
-    this.prices = new ArrayList<>();
-
     this.referenceUnit
         .getUnitConversions()
         .forEach(conversion -> addPriceForUnit(conversion.getToUnit()));
-
     addPriceForUnit(this.referenceUnit);
   }
 
   private void addPriceForUnit(Unit unit) {
+    var isConfigured =
+        this.prices.stream().anyMatch(price -> price.getUnit().getId().equals(unit.getId()));
+    if (isConfigured) {
+      return;
+    }
     this.prices.add(
         ProductPrice.builder().unit(unit).product(this).salePrice(BigDecimal.ZERO).build());
   }
