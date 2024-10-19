@@ -88,24 +88,31 @@ class ReceivePurchaseOrderIntegrationTest extends BaseIntegrationTest {
     assertEquals(PurchaseOrderStatus.RECEIVED.name(), savedOrder.getStatus());
 
     var productsId =
-        savedOrder.getPurchaseOrderLines().stream().map(line -> line.getProduct().getId()).toList();
+        savedOrder.getPurchaseOrderLines().stream()
+            .map(line -> line.getVendorProduct().getProduct().getId())
+            .toList();
 
     Map<Integer, BigDecimal> quantitiesByProductId =
         stockItemRepository.findAll().stream()
-            .filter(item -> productsId.contains(item.getPurchaseOrderLine().getProduct().getId()))
+            .filter(
+                item ->
+                    productsId.contains(
+                        item.getPurchaseOrderLine().getVendorProduct().getProduct().getId()))
             .collect(
                 Collectors.toMap(
-                    item -> item.getPurchaseOrderLine().getProduct().getId(),
+                    item -> item.getPurchaseOrderLine().getVendorProduct().getProduct().getId(),
                     StockItemEntity::getQuantity,
                     BigDecimalUtils::add));
 
     // 2. Verificar que los items de stock se han guardado correctamente
     for (PurchaseOrderLineEntity line : savedOrder.getPurchaseOrderLines()) {
       var expectedQuantity =
-          expectedQuantitiesByProductId.getOrDefault(line.getProduct().getId(), BigDecimal.ZERO);
+          expectedQuantitiesByProductId.getOrDefault(
+              line.getVendorProduct().getProduct().getId(), BigDecimal.ZERO);
       assertEquals(
           expectedQuantity,
-          quantitiesByProductId.getOrDefault(line.getProduct().getId(), BigDecimal.ZERO));
+          quantitiesByProductId.getOrDefault(
+              line.getVendorProduct().getProduct().getId(), BigDecimal.ZERO));
     }
 
     verify(purchaseOrderRepository, times(1)).save(any(PurchaseOrderEntity.class));

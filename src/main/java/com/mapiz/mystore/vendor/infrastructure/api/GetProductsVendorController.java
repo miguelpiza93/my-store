@@ -2,7 +2,7 @@ package com.mapiz.mystore.vendor.infrastructure.api;
 
 import static com.mapiz.mystore.vendor.infrastructure.EndpointConstant.VENDORS_BASE_PATH;
 
-import com.mapiz.mystore.vendor.application.dto.ProductVendorResponse;
+import com.mapiz.mystore.vendor.application.dto.VendorVendorResponse;
 import com.mapiz.mystore.vendor.application.usecase.GetProductsVendorUseCase;
 import com.mapiz.mystore.vendor.infrastructure.persistence.mapper.ProductVendorMapper;
 import java.util.List;
@@ -18,7 +18,7 @@ public class GetProductsVendorController {
   private final GetProductsVendorUseCase getProductsVendorUseCase;
 
   @GetMapping("/{id}/products")
-  public @ResponseBody ResponseEntity<List<ProductVendorResponse>> getProductsVendor(
+  public @ResponseBody ResponseEntity<List<VendorVendorResponse>> getProductsVendor(
       @PathVariable Integer id) {
     var result = getProductsVendorUseCase.apply(id);
     var response =

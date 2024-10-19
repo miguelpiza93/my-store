@@ -1,15 +1,15 @@
 package com.mapiz.mystore.vendor.domain.repository;
 
-import com.mapiz.mystore.vendor.domain.ProductVendor;
+import com.mapiz.mystore.vendor.domain.VendorProduct;
 import java.util.List;
 
 public interface ProductVendorRepository {
 
-  List<ProductVendor> findBySupplierId(Integer vendorId);
+  List<VendorProduct> findBySupplierId(Integer vendorId);
 
-  List<ProductVendor> findBySupplierIdAndProductIdIn(Integer supplierId, List<Integer> productIds);
+  List<VendorProduct> findBySupplierIdAndProductIdIn(Integer supplierId, List<Integer> productIds);
 
-  void deleteAll(List<ProductVendor> bySupplierId);
+  void deleteAll(List<VendorProduct> bySupplierId);
 
-  List<ProductVendor> saveAll(List<ProductVendor> list);
+  List<VendorProduct> saveAll(List<VendorProduct> list);
 }

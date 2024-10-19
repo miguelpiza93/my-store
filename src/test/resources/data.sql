@@ -26,24 +26,24 @@ values
 (3, 3, 2500)
 ;
 
-INSERT INTO purchase_orders(status, created_at, estimated_delivery_date, vendor_id)
+INSERT INTO purchase_orders(status, created_at, estimated_delivery_date, vendor_id, total)
 values
-('RECEIVED', NOW(), DATEADD('DAY', 2, NOW()), 1),
-('RECEIVED', NOW(), DATEADD('DAY', 2, NOW()), 1),
-('RECEIVED', NOW(), DATEADD('DAY', 2, NOW()), 1),
-('PENDING', NOW(), DATEADD('DAY', 2, NOW()), 1),
-('PENDING', NOW(), DATEADD('DAY', 2, NOW()), 2),
-('RECEIVED', NOW(), DATEADD('DAY', 2, NOW()), 3)
+('RECEIVED', NOW(), DATEADD('DAY', 2, NOW()), 1, 9000),
+('RECEIVED', NOW(), DATEADD('DAY', 2, NOW()), 1, 46000),
+('RECEIVED', NOW(), DATEADD('DAY', 2, NOW()), 1, 90000),
+('PENDING', NOW(), DATEADD('DAY', 2, NOW()), 1, 0),
+('PENDING', NOW(), DATEADD('DAY', 2, NOW()), 2, 0),
+('RECEIVED', NOW(), DATEADD('DAY', 2, NOW()), 3, 12500)
 ;
 
-INSERT INTO purchase_order_lines(quantity, unit_price, product_id, purchase_order_id, created_at)
+INSERT INTO purchase_order_lines(purchase_order_id, quantity, unit_price, total, vendor_product_id, created_at)
 values
-(1, 9000, 1, 1, DATEADD('DAY', -4, NOW())),
-(1, 12000, 1, 2, DATEADD('DAY', -3, NOW())),
-(2, 15000, 1, 3, DATEADD('DAY', -2, NOW())),
-(4, 8500, 1, 2, DATEADD('DAY', -1, NOW())),
-(2, 30000, 2, 3, DATEADD('DAY', -1, NOW())),
-(5, 2500, 3, 6, DATEADD('DAY', -1, NOW()))
+(1, 1, 9000, 9000, 1, DATEADD('DAY', -4, NOW())), -- Huevos Kikes ((9000*1) + (12000*1) + (8500*4) + (15000*2))/8
+(2, 1, 12000, 12000, 1, DATEADD('DAY', -3, NOW())), -- Huevos Kikes
+(2, 4, 8500, 34000, 1, DATEADD('DAY', -1, NOW())), -- Huevos Kikes
+(3, 2, 15000, 30000, 1, DATEADD('DAY', -2, NOW())), -- Huevos Kikes
+(3, 2, 30000, 60000, 2, DATEADD('DAY', -1, NOW())), -- Leche Alqueria
+(6, 5, 2500, 12500, 3, DATEADD('DAY', -1, NOW())) -- Salchicha Zenu
 ;
 
 INSERT INTO stock_items(purchase_order_line_id, quantity)

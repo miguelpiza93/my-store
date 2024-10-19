@@ -1,6 +1,6 @@
 package com.mapiz.mystore.purchaseorder.application.dto;
 
-import com.mapiz.mystore.product.application.dto.ProductResponse;
+import com.mapiz.mystore.vendor.application.dto.VendorVendorResponse;
 import java.math.BigDecimal;
 import java.time.Instant;
 import lombok.AllArgsConstructor;
@@ -14,7 +14,7 @@ import lombok.NoArgsConstructor;
 @Builder
 public class PurchaseOrderLineResponse {
   private Integer id;
-  private ProductResponse product;
+  private VendorVendorResponse vendorProduct;
   private BigDecimal quantity;
   private BigDecimal unitPrice;
   private Instant createdAt;

@@ -1,7 +1,7 @@
 package com.mapiz.mystore.vendor.infrastructure.persistence.repository.impl;
 
 import com.mapiz.mystore.shared.CycleAvoidingMappingContext;
-import com.mapiz.mystore.vendor.domain.ProductVendor;
+import com.mapiz.mystore.vendor.domain.VendorProduct;
 import com.mapiz.mystore.vendor.domain.repository.ProductVendorRepository;
 import com.mapiz.mystore.vendor.infrastructure.persistence.entity.VendorProductEntity;
 import com.mapiz.mystore.vendor.infrastructure.persistence.mapper.ProductVendorMapper;
@@ -18,12 +18,12 @@ public class ProductVendorRepositoryImpl implements ProductVendorRepository {
   private final JpaProductVendorRepository jpaRepository;
 
   @Override
-  public List<ProductVendor> findBySupplierId(Integer vendorId) {
+  public List<VendorProduct> findBySupplierId(Integer vendorId) {
     return jpaRepository.findByVendorId(vendorId).stream().map(getMapper()).toList();
   }
 
   @Override
-  public List<ProductVendor> findBySupplierIdAndProductIdIn(
+  public List<VendorProduct> findBySupplierIdAndProductIdIn(
       Integer supplierId, List<Integer> productIds) {
     return jpaRepository.findByVendorIdAndProductIdIn(supplierId, productIds).stream()
         .map(getMapper())
@@ -31,17 +31,17 @@ public class ProductVendorRepositoryImpl implements ProductVendorRepository {
   }
 
   @Override
-  public void deleteAll(List<ProductVendor> bySupplierId) {
-    jpaRepository.deleteAllById(bySupplierId.stream().map(ProductVendor::getId).toList());
+  public void deleteAll(List<VendorProduct> bySupplierId) {
+    jpaRepository.deleteAllById(bySupplierId.stream().map(VendorProduct::getId).toList());
   }
 
   @Override
-  public List<ProductVendor> saveAll(List<ProductVendor> list) {
+  public List<VendorProduct> saveAll(List<VendorProduct> list) {
     var toSave = list.stream().map(ProductVendorMapper.INSTANCE::modelToEntity).toList();
     return jpaRepository.saveAll(toSave).stream().map(getMapper()).toList();
   }
 
-  private Function<VendorProductEntity, ProductVendor> getMapper() {
+  private Function<VendorProductEntity, VendorProduct> getMapper() {
     return productVendor ->
         ProductVendorMapper.INSTANCE.entityToModel(
             productVendor, new CycleAvoidingMappingContext());

@@ -22,7 +22,12 @@ public class StockItem {
   }
 
   public void incrementQuantity(PurchaseOrderLine purchaseOrderLine) {
-    var baseConversion = this.purchaseOrderLine.getProduct().getReferenceUnit().getBaseConversion();
+    var baseConversion =
+        this.purchaseOrderLine
+            .getVendorProduct()
+            .getProduct()
+            .getReferenceUnit()
+            .getBaseConversion();
     var baseQuantity =
         BigDecimalUtils.multiply(
             this.purchaseOrderLine.getQuantity(), baseConversion.getConversionFactor());

@@ -121,7 +121,8 @@ public class RegisterSaleUseCaseImpl implements RegisterSaleUseCase {
   }
 
   private BigDecimal getSalePriceFromStock(List<StockItem> productStock, Unit unit) {
-    var productId = productStock.get(0).getPurchaseOrderLine().getProduct().getId();
+    var productId =
+        productStock.get(0).getPurchaseOrderLine().getVendorProduct().getProduct().getId();
     var productPrice =
         productPriceRepository.findByProductIdAndUnitId(productId, unit.getId()).orElseThrow();
     return productPrice.getSalePrice();
@@ -130,6 +131,8 @@ public class RegisterSaleUseCaseImpl implements RegisterSaleUseCase {
   private Map<Integer, List<StockItem>> getStockItemsByProductId(List<Sale> items) {
     var productIds = items.stream().map(item -> item.getProduct().getId()).toList();
     return stockItemRepository.findByProductIds(productIds).stream()
-        .collect(Collectors.groupingBy(item -> item.getPurchaseOrderLine().getProduct().getId()));
+        .collect(
+            Collectors.groupingBy(
+                item -> item.getPurchaseOrderLine().getVendorProduct().getProduct().getId()));
   }
 }

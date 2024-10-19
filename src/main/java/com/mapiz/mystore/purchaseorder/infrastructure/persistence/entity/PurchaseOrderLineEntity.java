@@ -1,6 +1,6 @@
 package com.mapiz.mystore.purchaseorder.infrastructure.persistence.entity;
 
-import com.mapiz.mystore.product.infrastructure.persistence.ProductEntity;
+import com.mapiz.mystore.vendor.infrastructure.persistence.entity.VendorProductEntity;
 import jakarta.persistence.*;
 import java.math.BigDecimal;
 import java.time.Instant;
@@ -29,9 +29,11 @@ public class PurchaseOrderLineEntity {
   @Column(name = "unit_price")
   private double unitPrice;
 
+  private BigDecimal total;
+
   @ManyToOne(fetch = FetchType.EAGER)
-  @JoinColumn(name = "product_id", nullable = false)
-  private ProductEntity product;
+  @JoinColumn(name = "vendor_product_id", nullable = false)
+  private VendorProductEntity vendorProduct;
 
   @ManyToOne(fetch = FetchType.LAZY)
   @JoinColumn(name = "purchase_order_id", nullable = false)
@@ -49,8 +51,8 @@ public class PurchaseOrderLineEntity {
         + quantity
         + ", unitPrice="
         + unitPrice
-        + ", product="
-        + product
+        + ", vendorProduct="
+        + vendorProduct
         + '}';
   }
 }

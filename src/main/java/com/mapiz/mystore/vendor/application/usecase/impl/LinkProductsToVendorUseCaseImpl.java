@@ -5,8 +5,8 @@ import com.mapiz.mystore.product.domain.repository.ProductRepository;
 import com.mapiz.mystore.vendor.application.command.LinkProductsToVendorCommand;
 import com.mapiz.mystore.vendor.application.exception.VendorNotFoundException;
 import com.mapiz.mystore.vendor.application.usecase.LinkProductsToVendorUseCase;
-import com.mapiz.mystore.vendor.domain.ProductVendor;
 import com.mapiz.mystore.vendor.domain.Vendor;
+import com.mapiz.mystore.vendor.domain.VendorProduct;
 import com.mapiz.mystore.vendor.domain.repository.ProductVendorRepository;
 import com.mapiz.mystore.vendor.domain.repository.VendorRepository;
 import java.math.BigDecimal;
@@ -24,7 +24,7 @@ public class LinkProductsToVendorUseCaseImpl implements LinkProductsToVendorUseC
   private final ProductVendorRepository productVendorRepository;
 
   @Override
-  public List<ProductVendor> apply(LinkProductsToVendorCommand command) {
+  public List<VendorProduct> apply(LinkProductsToVendorCommand command) {
     final var vendorId = command.getVendorId();
     var vendor =
         vendorRepository
@@ -34,17 +34,17 @@ public class LinkProductsToVendorUseCaseImpl implements LinkProductsToVendorUseC
     List<Product> products = productRepository.findAllById(command.getProducts().keySet());
     removeExistingProductsForVendor(vendorId);
 
-    List<ProductVendor> supplierProducts =
+    List<VendorProduct> supplierProducts =
         buildSupplierProducts(vendor, products, command.getProducts());
     return productVendorRepository.saveAll(supplierProducts);
   }
 
-  private List<ProductVendor> buildSupplierProducts(
+  private List<VendorProduct> buildSupplierProducts(
       Vendor vendor, List<Product> products, Map<Integer, BigDecimal> prices) {
     return products.stream()
         .map(
             product ->
-                ProductVendor.builder()
+                VendorProduct.builder()
                     .product(product)
                     .vendor(vendor)
                     .price(prices.get(product.getId()))

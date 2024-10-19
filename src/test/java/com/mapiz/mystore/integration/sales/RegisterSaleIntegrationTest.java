@@ -149,7 +149,8 @@ class RegisterSaleIntegrationTest extends BaseIntegrationTest {
   private void assertStockIsEmptyForProduct(int productId) {
     var availableStock =
         stockItemRepository.findAllAvailable().stream()
-            .filter(s -> s.getPurchaseOrderLine().getProduct().getId() == productId)
+            .filter(
+                s -> s.getPurchaseOrderLine().getVendorProduct().getProduct().getId() == productId)
             .toList();
     assertTrue(availableStock.isEmpty());
   }
@@ -157,7 +158,8 @@ class RegisterSaleIntegrationTest extends BaseIntegrationTest {
   private void assertRemainingStockForProduct(int productId, BigDecimal expectedRemainingQuantity) {
     var availableStock =
         stockItemRepository.findAllAvailable().stream()
-            .filter(s -> s.getPurchaseOrderLine().getProduct().getId() == productId)
+            .filter(
+                s -> s.getPurchaseOrderLine().getVendorProduct().getProduct().getId() == productId)
             .toList();
     var sumQuantity =
         availableStock.stream()

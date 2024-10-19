@@ -22,7 +22,7 @@ public class GetProductsInStockUseCaseImpl implements GetStockSummaryUseCase {
     return stockItemRepository.findAllAvailable().stream()
         .collect(
             Collectors.toMap(
-                item -> item.getPurchaseOrderLine().getProduct().getId(),
+                item -> item.getPurchaseOrderLine().getVendorProduct().getProduct().getId(),
                 this::createStockItemSummary,
                 this::mergeStockItemSummaries))
         .values();
@@ -30,8 +30,8 @@ public class GetProductsInStockUseCaseImpl implements GetStockSummaryUseCase {
 
   private StockItemSummary createStockItemSummary(StockItem item) {
     return StockItemSummary.builder()
-        .productId(item.getPurchaseOrderLine().getProduct().getId())
-        .productName(item.getPurchaseOrderLine().getProduct().getName())
+        .productId(item.getPurchaseOrderLine().getVendorProduct().getProduct().getId())
+        .productName(item.getPurchaseOrderLine().getVendorProduct().getProduct().getName())
         .quantity(item.getQuantity())
         .weightedCost(item.getPurchaseOrderLine().getCostPerBaseUnit())
         .build();

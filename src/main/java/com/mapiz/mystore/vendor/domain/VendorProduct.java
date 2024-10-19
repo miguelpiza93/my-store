@@ -9,7 +9,7 @@ import lombok.Data;
 @Builder
 @AllArgsConstructor
 @Data
-public class ProductVendor {
+public class VendorProduct {
   private Integer id;
   private Vendor vendor;
   private Product product;

@@ -2,6 +2,7 @@ package com.mapiz.mystore.purchaseorder.infrastructure.persistence.entity;
 
 import com.mapiz.mystore.vendor.infrastructure.persistence.entity.VendorEntity;
 import jakarta.persistence.*;
+import java.math.BigDecimal;
 import java.time.Instant;
 import java.time.LocalDate;
 import java.util.List;
@@ -35,6 +36,8 @@ public class PurchaseOrderEntity {
 
   @Column(name = "estimated_delivery_date")
   private LocalDate estimatedDeliveryDate;
+
+  private BigDecimal total;
 
   @ManyToOne
   @Fetch(FetchMode.JOIN)

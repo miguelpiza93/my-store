@@ -9,8 +9,8 @@ import com.mapiz.mystore.purchaseorder.domain.PurchaseOrderStatus;
 import com.mapiz.mystore.purchaseorder.domain.repository.PurchaseOrderLineRepository;
 import com.mapiz.mystore.purchaseorder.domain.repository.PurchaseOrderRepository;
 import com.mapiz.mystore.vendor.application.exception.VendorNotFoundException;
-import com.mapiz.mystore.vendor.domain.ProductVendor;
 import com.mapiz.mystore.vendor.domain.Vendor;
+import com.mapiz.mystore.vendor.domain.VendorProduct;
 import com.mapiz.mystore.vendor.domain.repository.ProductVendorRepository;
 import com.mapiz.mystore.vendor.domain.repository.VendorRepository;
 import java.time.Instant;
@@ -67,7 +67,7 @@ public class CreatePurchaseOrderUseCaseImpl implements CreatePurchaseOrderUseCas
 
   private List<PurchaseOrderLine> buildPurchaseOrderLines(
       CreatePurchaseOrderCommand command,
-      List<ProductVendor> productsVendorToOrder,
+      List<VendorProduct> productsVendorToOrder,
       PurchaseOrder purchaseOrder) {
     return command.getPurchaseOrderLines().stream()
         .map(
@@ -78,13 +78,14 @@ public class CreatePurchaseOrderUseCaseImpl implements CreatePurchaseOrderUseCas
 
   private PurchaseOrderLine buildPurchaseOrderLine(
       PurchaseOrderLineRequest lineRequest,
-      List<ProductVendor> productsVendorToOrder,
+      List<VendorProduct> vendorProductsToOrder,
       PurchaseOrder purchaseOrder) {
     return PurchaseOrderLine.builder()
-        .product(
-            productsVendorToOrder.stream()
-                .map(ProductVendor::getProduct)
-                .filter(product -> product.getId().equals(lineRequest.getProductId()))
+        .vendorProduct(
+            vendorProductsToOrder.stream()
+                .filter(
+                    vendorProduct ->
+                        vendorProduct.getProduct().getId().equals(lineRequest.getProductId()))
                 .findFirst()
                 .orElseThrow())
         .unitPrice(lineRequest.getUnitPrice())
