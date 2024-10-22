@@ -19,18 +19,12 @@ public class GetProductsInStockUseCaseImpl implements GetStockSummaryUseCase {
     var result = new ConcurrentHashMap<Integer, StockItemSummary>();
     var stockAvailable = stockItemRepository.findAllAvailable();
 
-    for (var stock : stockAvailable) {
-      var product = stock.getPurchaseOrderLine().getVendorProduct().getProduct();
-      Integer productId = product.getId();
-      StockItemSummary summary;
-      if (!result.containsKey(productId)) {
-        summary = new StockItemSummary(stock);
-      } else {
-        summary = result.get(productId);
-        summary.addStock(stock);
-      }
-      result.put(productId, summary);
-    }
+    stockAvailable.forEach(
+        stock -> {
+          var product = stock.getPurchaseOrderLine().getVendorProduct().getProduct();
+          Integer productId = product.getId();
+          result.computeIfAbsent(productId, id -> new StockItemSummary(product)).addStock(stock);
+        });
 
     return result.values();
   }

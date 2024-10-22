@@ -12,12 +12,10 @@ import lombok.Data;
 public class StockItemSummary {
 
   private Product product;
-  private List<StockItem> items;
+  private List<StockItem> items = new ArrayList<>();
 
-  public StockItemSummary(StockItem stock) {
-    this.items = new ArrayList<>();
-    this.items.add(stock);
-    this.product = stock.getPurchaseOrderLine().getVendorProduct().getProduct();
+  public StockItemSummary(Product product) {
+    this.product = product;
   }
 
   public void addStock(StockItem stock) {
@@ -25,25 +23,33 @@ public class StockItemSummary {
   }
 
   public BigDecimal getRawQuantity() {
-    var purchaseOrderLines = getPurchaseOrderLines();
-    return purchaseOrderLines.stream()
+    return items.stream()
+        .map(StockItem::getPurchaseOrderLine)
         .map(PurchaseOrderLine::getQuantity)
         .reduce(BigDecimal.ZERO, BigDecimalUtils::add);
   }
 
   public BigDecimal getWeightedCost() {
-    var purchaseOrderLines = getPurchaseOrderLines();
-    var totalCost = getTotalCost(purchaseOrderLines);
+    List<PurchaseOrderLine> purchaseOrderLines = getPurchaseOrderLines();
+    BigDecimal totalCost = getTotalCost(purchaseOrderLines);
+    BigDecimal totalQuantity = this.getRawQuantity();
 
-    var totalQuantity = this.getRawQuantity();
-    var weightedCostInReferenceUnit = BigDecimalUtils.divide(totalCost, totalQuantity);
-    var baseConversionFactor = product.getReferenceUnit().getBaseConversion().getConversionFactor();
+    if (totalQuantity.equals(BigDecimal.ZERO)) {
+      return BigDecimal.ZERO;
+    }
+
+    BigDecimal weightedCostInReferenceUnit = BigDecimalUtils.divide(totalCost, totalQuantity);
+    BigDecimal baseConversionFactor =
+        product.getReferenceUnit().getBaseConversion().getConversionFactor();
+
     return BigDecimalUtils.divide(weightedCostInReferenceUnit, baseConversionFactor);
   }
 
   public BigDecimal getQuantity() {
-    var referenceQuantity = this.getRawQuantity();
-    var conversionFactor = product.getReferenceUnit().getBaseConversion().getConversionFactor();
+    BigDecimal referenceQuantity = this.getRawQuantity();
+    BigDecimal conversionFactor =
+        product.getReferenceUnit().getBaseConversion().getConversionFactor();
+
     return BigDecimalUtils.multiply(referenceQuantity, conversionFactor);
   }
 
