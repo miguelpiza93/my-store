@@ -1,6 +1,6 @@
 package com.mapiz.mystore.stock.application.usecase;
 
-import com.mapiz.mystore.stock.application.dto.StockItemSummary;
+import com.mapiz.mystore.stock.domain.StockItemSummary;
 import java.util.Collection;
 import java.util.function.Supplier;
 

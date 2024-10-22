@@ -6,12 +6,12 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import com.mapiz.mystore.integration.BaseIntegrationTest;
-import com.mapiz.mystore.stock.application.dto.StockItemSummary;
+import com.mapiz.mystore.stock.application.dto.StockItemSummaryResponse;
 import com.mapiz.mystore.stock.infrastructure.EndpointConstant;
 import com.mapiz.mystore.stock.infrastructure.persistence.repository.JpaStockItemRepository;
+import com.mapiz.mystore.util.BigDecimalUtils;
 import java.math.BigDecimal;
 import java.util.List;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.mock.mockito.SpyBean;
 import org.springframework.http.MediaType;
@@ -21,23 +21,28 @@ class GetStockProductsIntegrationTest extends BaseIntegrationTest {
 
   @SpyBean private JpaStockItemRepository stockItemRepository;
 
-  @Disabled("Issue with weightedCost calculation")
   @Test
   void testGetStockProducts() throws Exception {
     // Arrange
     var expectedResponse =
         List.of(
-            StockItemSummary.builder()
+            StockItemSummaryResponse.builder()
                 .productId(EGG_ID)
                 .productName(EGG_NAME)
                 .quantity(UNITS_OF_EGGS_IN_STOCK)
-                .weightedCost(BigDecimal.valueOf(400))
+                .weightedCost(BigDecimalUtils.valueOf("354.2"))
                 .build(),
-            StockItemSummary.builder()
+            StockItemSummaryResponse.builder()
                 .productId(SAUSAGE_ID)
                 .productName(SAUSAGE_NAME)
                 .quantity(UNITS_OF_SAUSAGES_IN_STOCK)
                 .weightedCost(BigDecimal.valueOf(2500.0))
+                .build(),
+            StockItemSummaryResponse.builder()
+                .productId(MILK_ID)
+                .productName(MILK_NAME)
+                .quantity(UNITS_OF_MILK_IN_STOCK)
+                .weightedCost(BigDecimalUtils.valueOf(5000.0))
                 .build());
 
     // Act & Assert

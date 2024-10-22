@@ -2,7 +2,8 @@ package com.mapiz.mystore.stock.infrastructure.api;
 
 import static com.mapiz.mystore.stock.infrastructure.EndpointConstant.STOCK_BASE_PATH;
 
-import com.mapiz.mystore.stock.application.dto.StockItemSummary;
+import com.mapiz.mystore.stock.application.dto.StockItemSummaryResponse;
+import com.mapiz.mystore.stock.application.mapper.StockItemMapper;
 import com.mapiz.mystore.stock.application.usecase.GetStockSummaryUseCase;
 import java.util.Collection;
 import lombok.RequiredArgsConstructor;
@@ -20,8 +21,9 @@ public class GetStockSummaryController {
   private final GetStockSummaryUseCase getStockSummaryUseCase;
 
   @GetMapping("/summary")
-  public @ResponseBody ResponseEntity<Collection<StockItemSummary>> getStock() {
+  public @ResponseBody ResponseEntity<Collection<StockItemSummaryResponse>> getStock() {
     var summary = getStockSummaryUseCase.get();
-    return ResponseEntity.ok(summary);
+    var response = summary.stream().map(StockItemMapper.INSTANCE::modelToResponse).toList();
+    return ResponseEntity.ok(response);
   }
 }

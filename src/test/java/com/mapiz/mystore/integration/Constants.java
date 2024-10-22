@@ -35,8 +35,8 @@ public class Constants {
   public static final int NEXT_AVAILABLE_ID = 4;
 
   // STOCK CONSTANTS
-  public static final BigDecimal UNITS_OF_MILK_IN_STOCK = BigDecimal.ZERO;
-  public static final BigDecimal UNITS_OF_EGGS_IN_STOCK = BigDecimalUtils.valueOf(90);
+  public static final BigDecimal UNITS_OF_MILK_IN_STOCK = BigDecimalUtils.valueOf(12);
+  public static final BigDecimal UNITS_OF_EGGS_IN_STOCK = BigDecimalUtils.valueOf(240);
   public static final BigDecimal UNITS_OF_SAUSAGES_IN_STOCK = BigDecimalUtils.valueOf(5);
 
   // PURCHASE ORDER CONSTANTS
