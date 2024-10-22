@@ -10,7 +10,8 @@ import org.mapstruct.factory.Mappers;
 public abstract class StockItemMapper {
   public static final StockItemMapper INSTANCE = Mappers.getMapper(StockItemMapper.class);
 
-  @Mapping(target = "productId", source = "product.id")
-  @Mapping(target = "productName", source = "product.name")
+  @Mapping(target = "vendorProductId", source = "vendorProduct.id")
+  @Mapping(target = "productName", source = "vendorProduct.product.name")
+  @Mapping(target = "vendorName", source = "vendorProduct.vendor.name")
   public abstract StockItemSummaryResponse modelToResponse(StockItemSummary summary);
 }

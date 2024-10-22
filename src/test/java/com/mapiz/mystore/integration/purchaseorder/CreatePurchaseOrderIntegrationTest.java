@@ -63,9 +63,7 @@ class CreatePurchaseOrderIntegrationTest extends BaseIntegrationTest {
       var requestedOrderLine =
           requestedOrderLines.stream()
               .filter(
-                  line ->
-                      line.getProductId()
-                          .equals(savedPurchaseOrderLine.getVendorProduct().getProduct().getId()))
+                  line -> line.getProductId().equals(savedPurchaseOrderLine.getProduct().getId()))
               .findFirst()
               .orElseThrow();
       Assertions.assertEquals(

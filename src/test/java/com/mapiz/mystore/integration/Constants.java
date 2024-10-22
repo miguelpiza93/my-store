@@ -22,6 +22,8 @@ public class Constants {
   // VENDOR CONSTANTS
   public static final int KIKES_ID = 1;
   public static final String KIKES_NAME = "Kikes";
+  public static final String ALQUERIA_NAME = "Alqueria";
+  public static final String ZENU_NAME = "Zenu";
 
   // PRODUCT CONSTANTS
   public static final int EGG_ID = 1;
@@ -36,6 +38,8 @@ public class Constants {
 
   // PRODUCT VENDOR CONSTANTS
   public static final int KIKES_EGGS = 1;
+  public static final int ALQUERIA_MILKS = 2;
+  public static final int ZENU_SAUSAGES = 3;
 
   // STOCK CONSTANTS
   public static final BigDecimal UNITS_OF_MILK_IN_STOCK = BigDecimalUtils.valueOf(12);

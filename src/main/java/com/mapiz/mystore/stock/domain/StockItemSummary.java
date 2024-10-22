@@ -1,8 +1,8 @@
 package com.mapiz.mystore.stock.domain;
 
-import com.mapiz.mystore.product.domain.Product;
 import com.mapiz.mystore.purchaseorder.domain.PurchaseOrderLine;
 import com.mapiz.mystore.util.BigDecimalUtils;
+import com.mapiz.mystore.vendor.domain.VendorProduct;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
@@ -11,11 +11,11 @@ import lombok.Data;
 @Data
 public class StockItemSummary {
 
-  private Product product;
+  private VendorProduct vendorProduct;
   private List<StockItem> items = new ArrayList<>();
 
-  public StockItemSummary(Product product) {
-    this.product = product;
+  public StockItemSummary(VendorProduct vendorProduct) {
+    this.vendorProduct = vendorProduct;
   }
 
   public void addStock(StockItem stock) {
@@ -40,7 +40,7 @@ public class StockItemSummary {
 
     BigDecimal weightedCostInReferenceUnit = BigDecimalUtils.divide(totalCost, totalQuantity);
     BigDecimal baseConversionFactor =
-        product.getReferenceUnit().getBaseConversion().getConversionFactor();
+        vendorProduct.getProduct().getReferenceUnit().getBaseConversion().getConversionFactor();
 
     return BigDecimalUtils.divide(weightedCostInReferenceUnit, baseConversionFactor);
   }
@@ -48,7 +48,7 @@ public class StockItemSummary {
   public BigDecimal getQuantity() {
     BigDecimal referenceQuantity = this.getRawQuantity();
     BigDecimal conversionFactor =
-        product.getReferenceUnit().getBaseConversion().getConversionFactor();
+        vendorProduct.getProduct().getReferenceUnit().getBaseConversion().getConversionFactor();
 
     return BigDecimalUtils.multiply(referenceQuantity, conversionFactor);
   }

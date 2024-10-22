@@ -21,9 +21,11 @@ public class GetProductsInStockUseCaseImpl implements GetStockSummaryUseCase {
 
     stockAvailable.forEach(
         stock -> {
-          var product = stock.getPurchaseOrderLine().getVendorProduct().getProduct();
-          Integer productId = product.getId();
-          result.computeIfAbsent(productId, id -> new StockItemSummary(product)).addStock(stock);
+          var vendorProduct = stock.getPurchaseOrderLine().getVendorProduct();
+          Integer vendorProductId = vendorProduct.getId();
+          result
+              .computeIfAbsent(vendorProductId, id -> new StockItemSummary(vendorProduct))
+              .addStock(stock);
         });
 
     return result.values();

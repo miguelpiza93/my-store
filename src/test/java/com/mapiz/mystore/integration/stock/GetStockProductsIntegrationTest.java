@@ -27,20 +27,23 @@ class GetStockProductsIntegrationTest extends BaseIntegrationTest {
     var expectedResponse =
         List.of(
             StockItemSummaryResponse.builder()
-                .productId(EGG_ID)
+                .vendorProductId(KIKES_EGGS)
                 .productName(EGG_NAME)
+                .vendorName(KIKES_NAME)
                 .quantity(UNITS_OF_EGGS_IN_STOCK)
                 .weightedCost(BigDecimalUtils.valueOf("354.2"))
                 .build(),
             StockItemSummaryResponse.builder()
-                .productId(SAUSAGE_ID)
+                .vendorProductId(ZENU_SAUSAGES)
                 .productName(SAUSAGE_NAME)
+                .vendorName(ZENU_NAME)
                 .quantity(UNITS_OF_SAUSAGES_IN_STOCK)
                 .weightedCost(BigDecimal.valueOf(2500.0))
                 .build(),
             StockItemSummaryResponse.builder()
-                .productId(MILK_ID)
+                .vendorProductId(ALQUERIA_MILKS)
                 .productName(MILK_NAME)
+                .vendorName(ALQUERIA_NAME)
                 .quantity(UNITS_OF_MILK_IN_STOCK)
                 .weightedCost(BigDecimalUtils.valueOf(5000.0))
                 .build());

@@ -9,8 +9,9 @@ import lombok.Data;
 @AllArgsConstructor
 @Data
 public class StockItemSummaryResponse {
-  private Integer productId;
+  private Integer vendorProductId;
   private String productName;
+  private String vendorName;
   private BigDecimal quantity;
   private BigDecimal weightedCost;
 }
