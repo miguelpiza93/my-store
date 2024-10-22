@@ -2,6 +2,7 @@ package com.mapiz.mystore.vendor.infrastructure.persistence.repository;
 
 import com.mapiz.mystore.vendor.infrastructure.persistence.entity.VendorProductEntity;
 import java.util.List;
+import java.util.Optional;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
@@ -12,4 +13,6 @@ public interface JpaProductVendorRepository extends JpaRepository<VendorProductE
 
   List<VendorProductEntity> findByVendorIdAndProductIdIn(
       Integer vendorId, List<Integer> productIds);
+
+  Optional<VendorProductEntity> findByVendorIdAndProductId(Integer supplierId, Integer productId);
 }

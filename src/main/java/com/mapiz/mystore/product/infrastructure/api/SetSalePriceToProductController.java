@@ -17,12 +17,15 @@ public class SetSalePriceToProductController {
 
   private final SetSalePriceToProductUseCase setSalePriceToProductUseCase;
 
-  @PatchMapping("/{id}")
+  @PatchMapping("/{productId}/prices/{vendorId}")
   public @ResponseBody ResponseEntity<Void> setSalePrice(
-      @PathVariable Integer id, @Valid @RequestBody SetSalePriceToStockProductRequest request) {
+      @PathVariable Integer productId,
+      @PathVariable Integer vendorId,
+      @Valid @RequestBody SetSalePriceToStockProductRequest request) {
     setSalePriceToProductUseCase.accept(
         SetSalePriceToStockProductCommand.builder()
-            .productId(id)
+            .productId(productId)
+            .vendorId(vendorId)
             .unitId(request.getUnitId())
             .salePrice(request.getSalePrice())
             .build());

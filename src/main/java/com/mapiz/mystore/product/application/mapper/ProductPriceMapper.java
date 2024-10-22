@@ -1,7 +1,7 @@
 package com.mapiz.mystore.product.application.mapper;
 
 import com.mapiz.mystore.product.application.dto.ProductPriceDetail;
-import com.mapiz.mystore.product.domain.ProductPrice;
+import com.mapiz.mystore.vendor.domain.VendorProductUnitVariant;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.factory.Mappers;
@@ -14,5 +14,5 @@ public abstract class ProductPriceMapper {
   @Mapping(source = "unit.id", target = "unitId")
   @Mapping(source = "unit.name", target = "unitName")
   @Mapping(source = "salePrice", target = "price")
-  public abstract ProductPriceDetail modelToResponse(ProductPrice productPrice);
+  public abstract ProductPriceDetail modelToResponse(VendorProductUnitVariant productPrice);
 }

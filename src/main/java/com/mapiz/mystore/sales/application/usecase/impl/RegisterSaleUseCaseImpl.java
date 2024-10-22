@@ -1,6 +1,6 @@
 package com.mapiz.mystore.sales.application.usecase.impl;
 
-import com.mapiz.mystore.product.domain.repository.ProductPriceRepository;
+import com.mapiz.mystore.product.domain.repository.UnitStockItemRepository;
 import com.mapiz.mystore.sales.application.command.RegisterSaleCommand;
 import com.mapiz.mystore.sales.application.exception.NotEnoughStockException;
 import com.mapiz.mystore.sales.application.mapper.SaleMapper;
@@ -26,7 +26,7 @@ public class RegisterSaleUseCaseImpl implements RegisterSaleUseCase {
 
   private final SaleRepository saleRepository;
   private final StockItemRepository stockItemRepository;
-  private final ProductPriceRepository productPriceRepository;
+  private final UnitStockItemRepository productPriceRepository;
   private final UnitRepository unitRepository;
 
   @Override
@@ -121,10 +121,11 @@ public class RegisterSaleUseCaseImpl implements RegisterSaleUseCase {
   }
 
   private BigDecimal getSalePriceFromStock(List<StockItem> productStock, Unit unit) {
-    var productId =
-        productStock.get(0).getPurchaseOrderLine().getVendorProduct().getProduct().getId();
+    var productVendorId = productStock.get(0).getPurchaseOrderLine().getVendorProduct().getId();
     var productPrice =
-        productPriceRepository.findByProductIdAndUnitId(productId, unit.getId()).orElseThrow();
+        productPriceRepository
+            .findByVendorProductIdAndUnitId(productVendorId, unit.getId())
+            .orElseThrow();
     return productPrice.getSalePrice();
   }
 

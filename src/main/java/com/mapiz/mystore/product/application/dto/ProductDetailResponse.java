@@ -1,6 +1,5 @@
 package com.mapiz.mystore.product.application.dto;
 
-import java.util.List;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -13,5 +12,4 @@ public class ProductDetailResponse {
   private String name;
   private String description;
   private String referenceUnit;
-  private List<ProductPriceDetail> prices;
 }

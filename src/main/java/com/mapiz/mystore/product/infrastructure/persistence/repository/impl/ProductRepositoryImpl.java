@@ -12,7 +12,6 @@ import java.util.Set;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
-import org.hibernate.Hibernate;
 import org.springframework.stereotype.Component;
 
 @Component
@@ -24,7 +23,6 @@ public class ProductRepositoryImpl implements ProductRepository {
   @Override
   public Optional<Product> findById(Integer id) {
     var entity = jpaRepository.findById(id);
-    entity.ifPresent(productEntity -> Hibernate.unproxy(productEntity.getPrices()));
     return entity.map(getMapper());
   }
 

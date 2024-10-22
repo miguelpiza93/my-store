@@ -1,4 +1,4 @@
-package com.mapiz.mystore.product.domain;
+package com.mapiz.mystore.vendor.domain;
 
 import com.mapiz.mystore.unit.domain.Unit;
 import java.math.BigDecimal;
@@ -9,9 +9,9 @@ import lombok.Data;
 @Builder
 @AllArgsConstructor
 @Data
-public class ProductPrice {
+public class VendorProductUnitVariant {
   private Integer id;
-  private Product product;
+  private VendorProduct vendorProduct;
   private Unit unit;
   private BigDecimal salePrice;
 

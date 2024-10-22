@@ -1,4 +1,4 @@
-package com.mapiz.mystore.product.infrastructure.persistence;
+package com.mapiz.mystore.vendor.infrastructure.persistence.entity;
 
 import com.mapiz.mystore.unit.infrastructure.persistence.entity.UnitEntity;
 import jakarta.persistence.*;
@@ -14,21 +14,23 @@ import org.hibernate.annotations.FetchMode;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-@Entity(name = "product_prices")
-public class ProductPriceEntity {
+@Entity(name = "vendor_product_unit_variants")
+public class VendorProductUnitVariantEntity {
 
   @Id
   @SequenceGenerator(
-      name = "product_prices_sequence",
-      sequenceName = "product_prices_sequence",
+      name = "vendor_product_unit_variants_sequence",
+      sequenceName = "vendor_product_unit_variants_sequence",
       allocationSize = 1)
-  @GeneratedValue(generator = "product_prices_sequence", strategy = GenerationType.SEQUENCE)
+  @GeneratedValue(
+      generator = "vendor_product_unit_variants_sequence",
+      strategy = GenerationType.SEQUENCE)
   private Integer id;
 
   @ManyToOne
   @Fetch(FetchMode.JOIN)
-  @JoinColumn(name = "product_id", nullable = false)
-  private ProductEntity product;
+  @JoinColumn(name = "vendor_product_id", nullable = false)
+  private VendorProductEntity vendorProduct;
 
   @ManyToOne
   @Fetch(FetchMode.JOIN)
@@ -43,8 +45,8 @@ public class ProductPriceEntity {
     return "ProductPriceEntity{"
         + "id="
         + id
-        + ", product="
-        + product.getId()
+        + ", VendorProduct="
+        + vendorProduct.getId()
         + ", unit="
         + unit
         + ", salePrice="

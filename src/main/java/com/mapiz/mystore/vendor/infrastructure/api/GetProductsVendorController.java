@@ -4,7 +4,7 @@ import static com.mapiz.mystore.vendor.infrastructure.EndpointConstant.VENDORS_B
 
 import com.mapiz.mystore.vendor.application.dto.VendorVendorResponse;
 import com.mapiz.mystore.vendor.application.usecase.GetProductsVendorUseCase;
-import com.mapiz.mystore.vendor.infrastructure.persistence.mapper.ProductVendorMapper;
+import com.mapiz.mystore.vendor.infrastructure.persistence.mapper.VendorProductMapper;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -22,7 +22,7 @@ public class GetProductsVendorController {
       @PathVariable Integer id) {
     var result = getProductsVendorUseCase.apply(id);
     var response =
-        result.stream().map(ProductVendorMapper.INSTANCE::modelToProductVendorResponse).toList();
+        result.stream().map(VendorProductMapper.INSTANCE::modelToProductVendorResponse).toList();
     return ResponseEntity.ok(response);
   }
 }

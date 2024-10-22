@@ -4,9 +4,10 @@ import com.mapiz.mystore.shared.CycleAvoidingMappingContext;
 import com.mapiz.mystore.vendor.domain.VendorProduct;
 import com.mapiz.mystore.vendor.domain.repository.ProductVendorRepository;
 import com.mapiz.mystore.vendor.infrastructure.persistence.entity.VendorProductEntity;
-import com.mapiz.mystore.vendor.infrastructure.persistence.mapper.ProductVendorMapper;
+import com.mapiz.mystore.vendor.infrastructure.persistence.mapper.VendorProductMapper;
 import com.mapiz.mystore.vendor.infrastructure.persistence.repository.JpaProductVendorRepository;
 import java.util.List;
+import java.util.Optional;
 import java.util.function.Function;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
@@ -31,19 +32,25 @@ public class ProductVendorRepositoryImpl implements ProductVendorRepository {
   }
 
   @Override
+  public Optional<VendorProduct> findBySupplierIdAndProductId(
+      Integer supplierId, Integer productId) {
+    return jpaRepository.findByVendorIdAndProductId(supplierId, productId).map(getMapper());
+  }
+
+  @Override
   public void deleteAll(List<VendorProduct> bySupplierId) {
     jpaRepository.deleteAllById(bySupplierId.stream().map(VendorProduct::getId).toList());
   }
 
   @Override
   public List<VendorProduct> saveAll(List<VendorProduct> list) {
-    var toSave = list.stream().map(ProductVendorMapper.INSTANCE::modelToEntity).toList();
+    var toSave = list.stream().map(VendorProductMapper.INSTANCE::modelToEntity).toList();
     return jpaRepository.saveAll(toSave).stream().map(getMapper()).toList();
   }
 
   private Function<VendorProductEntity, VendorProduct> getMapper() {
     return productVendor ->
-        ProductVendorMapper.INSTANCE.entityToModel(
+        VendorProductMapper.INSTANCE.entityToModel(
             productVendor, new CycleAvoidingMappingContext());
   }
 }

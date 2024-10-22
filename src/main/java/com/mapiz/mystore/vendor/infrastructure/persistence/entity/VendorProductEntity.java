@@ -2,6 +2,7 @@ package com.mapiz.mystore.vendor.infrastructure.persistence.entity;
 
 import com.mapiz.mystore.product.infrastructure.persistence.ProductEntity;
 import jakarta.persistence.*;
+import java.util.List;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -31,4 +32,7 @@ public class VendorProductEntity {
   private ProductEntity product;
 
   private double price;
+
+  @OneToMany(mappedBy = "vendorProduct", fetch = FetchType.LAZY)
+  private List<VendorProductUnitVariantEntity> salePrices;
 }

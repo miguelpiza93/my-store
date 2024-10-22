@@ -5,13 +5,6 @@ values
 ('Salchicha', 'x6', 2)
 ;
 
-INSERT INTO product_prices(product_id, unit_id, sale_price)
-values
-(1, 2, 500.0),
-(1, 1, 12000.0),
-(3, 2, 3000.0)
-;
-
 INSERT INTO vendors(name)
 values
 ('Kikes'),
@@ -24,6 +17,13 @@ values
 (1, 1, 8500),
 (2, 2, 30000),
 (3, 3, 2500)
+;
+
+INSERT INTO vendor_product_unit_variants(vendor_product_id, unit_id, sale_price)
+values
+(1, 2, 500.0),
+(1, 1, 12000.0),
+(3, 2, 3000.0)
 ;
 
 INSERT INTO purchase_orders(status, created_at, estimated_delivery_date, vendor_id, total)

@@ -6,7 +6,6 @@ import com.mapiz.mystore.shared.CycleAvoidingMappingContext;
 import com.mapiz.mystore.unit.infrastructure.persistence.mapper.UnitMapper;
 import org.mapstruct.Context;
 import org.mapstruct.Mapper;
-import org.mapstruct.Mapping;
 import org.mapstruct.factory.Mappers;
 
 @Mapper(uses = {UnitMapper.class})
@@ -17,6 +16,5 @@ public abstract class ProductMapper {
   public abstract Product toDomain(
       ProductEntity productEntity, @Context CycleAvoidingMappingContext context);
 
-  @Mapping(target = "prices", ignore = true)
   public abstract ProductEntity toEntity(Product product);
 }

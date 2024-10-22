@@ -7,16 +7,19 @@ import com.mapiz.mystore.vendor.domain.VendorProduct;
 import com.mapiz.mystore.vendor.infrastructure.persistence.entity.VendorProductEntity;
 import org.mapstruct.Context;
 import org.mapstruct.Mapper;
+import org.mapstruct.Mapping;
 import org.mapstruct.factory.Mappers;
 
-@Mapper(uses = {ProductMapper.class})
-public abstract class ProductVendorMapper {
+@Mapper(uses = {ProductMapper.class, VendorProductUnitMapper.class, VendorMapper.class})
+public abstract class VendorProductMapper {
 
-  public static final ProductVendorMapper INSTANCE = Mappers.getMapper(ProductVendorMapper.class);
+  public static final VendorProductMapper INSTANCE = Mappers.getMapper(VendorProductMapper.class);
 
+  @Mapping(target = "salePrices", ignore = true)
   public abstract VendorProduct entityToModel(
       VendorProductEntity entity, @Context CycleAvoidingMappingContext context);
 
+  @Mapping(target = "salePrices", ignore = true)
   public abstract VendorProductEntity modelToEntity(VendorProduct model);
 
   public abstract VendorVendorResponse modelToProductVendorResponse(VendorProduct productVendor);
