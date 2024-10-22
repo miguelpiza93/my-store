@@ -8,7 +8,7 @@ import lombok.Getter;
 @Builder
 @AllArgsConstructor
 @Getter
-public class VendorVendorResponse {
+public class VendorProductResponse {
   private Integer id;
   private ProductResponse product;
   private double price;

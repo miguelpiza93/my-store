@@ -2,7 +2,7 @@ package com.mapiz.mystore.vendor.infrastructure.persistence.mapper;
 
 import com.mapiz.mystore.product.infrastructure.persistence.mapper.ProductMapper;
 import com.mapiz.mystore.shared.CycleAvoidingMappingContext;
-import com.mapiz.mystore.vendor.application.dto.VendorVendorResponse;
+import com.mapiz.mystore.vendor.application.dto.VendorProductResponse;
 import com.mapiz.mystore.vendor.domain.VendorProduct;
 import com.mapiz.mystore.vendor.infrastructure.persistence.entity.VendorProductEntity;
 import org.mapstruct.Context;
@@ -22,5 +22,5 @@ public abstract class VendorProductMapper {
   @Mapping(target = "salePrices", ignore = true)
   public abstract VendorProductEntity modelToEntity(VendorProduct model);
 
-  public abstract VendorVendorResponse modelToProductVendorResponse(VendorProduct productVendor);
+  public abstract VendorProductResponse modelToProductVendorResponse(VendorProduct productVendor);
 }

@@ -1,5 +1,6 @@
 package com.mapiz.mystore.purchaseorder.domain;
 
+import com.mapiz.mystore.util.BigDecimalUtils;
 import com.mapiz.mystore.vendor.domain.VendorProduct;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
@@ -17,6 +18,10 @@ public class PurchaseOrderLine {
   private BigDecimal unitPrice;
   private BigDecimal total;
   private PurchaseOrder purchaseOrder;
+
+  public BigDecimal getTotal() {
+    return BigDecimalUtils.multiply(unitPrice, quantity);
+  }
 
   public BigDecimal getCostPerBaseUnit() {
     var baseConversion = vendorProduct.getProduct().getReferenceUnit().getBaseConversion();

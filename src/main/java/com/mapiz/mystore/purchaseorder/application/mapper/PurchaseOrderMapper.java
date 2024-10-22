@@ -10,7 +10,7 @@ import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.factory.Mappers;
 
-@Mapper(uses = {ProductMapper.class})
+@Mapper(uses = {ProductMapper.class, PurchaseOrderLineMapper.class})
 public abstract class PurchaseOrderMapper {
 
   public static final PurchaseOrderMapper INSTANCE = Mappers.getMapper(PurchaseOrderMapper.class);

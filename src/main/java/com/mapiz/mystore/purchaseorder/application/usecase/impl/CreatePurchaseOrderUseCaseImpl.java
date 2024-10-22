@@ -8,11 +8,13 @@ import com.mapiz.mystore.purchaseorder.domain.PurchaseOrderLine;
 import com.mapiz.mystore.purchaseorder.domain.PurchaseOrderStatus;
 import com.mapiz.mystore.purchaseorder.domain.repository.PurchaseOrderLineRepository;
 import com.mapiz.mystore.purchaseorder.domain.repository.PurchaseOrderRepository;
+import com.mapiz.mystore.util.BigDecimalUtils;
 import com.mapiz.mystore.vendor.application.exception.VendorNotFoundException;
 import com.mapiz.mystore.vendor.domain.Vendor;
 import com.mapiz.mystore.vendor.domain.VendorProduct;
 import com.mapiz.mystore.vendor.domain.repository.ProductVendorRepository;
 import com.mapiz.mystore.vendor.domain.repository.VendorRepository;
+import java.math.BigDecimal;
 import java.time.Instant;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
@@ -57,10 +59,16 @@ public class CreatePurchaseOrderUseCaseImpl implements CreatePurchaseOrderUseCas
   }
 
   private PurchaseOrder buildPurchaseOrder(CreatePurchaseOrderCommand command, Vendor vendor) {
+    var total =
+        command.getPurchaseOrderLines().stream()
+            .map(line -> BigDecimalUtils.multiply(line.getUnitPrice(), line.getQuantity()))
+            .reduce(BigDecimal.ZERO, BigDecimalUtils::add);
+
     return PurchaseOrder.builder()
         .createdAt(Instant.now())
         .vendor(vendor)
         .status(PurchaseOrderStatus.PENDING)
+        .total(total)
         .estimatedDeliveryDate(command.getEstimatedDeliveryDate())
         .build();
   }

@@ -10,7 +10,7 @@ import com.mapiz.mystore.product.application.dto.ProductResponse;
 import com.mapiz.mystore.product.infrastructure.persistence.ProductEntity;
 import com.mapiz.mystore.product.infrastructure.persistence.repository.JpaProductRepository;
 import com.mapiz.mystore.vendor.application.dto.LinkProductsToVendorRequest;
-import com.mapiz.mystore.vendor.application.dto.VendorVendorResponse;
+import com.mapiz.mystore.vendor.application.dto.VendorProductResponse;
 import com.mapiz.mystore.vendor.infrastructure.EndpointConstant;
 import com.mapiz.mystore.vendor.infrastructure.persistence.entity.VendorEntity;
 import com.mapiz.mystore.vendor.infrastructure.persistence.entity.VendorProductEntity;
@@ -85,7 +85,7 @@ class LinkProductsToVendorIntegrationTest extends BaseIntegrationTest {
 
     var expectedProductVendors =
         List.of(
-            VendorVendorResponse.builder()
+            VendorProductResponse.builder()
                 .id(1)
                 .product(
                     ProductResponse.builder()
@@ -95,7 +95,7 @@ class LinkProductsToVendorIntegrationTest extends BaseIntegrationTest {
                         .build())
                 .price(10.0)
                 .build(),
-            VendorVendorResponse.builder()
+            VendorProductResponse.builder()
                 .id(2)
                 .product(
                     ProductResponse.builder()
