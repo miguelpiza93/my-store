@@ -5,8 +5,11 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import com.mapiz.mystore.integration.BaseIntegrationTest;
+import com.mapiz.mystore.util.BigDecimalUtils;
 import com.mapiz.mystore.vendor.application.dto.VendorProductDetailResponse;
+import com.mapiz.mystore.vendor.application.dto.VendorProductPriceDetail;
 import com.mapiz.mystore.vendor.infrastructure.EndpointConstant;
+import java.util.List;
 import org.junit.jupiter.api.Test;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
@@ -20,8 +23,16 @@ class GetVendorProductIntegrationTest extends BaseIntegrationTest {
         VendorProductDetailResponse.builder()
             .id(EGG_ID)
             .name(EGG_NAME)
+            .vendorName(KIKES_NAME)
             .description(EGG_DESCRIPTION)
             .referenceUnit(CARTON_NAME)
+            .salePrices(
+                List.of(
+                    new VendorProductPriceDetail(UNIT_ID, UNIT_NAME, BigDecimalUtils.valueOf(500)),
+                    new VendorProductPriceDetail(
+                        CARTON_ID, CARTON_NAME, BigDecimalUtils.valueOf(12000)),
+                    new VendorProductPriceDetail(
+                        HALF_CARTON_ID, HALF_CARTON_NAME, BigDecimalUtils.valueOf(0))))
             .build();
     // Act & Assert
     mockMvc
