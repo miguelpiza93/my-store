@@ -22,7 +22,9 @@ public class Constants {
   // VENDOR CONSTANTS
   public static final int KIKES_ID = 1;
   public static final String KIKES_NAME = "Kikes";
+  public static final int ALQUERIA_ID = 2;
   public static final String ALQUERIA_NAME = "Alqueria";
+  public static final int ZENU_ID = 3;
   public static final String ZENU_NAME = "Zenu";
 
   // PRODUCT CONSTANTS
