@@ -8,6 +8,7 @@ import com.mapiz.mystore.util.BigDecimalUtils;
 import java.math.BigDecimal;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
+import org.mapstruct.Mappings;
 import org.mapstruct.Named;
 import org.mapstruct.factory.Mappers;
 
@@ -18,14 +19,16 @@ public abstract class SaleMapper {
 
   public abstract RegisterSaleCommand requestToCommand(RegisterSaleRequest request);
 
-  @Mapping(target = "product.id", source = "productId")
-  @Mapping(target = "unit.id", source = "unitId")
-  @Mapping(target = "total", ignore = true)
-  @Mapping(target = "cost", ignore = true)
-  @Mapping(target = "price", ignore = true)
-  @Mapping(target = "createdAt", ignore = true)
-  @Mapping(target = "id", ignore = true)
-  @Mapping(target = "quantity", source = "quantity", qualifiedByName = "setScale")
+  @Mappings({
+    @Mapping(target = "vendorProductVariant.vendorProduct.id", source = "vendorProductId"),
+    @Mapping(target = "vendorProductVariant.unit.id", source = "unitId"),
+    @Mapping(target = "total", ignore = true),
+    @Mapping(target = "cost", ignore = true),
+    @Mapping(target = "price", ignore = true),
+    @Mapping(target = "createdAt", ignore = true),
+    @Mapping(target = "id", ignore = true),
+    @Mapping(target = "quantity", source = "quantity", qualifiedByName = "setScale")
+  })
   public abstract Sale commandItemToModel(RegisterSaleCommandItem registerSaleCommandItem);
 
   @Named("setScale")

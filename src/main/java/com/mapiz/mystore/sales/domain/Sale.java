@@ -1,8 +1,7 @@
 package com.mapiz.mystore.sales.domain;
 
-import com.mapiz.mystore.product.domain.Product;
-import com.mapiz.mystore.unit.domain.Unit;
 import com.mapiz.mystore.util.BigDecimalUtils;
+import com.mapiz.mystore.vendor.domain.VendorProductUnitVariant;
 import java.math.BigDecimal;
 import java.time.Instant;
 import lombok.AllArgsConstructor;
@@ -14,11 +13,9 @@ public class Sale {
 
   private Integer id;
 
-  private Product product;
+  private VendorProductUnitVariant vendorProductVariant;
 
   private BigDecimal quantity;
-
-  private Unit unit;
 
   private BigDecimal price;
 
@@ -38,6 +35,7 @@ public class Sale {
   }
 
   public BigDecimal getBaseQuantity() {
-    return BigDecimalUtils.multiply(quantity, this.unit.getBaseConversion().getConversionFactor());
+    return BigDecimalUtils.multiply(
+        quantity, this.vendorProductVariant.getUnit().getBaseConversion().getConversionFactor());
   }
 }

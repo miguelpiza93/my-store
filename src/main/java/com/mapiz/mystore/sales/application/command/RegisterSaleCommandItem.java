@@ -7,7 +7,7 @@ import lombok.Getter;
 @AllArgsConstructor
 @Getter
 public class RegisterSaleCommandItem {
-  private int productId;
+  private int vendorProductId;
   private BigDecimal quantity;
   private int unitId;
 }

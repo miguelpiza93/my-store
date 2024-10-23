@@ -1,10 +1,9 @@
 package com.mapiz.mystore.sales.infrastructure.persistence.entity;
 
-import com.mapiz.mystore.product.infrastructure.persistence.ProductEntity;
-import com.mapiz.mystore.unit.infrastructure.persistence.entity.UnitEntity;
 import jakarta.persistence.*;
 import java.math.BigDecimal;
 import java.time.Instant;
+import java.util.List;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -22,21 +21,12 @@ public class SaleEntity {
   @GeneratedValue(generator = "sales_sequence", strategy = GenerationType.SEQUENCE)
   private Integer id;
 
-  @OneToOne
-  @JoinColumn(name = "product_id", nullable = false)
-  private ProductEntity product;
+  @OneToMany(mappedBy = "sale", fetch = FetchType.EAGER)
+  private List<SaleLineEntity> lines;
 
-  private BigDecimal quantity;
-
-  @OneToOne
-  @JoinColumn(name = "unit_id", nullable = false)
-  private UnitEntity unit;
-
-  private BigDecimal price;
+  private String status;
 
   private BigDecimal total;
-
-  private BigDecimal cost;
 
   @Column(name = "created_at")
   private Instant createdAt;

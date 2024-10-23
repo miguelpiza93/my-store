@@ -34,32 +34,32 @@ class RegisterSaleIntegrationTest extends BaseIntegrationTest {
 
   @Test
   void testRegisterSaleBuyingAllStockUsingTheBaseUnit() throws Exception {
-    var request = createSaleRequest(SAUSAGE_ID, UNITS_OF_SAUSAGES_IN_STOCK, UNIT_ID);
+    var request = createSaleRequest(ZENU_SAUSAGES, UNITS_OF_SAUSAGES_IN_STOCK, UNIT_ID);
     var result = executePostRequest(request);
 
     assertSalePersistedWithExpectedValues(
         result, SAUSAGE_ID, UNITS_OF_SAUSAGES_IN_STOCK, UNIT_ID, "12500.0", "3000.0", "15000.0");
 
-    assertStockIsEmptyForProduct(SAUSAGE_ID);
+    assertStockIsEmptyForVendorProduct(ZENU_SAUSAGES);
   }
 
   @Test
   void testRegisterSaleFewItemsUsingTheBaseUnit() throws Exception {
     var quantity = BigDecimalUtils.valueOf(3);
-    var request = createSaleRequest(EGG_ID, quantity, UNIT_ID);
+    var request = createSaleRequest(KIKES_EGGS, quantity, UNIT_ID);
     var result = executePostRequest(request);
 
     assertSalePersistedWithExpectedValues(
         result, EGG_ID, quantity, UNIT_ID, "900.0", "500.0", "1500.0");
 
     var expectedRemainingQuantity = BigDecimalUtils.subtract(UNITS_OF_EGGS_IN_STOCK, quantity);
-    assertRemainingStockForProduct(EGG_ID, expectedRemainingQuantity);
+    assertRemainingStockForVendorProduct(KIKES_EGGS, expectedRemainingQuantity);
   }
 
   @Test
   void testRegisterSaleFewItemsUsingTheReferenceUnit() throws Exception {
     var quantityOfCartons = BigDecimalUtils.valueOf(2.0);
-    var request = createSaleRequest(EGG_ID, quantityOfCartons, CARTON_ID);
+    var request = createSaleRequest(KIKES_EGGS, quantityOfCartons, CARTON_ID);
     var result = executePostRequest(request);
 
     assertSalePersistedWithExpectedValues(
@@ -69,7 +69,7 @@ class RegisterSaleIntegrationTest extends BaseIntegrationTest {
         BigDecimalUtils.subtract(
             UNITS_OF_EGGS_IN_STOCK, BigDecimalUtils.multiply(quantityOfCartons, UNITS_PER_CARTON));
 
-    assertRemainingStockForProduct(EGG_ID, expectedRemainingQuantity);
+    assertRemainingStockForVendorProduct(KIKES_EGGS, expectedRemainingQuantity);
   }
 
   @Test
@@ -102,12 +102,13 @@ class RegisterSaleIntegrationTest extends BaseIntegrationTest {
 
   // Métodos auxiliares para simplificar y reutilizar el código
 
-  private RegisterSaleRequest createSaleRequest(int productId, BigDecimal quantity, int unitId) {
+  private RegisterSaleRequest createSaleRequest(
+      int vendorProductId, BigDecimal quantity, int unitId) {
     return RegisterSaleRequest.builder()
         .items(
             List.of(
                 SaleItemRequest.builder()
-                    .productId(productId)
+                    .vendorProductId(vendorProductId)
                     .quantity(quantity)
                     .unitId(unitId)
                     .build()))
@@ -126,7 +127,7 @@ class RegisterSaleIntegrationTest extends BaseIntegrationTest {
 
   private void assertSalePersistedWithExpectedValues(
       MvcResult result,
-      int productId,
+      int vendorProductId,
       BigDecimal quantity,
       int unitId,
       String expectedCost,
@@ -137,8 +138,8 @@ class RegisterSaleIntegrationTest extends BaseIntegrationTest {
     var ids = getSavedIds(result);
     var sale = saleRepository.findById(ids.get(0)).orElseThrow();
 
-    assertEquals(sale.getUnit().getId(), unitId);
-    assertEquals(sale.getProduct().getId(), productId);
+    assertEquals(sale.getVendorProductVariant().getUnit().getId(), unitId);
+    assertEquals(sale.getVendorProductVariant().getVendorProduct().getId(), vendorProductId);
     assertEquals(sale.getQuantity(), quantity);
     assertEquals(BigDecimalUtils.valueOf(sale.getCost()), BigDecimalUtils.valueOf(expectedCost));
     assertEquals(BigDecimalUtils.valueOf(sale.getPrice()), BigDecimalUtils.valueOf(expectedPrice));
@@ -146,20 +147,19 @@ class RegisterSaleIntegrationTest extends BaseIntegrationTest {
     assertNotNull(sale.getCreatedAt());
   }
 
-  private void assertStockIsEmptyForProduct(int productId) {
+  private void assertStockIsEmptyForVendorProduct(int vendorProductId) {
     var availableStock =
         stockItemRepository.findAllAvailable().stream()
-            .filter(
-                s -> s.getPurchaseOrderLine().getVendorProduct().getProduct().getId() == productId)
+            .filter(s -> s.getPurchaseOrderLine().getVendorProduct().getId() == vendorProductId)
             .toList();
     assertTrue(availableStock.isEmpty());
   }
 
-  private void assertRemainingStockForProduct(int productId, BigDecimal expectedRemainingQuantity) {
+  private void assertRemainingStockForVendorProduct(
+      int vendorProductId, BigDecimal expectedRemainingQuantity) {
     var availableStock =
         stockItemRepository.findAllAvailable().stream()
-            .filter(
-                s -> s.getPurchaseOrderLine().getVendorProduct().getProduct().getId() == productId)
+            .filter(s -> s.getPurchaseOrderLine().getVendorProduct().getId() == vendorProductId)
             .toList();
     var sumQuantity =
         availableStock.stream()

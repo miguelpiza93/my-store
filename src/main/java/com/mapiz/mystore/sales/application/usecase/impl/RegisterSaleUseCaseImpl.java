@@ -33,7 +33,7 @@ public class RegisterSaleUseCaseImpl implements RegisterSaleUseCase {
   public List<Integer> apply(RegisterSaleCommand command) {
     var items = command.getItems().stream().map(SaleMapper.INSTANCE::commandItemToModel).toList();
 
-    var stockItemsByProductId = getStockItemsByProductId(items);
+    var stockItemsByProductId = getStockItemsByVendorProductId(items);
     var unitsById = getUnitsById(items);
 
     validateStockAvailability(stockItemsByProductId, items);
@@ -42,7 +42,10 @@ public class RegisterSaleUseCaseImpl implements RegisterSaleUseCase {
         items.stream()
             .map(
                 item ->
-                    enrichSale(item, stockItemsByProductId, unitsById.get(item.getUnit().getId())))
+                    enrichSale(
+                        item,
+                        stockItemsByProductId,
+                        unitsById.get(item.getVendorProductVariant().getUnit().getId())))
             .toList();
 
     var saved = saleRepository.saveAll(updatedItems);
@@ -52,17 +55,20 @@ public class RegisterSaleUseCaseImpl implements RegisterSaleUseCase {
   }
 
   private Map<Integer, Unit> getUnitsById(List<Sale> sales) {
-    var unitIds = sales.stream().map(sale -> sale.getUnit().getId()).collect(Collectors.toSet());
+    var unitIds =
+        sales.stream()
+            .map(sale -> sale.getVendorProductVariant().getUnit().getId())
+            .collect(Collectors.toSet());
     var units = unitRepository.findAllById(unitIds);
     return units.stream().collect(Collectors.toMap(Unit::getId, unit -> unit));
   }
 
   private Sale enrichSale(
-      Sale sale, Map<Integer, List<StockItem>> stockItemsByProductId, Unit unit) {
-    sale.setUnit(unit);
-    var productStock = stockItemsByProductId.get(sale.getProduct().getId());
-    var totalCost = calculateTotalCost(productStock, sale);
-    var price = getSalePriceFromStock(productStock, unit);
+      Sale sale, Map<Integer, List<StockItem>> stockItemsByVendorProductId, Unit unit) {
+    var vendorProductStock =
+        stockItemsByVendorProductId.get(sale.getVendorProductVariant().getVendorProduct().getId());
+    var totalCost = calculateTotalCost(vendorProductStock, sale);
+    var price = getSalePriceFromStock(vendorProductStock, unit);
     sale.setCost(totalCost);
     sale.setPrice(price);
     sale.setCreatedAt(Instant.now());
@@ -109,13 +115,15 @@ public class RegisterSaleUseCaseImpl implements RegisterSaleUseCase {
       Map<Integer, List<StockItem>> stockItemsByProductId, Sale item) {
     BigDecimal totalStock = getTotalStockForProduct(stockItemsByProductId, item);
     return String.format(
-        "Product id: %d, Wanted: %s, Have: %s",
-        item.getProduct().getId(), item.getQuantity(), totalStock);
+        "Vendor Product Variant id: %d, Wanted: %s, Have: %s",
+        item.getVendorProductVariant().getId(), item.getQuantity(), totalStock);
   }
 
   private BigDecimal getTotalStockForProduct(
       Map<Integer, List<StockItem>> stockItemsByProductId, Sale item) {
-    return stockItemsByProductId.get(item.getProduct().getId()).stream()
+    return stockItemsByProductId
+        .get(item.getVendorProductVariant().getVendorProduct().getId())
+        .stream()
         .map(StockItem::getQuantity)
         .reduce(BigDecimal.ZERO, BigDecimalUtils::add);
   }
@@ -129,11 +137,13 @@ public class RegisterSaleUseCaseImpl implements RegisterSaleUseCase {
     return productPrice.getSalePrice();
   }
 
-  private Map<Integer, List<StockItem>> getStockItemsByProductId(List<Sale> items) {
-    var productIds = items.stream().map(item -> item.getProduct().getId()).toList();
-    return stockItemRepository.findByProductIds(productIds).stream()
+  private Map<Integer, List<StockItem>> getStockItemsByVendorProductId(List<Sale> items) {
+    var vendorProductIds =
+        items.stream()
+            .map(item -> item.getVendorProductVariant().getVendorProduct().getId())
+            .toList();
+    return stockItemRepository.findByVendorProductIds(vendorProductIds).stream()
         .collect(
-            Collectors.groupingBy(
-                item -> item.getPurchaseOrderLine().getVendorProduct().getProduct().getId()));
+            Collectors.groupingBy(item -> item.getPurchaseOrderLine().getVendorProduct().getId()));
   }
 }

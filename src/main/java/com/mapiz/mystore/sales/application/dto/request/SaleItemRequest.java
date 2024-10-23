@@ -9,7 +9,7 @@ import lombok.Getter;
 @Getter
 @Builder
 public class SaleItemRequest {
-  private int productId;
+  private int vendorProductId;
   private BigDecimal quantity;
   private int unitId;
 }

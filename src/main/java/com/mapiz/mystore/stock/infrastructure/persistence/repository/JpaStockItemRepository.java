@@ -11,9 +11,10 @@ import org.springframework.stereotype.Repository;
 public interface JpaStockItemRepository extends JpaRepository<StockItemEntity, Integer> {
 
   @Query(
-      "SELECT s FROM stock_items s WHERE s.purchaseOrderLine.vendorProduct.product.id IN"
-          + " (:productIds) AND s.quantity > 0 ORDER BY s.purchaseOrderLine.createdAt ASC")
-  List<StockItemEntity> findByProductIds(@Param("productIds") List<Integer> productIds);
+      "SELECT s FROM stock_items s WHERE s.purchaseOrderLine.vendorProduct.id IN"
+          + " (:vendorProductIds) AND s.quantity > 0 ORDER BY s.purchaseOrderLine.createdAt ASC")
+  List<StockItemEntity> findByVendorProductIds(
+      @Param("vendorProductIds") List<Integer> vendorProductIds);
 
   @Query("SELECT s FROM stock_items s WHERE s.quantity > 0")
   List<StockItemEntity> findAllAvailable();
