@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.*;
 
 @RequiredArgsConstructor
 @RestController
-@RequestMapping(EndpointConstant.VENDORS_BASE_PATH)
+@RequestMapping(EndpointConstant.BASE_PATH)
 public class DeleteVendorController {
 
   private final DeleteVendorUseCase deleteVendorUseCase;

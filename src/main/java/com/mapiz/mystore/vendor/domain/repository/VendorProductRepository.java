@@ -4,13 +4,13 @@ import com.mapiz.mystore.vendor.domain.VendorProduct;
 import java.util.List;
 import java.util.Optional;
 
-public interface ProductVendorRepository {
+public interface VendorProductRepository {
 
   List<VendorProduct> findBySupplierId(Integer vendorId);
 
   List<VendorProduct> findBySupplierIdAndProductIdIn(Integer supplierId, List<Integer> productIds);
 
-  Optional<VendorProduct> findBySupplierIdAndProductId(Integer supplierId, Integer productId);
+  Optional<VendorProduct> findByVendorIdAndProductId(Integer supplierId, Integer productId);
 
   void deleteAll(List<VendorProduct> bySupplierId);
 

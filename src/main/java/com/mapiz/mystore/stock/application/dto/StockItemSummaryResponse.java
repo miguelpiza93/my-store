@@ -10,6 +10,8 @@ import lombok.Data;
 @Data
 public class StockItemSummaryResponse {
   private Integer vendorProductId;
+  private Integer productId;
+  private Integer vendorId;
   private String productName;
   private String vendorName;
   private BigDecimal quantity;

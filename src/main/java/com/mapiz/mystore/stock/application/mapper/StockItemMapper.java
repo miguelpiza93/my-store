@@ -13,5 +13,7 @@ public abstract class StockItemMapper {
   @Mapping(target = "vendorProductId", source = "vendorProduct.id")
   @Mapping(target = "productName", source = "vendorProduct.product.name")
   @Mapping(target = "vendorName", source = "vendorProduct.vendor.name")
+  @Mapping(target = "productId", source = "vendorProduct.product.id")
+  @Mapping(target = "vendorId", source = "vendorProduct.vendor.id")
   public abstract StockItemSummaryResponse modelToResponse(StockItemSummary summary);
 }

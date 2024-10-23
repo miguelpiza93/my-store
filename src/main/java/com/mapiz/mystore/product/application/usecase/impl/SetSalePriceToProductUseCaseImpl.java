@@ -8,7 +8,7 @@ import com.mapiz.mystore.stock.application.command.SetSalePriceToStockProductCom
 import com.mapiz.mystore.unit.domain.Unit;
 import com.mapiz.mystore.vendor.domain.VendorProduct;
 import com.mapiz.mystore.vendor.domain.VendorProductUnitVariant;
-import com.mapiz.mystore.vendor.domain.repository.ProductVendorRepository;
+import com.mapiz.mystore.vendor.domain.repository.VendorProductRepository;
 import java.math.BigDecimal;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
@@ -17,14 +17,14 @@ import org.springframework.stereotype.Component;
 @RequiredArgsConstructor
 public class SetSalePriceToProductUseCaseImpl implements SetSalePriceToProductUseCase {
 
-  private final ProductVendorRepository productVendorRepository;
+  private final VendorProductRepository productVendorRepository;
   private final UnitStockItemRepository unitStockItemRepository;
 
   @Override
   public void accept(SetSalePriceToStockProductCommand command) {
     var vendorProduct =
         productVendorRepository
-            .findBySupplierIdAndProductId(command.getVendorId(), command.getProductId())
+            .findByVendorIdAndProductId(command.getVendorId(), command.getProductId())
             .orElseThrow(() -> new ProductNotFoundException(command.getProductId()));
 
     var unitInUse =

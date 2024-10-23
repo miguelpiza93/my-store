@@ -109,7 +109,7 @@ class LinkProductsToVendorIntegrationTest extends BaseIntegrationTest {
     mockMvc
         .perform(
             MockMvcRequestBuilders.post(
-                    EndpointConstant.VENDORS_BASE_PATH + "/" + vendorId + "/link-products")
+                    EndpointConstant.BASE_PATH + "/" + vendorId + "/link-products")
                 .content(objectMapper.writeValueAsString(request))
                 .contentType(MediaType.APPLICATION_JSON))
         .andExpect(status().isOk())

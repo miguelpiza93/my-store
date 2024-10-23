@@ -35,7 +35,7 @@ class GetVendorsIntegrationTest extends BaseIntegrationTest {
             VendorResponse.builder().id(1).name("Vendor 1").build(),
             VendorResponse.builder().id(2).name("Vendor 2").build());
     mockMvc
-        .perform(MockMvcRequestBuilders.get(EndpointConstant.VENDORS_BASE_PATH))
+        .perform(MockMvcRequestBuilders.get(EndpointConstant.BASE_PATH))
         .andExpect(status().isOk())
         .andExpect(content().contentType(MediaType.APPLICATION_JSON))
         .andExpect(content().json(objectMapper.writeValueAsString(expectedVendors)));
@@ -48,7 +48,7 @@ class GetVendorsIntegrationTest extends BaseIntegrationTest {
 
     // Act & Assert
     mockMvc
-        .perform(MockMvcRequestBuilders.get(EndpointConstant.VENDORS_BASE_PATH))
+        .perform(MockMvcRequestBuilders.get(EndpointConstant.BASE_PATH))
         .andExpect(status().isOk())
         .andExpect(content().contentType(MediaType.APPLICATION_JSON))
         .andExpect(content().json("[]"));

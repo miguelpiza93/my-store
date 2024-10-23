@@ -7,7 +7,7 @@ import com.mapiz.mystore.vendor.application.exception.VendorNotFoundException;
 import com.mapiz.mystore.vendor.application.usecase.LinkProductsToVendorUseCase;
 import com.mapiz.mystore.vendor.domain.Vendor;
 import com.mapiz.mystore.vendor.domain.VendorProduct;
-import com.mapiz.mystore.vendor.domain.repository.ProductVendorRepository;
+import com.mapiz.mystore.vendor.domain.repository.VendorProductRepository;
 import com.mapiz.mystore.vendor.domain.repository.VendorRepository;
 import java.math.BigDecimal;
 import java.util.List;
@@ -21,7 +21,7 @@ public class LinkProductsToVendorUseCaseImpl implements LinkProductsToVendorUseC
 
   private final VendorRepository vendorRepository;
   private final ProductRepository productRepository;
-  private final ProductVendorRepository productVendorRepository;
+  private final VendorProductRepository productVendorRepository;
 
   @Override
   public List<VendorProduct> apply(LinkProductsToVendorCommand command) {

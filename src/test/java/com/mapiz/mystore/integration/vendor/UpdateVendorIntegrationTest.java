@@ -41,7 +41,7 @@ class UpdateVendorIntegrationTest extends BaseIntegrationTest {
             .build();
     mockMvc
         .perform(
-            MockMvcRequestBuilders.put(EndpointConstant.VENDORS_BASE_PATH + "/" + idToUpdate)
+            MockMvcRequestBuilders.put(EndpointConstant.BASE_PATH + "/" + idToUpdate)
                 .content(objectMapper.writeValueAsString(request))
                 .contentType(MediaType.APPLICATION_JSON))
         .andExpect(status().isOk())
@@ -62,7 +62,7 @@ class UpdateVendorIntegrationTest extends BaseIntegrationTest {
 
     mockMvc
         .perform(
-            MockMvcRequestBuilders.put(EndpointConstant.VENDORS_BASE_PATH + "/" + idToUpdate)
+            MockMvcRequestBuilders.put(EndpointConstant.BASE_PATH + "/" + idToUpdate)
                 .content(objectMapper.writeValueAsString(request))
                 .contentType(MediaType.APPLICATION_JSON))
         .andExpect(status().isNotFound())

@@ -2,7 +2,7 @@ package com.mapiz.mystore.vendor.infrastructure.persistence.repository.impl;
 
 import com.mapiz.mystore.shared.CycleAvoidingMappingContext;
 import com.mapiz.mystore.vendor.domain.VendorProduct;
-import com.mapiz.mystore.vendor.domain.repository.ProductVendorRepository;
+import com.mapiz.mystore.vendor.domain.repository.VendorProductRepository;
 import com.mapiz.mystore.vendor.infrastructure.persistence.entity.VendorProductEntity;
 import com.mapiz.mystore.vendor.infrastructure.persistence.mapper.VendorProductMapper;
 import com.mapiz.mystore.vendor.infrastructure.persistence.repository.JpaProductVendorRepository;
@@ -10,11 +10,12 @@ import java.util.List;
 import java.util.Optional;
 import java.util.function.Function;
 import lombok.RequiredArgsConstructor;
+import org.hibernate.Hibernate;
 import org.springframework.stereotype.Component;
 
 @Component
 @RequiredArgsConstructor
-public class ProductVendorRepositoryImpl implements ProductVendorRepository {
+public class ProductVendorRepositoryImpl implements VendorProductRepository {
 
   private final JpaProductVendorRepository jpaRepository;
 
@@ -32,9 +33,10 @@ public class ProductVendorRepositoryImpl implements ProductVendorRepository {
   }
 
   @Override
-  public Optional<VendorProduct> findBySupplierIdAndProductId(
-      Integer supplierId, Integer productId) {
-    return jpaRepository.findByVendorIdAndProductId(supplierId, productId).map(getMapper());
+  public Optional<VendorProduct> findByVendorIdAndProductId(Integer supplierId, Integer productId) {
+    var result = jpaRepository.findByVendorIdAndProductId(supplierId, productId);
+    result.ifPresent(vendorProductEntity -> Hibernate.unproxy(vendorProductEntity.getSalePrices()));
+    return result.map(getMapper());
   }
 
   @Override

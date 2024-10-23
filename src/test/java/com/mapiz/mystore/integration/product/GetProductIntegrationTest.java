@@ -5,8 +5,8 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import com.mapiz.mystore.integration.BaseIntegrationTest;
-import com.mapiz.mystore.product.application.dto.ProductDetailResponse;
 import com.mapiz.mystore.product.infrastructure.EndpointConstant;
+import com.mapiz.mystore.vendor.application.dto.VendorProductDetailResponse;
 import org.junit.jupiter.api.Test;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
@@ -17,7 +17,7 @@ class GetProductIntegrationTest extends BaseIntegrationTest {
   void testGetProduct() throws Exception {
     // Arrange
     var expectedResponse =
-        ProductDetailResponse.builder()
+        VendorProductDetailResponse.builder()
             .id(EGG_ID)
             .name(EGG_NAME)
             .description(EGG_DESCRIPTION)

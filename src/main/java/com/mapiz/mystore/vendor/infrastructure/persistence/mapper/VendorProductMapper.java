@@ -15,7 +15,6 @@ public abstract class VendorProductMapper {
 
   public static final VendorProductMapper INSTANCE = Mappers.getMapper(VendorProductMapper.class);
 
-  @Mapping(target = "salePrices", ignore = true)
   public abstract VendorProduct entityToModel(
       VendorProductEntity entity, @Context CycleAvoidingMappingContext context);
 

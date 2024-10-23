@@ -1,6 +1,6 @@
 package com.mapiz.mystore.vendor.infrastructure.api;
 
-import static com.mapiz.mystore.vendor.infrastructure.EndpointConstant.VENDORS_BASE_PATH;
+import static com.mapiz.mystore.vendor.infrastructure.EndpointConstant.BASE_PATH;
 
 import com.mapiz.mystore.vendor.application.dto.UpdateVendorRequest;
 import com.mapiz.mystore.vendor.application.dto.VendorResponse;
@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.*;
 
 @RequiredArgsConstructor
 @RestController
-@RequestMapping(VENDORS_BASE_PATH)
+@RequestMapping(BASE_PATH)
 public class UpdateVendorController {
 
   private final UpdateVendorUseCase updateVendorUseCase;

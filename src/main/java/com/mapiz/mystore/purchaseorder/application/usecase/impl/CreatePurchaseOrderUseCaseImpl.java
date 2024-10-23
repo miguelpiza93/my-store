@@ -12,7 +12,7 @@ import com.mapiz.mystore.util.BigDecimalUtils;
 import com.mapiz.mystore.vendor.application.exception.VendorNotFoundException;
 import com.mapiz.mystore.vendor.domain.Vendor;
 import com.mapiz.mystore.vendor.domain.VendorProduct;
-import com.mapiz.mystore.vendor.domain.repository.ProductVendorRepository;
+import com.mapiz.mystore.vendor.domain.repository.VendorProductRepository;
 import com.mapiz.mystore.vendor.domain.repository.VendorRepository;
 import java.math.BigDecimal;
 import java.time.Instant;
@@ -30,7 +30,7 @@ public class CreatePurchaseOrderUseCaseImpl implements CreatePurchaseOrderUseCas
 
   private final VendorRepository vendorRepository;
 
-  private final ProductVendorRepository productVendorRepository;
+  private final VendorProductRepository productVendorRepository;
 
   @Override
   public PurchaseOrder apply(CreatePurchaseOrderCommand command) {

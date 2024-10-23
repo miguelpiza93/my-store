@@ -31,7 +31,7 @@ class GetVendorByIdIntegrationTest extends BaseIntegrationTest {
     // Act & Assert
     var expectedVendor = VendorResponse.builder().id(1).name("Product 1").build();
     mockMvc
-        .perform(MockMvcRequestBuilders.get(EndpointConstant.VENDORS_BASE_PATH + "/" + idToGet))
+        .perform(MockMvcRequestBuilders.get(EndpointConstant.BASE_PATH + "/" + idToGet))
         .andExpect(status().isOk())
         .andExpect(content().contentType(MediaType.APPLICATION_JSON))
         .andExpect(content().json(objectMapper.writeValueAsString(expectedVendor)));
@@ -47,7 +47,7 @@ class GetVendorByIdIntegrationTest extends BaseIntegrationTest {
 
     // Act & Assert
     mockMvc
-        .perform(MockMvcRequestBuilders.get(EndpointConstant.VENDORS_BASE_PATH + "/" + idToGet))
+        .perform(MockMvcRequestBuilders.get(EndpointConstant.BASE_PATH + "/" + idToGet))
         .andExpect(status().isNotFound())
         .andExpect(content().contentType(MediaType.APPLICATION_JSON))
         .andExpect(content().json(objectMapper.writeValueAsString(expectedApiError)));

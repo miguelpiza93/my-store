@@ -52,7 +52,7 @@ class CreateVendorIntegrationTest extends BaseIntegrationTest {
     // Act & Assert
     mockMvc
         .perform(
-            MockMvcRequestBuilders.post(EndpointConstant.VENDORS_BASE_PATH)
+            MockMvcRequestBuilders.post(EndpointConstant.BASE_PATH)
                 .content(objectMapper.writeValueAsString(request))
                 .contentType(MediaType.APPLICATION_JSON))
         .andExpect(status().isBadRequest())
@@ -66,7 +66,7 @@ class CreateVendorIntegrationTest extends BaseIntegrationTest {
       CreateVendorRequest request, CreateVendorResponse expectedVendor) throws Exception {
     mockMvc
         .perform(
-            MockMvcRequestBuilders.post(EndpointConstant.VENDORS_BASE_PATH)
+            MockMvcRequestBuilders.post(EndpointConstant.BASE_PATH)
                 .content(objectMapper.writeValueAsString(request))
                 .contentType(MediaType.APPLICATION_JSON))
         .andExpect(status().isCreated())

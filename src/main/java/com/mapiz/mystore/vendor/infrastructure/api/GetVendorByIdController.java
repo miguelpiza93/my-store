@@ -1,6 +1,6 @@
 package com.mapiz.mystore.vendor.infrastructure.api;
 
-import static com.mapiz.mystore.vendor.infrastructure.EndpointConstant.VENDORS_BASE_PATH;
+import static com.mapiz.mystore.vendor.infrastructure.EndpointConstant.BASE_PATH;
 
 import com.mapiz.mystore.vendor.application.dto.VendorResponse;
 import com.mapiz.mystore.vendor.application.mapper.VendorMapper;
@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.*;
 
 @RequiredArgsConstructor
 @RestController
-@RequestMapping(VENDORS_BASE_PATH)
+@RequestMapping(BASE_PATH)
 public class GetVendorByIdController {
 
   private final GetVendorByIdUseCase getVendorByIdUseCase;
