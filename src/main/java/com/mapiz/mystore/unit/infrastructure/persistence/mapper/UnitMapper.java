@@ -19,5 +19,6 @@ public abstract class UnitMapper {
 
   @Mapping(source = "baseUnit", target = "isBaseUnit")
   @Mapping(source = "fractional", target = "isFractional")
-  public abstract UnitEntity modelToEntity(Unit model);
+  public abstract UnitEntity modelToEntity(
+      Unit model, @Context CycleAvoidingMappingContext context);
 }

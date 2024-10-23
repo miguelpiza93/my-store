@@ -46,7 +46,13 @@ public class ProductVendorRepositoryImpl implements VendorProductRepository {
 
   @Override
   public List<VendorProduct> saveAll(List<VendorProduct> list) {
-    var toSave = list.stream().map(VendorProductMapper.INSTANCE::modelToEntity).toList();
+    var toSave =
+        list.stream()
+            .map(
+                vendorProduct ->
+                    VendorProductMapper.INSTANCE.modelToEntity(
+                        vendorProduct, new CycleAvoidingMappingContext()))
+            .toList();
     return jpaRepository.saveAll(toSave).stream().map(getMapper()).toList();
   }
 

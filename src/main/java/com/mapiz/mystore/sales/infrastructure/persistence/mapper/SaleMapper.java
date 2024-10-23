@@ -16,7 +16,8 @@ public abstract class SaleMapper {
   public static final SaleMapper INSTANCE = Mappers.getMapper(SaleMapper.class);
 
   @Mapping(target = "id", ignore = true)
-  public abstract SaleEntity modelToEntity(Sale model);
+  public abstract SaleEntity modelToEntity(
+      Sale model, @Context CycleAvoidingMappingContext context);
 
   public abstract Sale entityToModel(
       SaleEntity saleEntity, @Context CycleAvoidingMappingContext context);

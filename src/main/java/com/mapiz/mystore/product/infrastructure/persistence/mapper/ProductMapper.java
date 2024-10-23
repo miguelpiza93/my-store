@@ -16,5 +16,6 @@ public abstract class ProductMapper {
   public abstract Product toDomain(
       ProductEntity productEntity, @Context CycleAvoidingMappingContext context);
 
-  public abstract ProductEntity toEntity(Product product);
+  public abstract ProductEntity toEntity(
+      Product product, @Context CycleAvoidingMappingContext context);
 }

@@ -37,8 +37,9 @@ public class SetSalePriceToProductIntegrationTest extends BaseIntegrationTest {
                     EndpointConstant.BASE_PATH
                         + "/"
                         + productIdToSetSalePrice
-                        + "/prices/"
-                        + KIKES_ID)
+                        + "/vendors/"
+                        + KIKES_ID
+                        + "/prices")
                 .content(objectMapper.writeValueAsString(request))
                 .contentType(MediaType.APPLICATION_JSON))
         .andExpect(status().isAccepted());
@@ -70,8 +71,9 @@ public class SetSalePriceToProductIntegrationTest extends BaseIntegrationTest {
                     EndpointConstant.BASE_PATH
                         + "/"
                         + productIdToSetSalePrice
-                        + "/prices/"
-                        + KIKES_ID)
+                        + "/vendors/"
+                        + KIKES_ID
+                        + "/prices")
                 .content(objectMapper.writeValueAsString(request))
                 .contentType(MediaType.APPLICATION_JSON))
         .andExpect(status().isNotFound())

@@ -33,7 +33,8 @@ public class ProductRepositoryImpl implements ProductRepository {
 
   @Override
   public Product save(Product product) {
-    ProductEntity entity = ProductMapper.INSTANCE.toEntity(product);
+    ProductEntity entity =
+        ProductMapper.INSTANCE.toEntity(product, new CycleAvoidingMappingContext());
     return ProductMapper.INSTANCE.toDomain(
         jpaRepository.save(entity), new CycleAvoidingMappingContext());
   }

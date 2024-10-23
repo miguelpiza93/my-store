@@ -19,7 +19,8 @@ public class UnitStockItemRepositoryImpl implements UnitStockItemRepository {
 
   @Override
   public VendorProductUnitVariant save(VendorProductUnitVariant productPrice) {
-    var productPriceEntity = VendorProductUnitMapper.INSTANCE.toEntity(productPrice);
+    var productPriceEntity =
+        VendorProductUnitMapper.INSTANCE.toEntity(productPrice, new CycleAvoidingMappingContext());
     return VendorProductUnitMapper.INSTANCE.toDomain(
         jpaProductPriceRepository.save(productPriceEntity), new CycleAvoidingMappingContext());
   }

@@ -19,7 +19,8 @@ public abstract class VendorProductMapper {
       VendorProductEntity entity, @Context CycleAvoidingMappingContext context);
 
   @Mapping(target = "salePrices", ignore = true)
-  public abstract VendorProductEntity modelToEntity(VendorProduct model);
+  public abstract VendorProductEntity modelToEntity(
+      VendorProduct model, @Context CycleAvoidingMappingContext context);
 
   public abstract VendorProductResponse modelToProductVendorResponse(VendorProduct productVendor);
 }

@@ -17,7 +17,10 @@ public class SaleRepositoryImpl implements SaleRepository {
 
   @Override
   public List<Sale> saveAll(List<Sale> models) {
-    var entities = models.stream().map(SaleMapper.INSTANCE::modelToEntity).toList();
+    var entities =
+        models.stream()
+            .map(sale -> SaleMapper.INSTANCE.modelToEntity(sale, new CycleAvoidingMappingContext()))
+            .toList();
     return jpaSaleRepository.saveAll(entities).stream()
         .map(entity -> SaleMapper.INSTANCE.entityToModel(entity, new CycleAvoidingMappingContext()))
         .toList();

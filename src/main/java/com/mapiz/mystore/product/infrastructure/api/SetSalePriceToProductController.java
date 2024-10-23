@@ -17,7 +17,7 @@ public class SetSalePriceToProductController {
 
   private final SetSalePriceToProductUseCase setSalePriceToProductUseCase;
 
-  @PatchMapping("/{productId}/prices/{vendorId}")
+  @PatchMapping("/{productId}/vendors/{vendorId}/prices")
   public @ResponseBody ResponseEntity<Void> setSalePrice(
       @PathVariable Integer productId,
       @PathVariable Integer vendorId,

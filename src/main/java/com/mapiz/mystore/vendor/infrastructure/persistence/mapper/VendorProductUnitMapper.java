@@ -8,13 +8,14 @@ import org.mapstruct.Context;
 import org.mapstruct.Mapper;
 import org.mapstruct.factory.Mappers;
 
-@Mapper(uses = {UnitMapper.class, VendorProductMapper.class})
+@Mapper(uses = {UnitMapper.class})
 public abstract class VendorProductUnitMapper {
 
   public static final VendorProductUnitMapper INSTANCE =
       Mappers.getMapper(VendorProductUnitMapper.class);
 
-  public abstract VendorProductUnitVariantEntity toEntity(VendorProductUnitVariant productPrice);
+  public abstract VendorProductUnitVariantEntity toEntity(
+      VendorProductUnitVariant productPrice, @Context CycleAvoidingMappingContext context);
 
   public abstract VendorProductUnitVariant toDomain(
       VendorProductUnitVariantEntity productPriceEntity,
