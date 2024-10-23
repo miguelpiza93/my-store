@@ -12,8 +12,7 @@ public class StockItemSummaryResponse {
   private Integer vendorProductId;
   private Integer productId;
   private Integer vendorId;
-  private String productName;
-  private String vendorName;
+  private String fullDescription;
   private BigDecimal quantity;
   private BigDecimal weightedCost;
 }
