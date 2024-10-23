@@ -2,7 +2,10 @@ package com.mapiz.mystore.product.domain;
 
 import com.mapiz.mystore.unit.domain.Conversion;
 import com.mapiz.mystore.unit.domain.Unit;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -25,5 +28,17 @@ public class Product {
         .filter(conversion -> conversion.getToUnit().getId() == unitId)
         .map(Conversion::getToUnit)
         .findFirst();
+  }
+
+  public List<Unit> getAllUnits() {
+    var result =
+        referenceUnit.getUnitConversions().stream()
+            .map(Conversion::getToUnit)
+            .collect(
+                Collectors.toCollection(
+                    () -> new ArrayList<>(referenceUnit.getUnitConversions().size() + 1)));
+
+    result.add(referenceUnit);
+    return result;
   }
 }
