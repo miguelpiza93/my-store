@@ -6,6 +6,7 @@ import com.mapiz.mystore.util.BigDecimalUtils;
 import java.math.BigDecimal;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -24,25 +25,21 @@ public class VendorProduct {
 
   public List<VendorProductUnitVariant> getSalePrices() {
     return Optional.ofNullable(salePrices)
-        .filter(salePrices -> !salePrices.isEmpty())
-        .map(this::completeSalePrices)
+        .map(this::completeWithDefaults)
         .orElseGet(this::getInitialSalePricesList);
   }
 
-  private List<VendorProductUnitVariant> completeSalePrices(
-      List<VendorProductUnitVariant> configuredPrices) {
-    var allExpectedPrices = getInitialSalePricesList();
-    return allExpectedPrices.stream()
-        .map(initialPrice -> getVariant(configuredPrices, initialPrice))
-        .toList();
-  }
+  private List<VendorProductUnitVariant> completeWithDefaults(
+      List<VendorProductUnitVariant> salePrices) {
+    var configuredPricesMap =
+        salePrices.stream()
+            .collect(Collectors.toMap(variant -> variant.getUnit().getId(), variant -> variant));
 
-  private static VendorProductUnitVariant getVariant(
-      List<VendorProductUnitVariant> configuredPrices, VendorProductUnitVariant initialPrice) {
-    return configuredPrices.stream()
-        .filter(price -> price.getUnit().getId().equals(initialPrice.getUnit().getId()))
-        .findFirst()
-        .orElse(initialPrice);
+    return getInitialSalePricesList().stream()
+        .map(
+            initialPrice ->
+                configuredPricesMap.getOrDefault(initialPrice.getUnit().getId(), initialPrice))
+        .toList();
   }
 
   private List<VendorProductUnitVariant> getInitialSalePricesList() {
@@ -67,8 +64,8 @@ public class VendorProduct {
         + product
         + ", price="
         + price
-        + "Prices"
-        + salePrices
+        + ", salePricesCount="
+        + (salePrices == null ? 0 : salePrices.size())
         + '}';
   }
 }
