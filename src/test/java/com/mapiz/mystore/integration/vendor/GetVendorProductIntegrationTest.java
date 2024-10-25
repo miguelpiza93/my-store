@@ -13,7 +13,6 @@ import com.mapiz.mystore.vendor.application.dto.VendorProductPriceDetail;
 import com.mapiz.mystore.vendor.infrastructure.EndpointConstant;
 import java.util.List;
 import java.util.Set;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
@@ -24,7 +23,6 @@ class GetVendorProductIntegrationTest extends BaseIntegrationTest {
   @Autowired private UnitRepositoryImpl unitRepository;
 
   @Test
-  @Disabled
   void testGetVendorProductWithPrices() throws Exception {
     // Arrange
     var expectedUnits =

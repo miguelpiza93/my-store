@@ -5,7 +5,7 @@ import com.mapiz.mystore.unit.domain.Unit;
 import com.mapiz.mystore.util.BigDecimalUtils;
 import java.math.BigDecimal;
 import java.util.List;
-import java.util.Objects;
+import java.util.Optional;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -23,9 +23,30 @@ public class VendorProduct {
   private List<VendorProductUnitVariant> salePrices;
 
   public List<VendorProductUnitVariant> getSalePrices() {
-    return Objects.nonNull(salePrices)
-        ? salePrices
-        : this.product.getAllUnits().stream().map(this::initProductVariant).toList();
+    return Optional.ofNullable(salePrices)
+        .filter(salePrices -> !salePrices.isEmpty())
+        .map(this::completeSalePrices)
+        .orElseGet(this::getInitialSalePricesList);
+  }
+
+  private List<VendorProductUnitVariant> completeSalePrices(
+      List<VendorProductUnitVariant> configuredPrices) {
+    var allExpectedPrices = getInitialSalePricesList();
+    return allExpectedPrices.stream()
+        .map(initialPrice -> getVariant(configuredPrices, initialPrice))
+        .toList();
+  }
+
+  private static VendorProductUnitVariant getVariant(
+      List<VendorProductUnitVariant> configuredPrices, VendorProductUnitVariant initialPrice) {
+    return configuredPrices.stream()
+        .filter(price -> price.getUnit().getId().equals(initialPrice.getUnit().getId()))
+        .findFirst()
+        .orElse(initialPrice);
+  }
+
+  private List<VendorProductUnitVariant> getInitialSalePricesList() {
+    return product.getAllUnits().stream().map(this::initProductVariant).toList();
   }
 
   private VendorProductUnitVariant initProductVariant(Unit unit) {
