@@ -20,7 +20,6 @@ import com.mapiz.mystore.util.BigDecimalUtils;
 import java.io.UnsupportedEncodingException;
 import java.math.BigDecimal;
 import java.util.List;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.mock.mockito.SpyBean;
 import org.springframework.http.HttpStatus;
@@ -28,7 +27,6 @@ import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
-@Disabled
 class RegisterSaleIntegrationTest extends BaseIntegrationTest {
 
   @SpyBean private JpaSaleRepository saleRepository;

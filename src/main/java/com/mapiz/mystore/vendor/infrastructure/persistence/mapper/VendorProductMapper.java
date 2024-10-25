@@ -12,8 +12,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 @Mapper(componentModel = "spring")
 public abstract class VendorProductMapper {
 
-  //  @Autowired protected VendorProductUnitVariantInfraMapper vendorProductUnitVariantMapper;
-
   @Autowired protected ProductMapper productMapper;
 
   @Mappings({
@@ -33,39 +31,12 @@ public abstract class VendorProductMapper {
   @AfterMapping
   public void postMappingModel(VendorProductEntity entity, @MappingTarget VendorProduct target) {
     setProductToModel(entity, target);
-    //    setSalePricesToModel(entity, target);
   }
 
   @AfterMapping
   public void postMappingEntity(VendorProduct source, @MappingTarget VendorProductEntity target) {
     setProductToEntity(source, target);
   }
-
-  //  private void setSalePricesToModel(VendorProductEntity entity, VendorProduct target) {
-  //    if (entity.getSalePrices() == null) {
-  //      return;
-  //    }
-  //
-  //    List<VendorProductUnitVariant> salePrices =
-  //        entity.getSalePrices().stream()
-  //            .map(vendorProductUnitVariantMapper::toDomain)
-  //            .collect(Collectors.toList());
-  //
-  //    target.setSalePrices(salePrices);
-  //  }
-
-  //  private void setSalePricesToEntity(VendorProduct source, VendorProductEntity target) {
-  //    if (source.getSalePrices() == null) {
-  //      return;
-  //    }
-  //
-  //    List<VendorProductUnitVariantEntity> salePrices =
-  //        source.getSalePrices().stream()
-  //            .map(vendorProductUnitVariantMapper::toEntity)
-  //            .collect(Collectors.toList());
-  //
-  //    target.setSalePrices(salePrices);
-  //  }
 
   private void setProductToModel(VendorProductEntity entity, VendorProduct target) {
     Product product = productMapper.toDomain(entity.getProduct());
