@@ -5,11 +5,9 @@ import com.mapiz.mystore.product.domain.repository.ProductRepository;
 import com.mapiz.mystore.product.infrastructure.persistence.ProductEntity;
 import com.mapiz.mystore.product.infrastructure.persistence.mapper.ProductMapper;
 import com.mapiz.mystore.product.infrastructure.persistence.repository.JpaProductRepository;
-import com.mapiz.mystore.shared.CycleAvoidingMappingContext;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
-import java.util.function.Function;
 import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
@@ -18,25 +16,26 @@ import org.springframework.stereotype.Component;
 @RequiredArgsConstructor
 public class ProductRepositoryImpl implements ProductRepository {
 
+  private final ProductMapper productMapper;
   private final JpaProductRepository jpaRepository;
 
   @Override
   public Optional<Product> findById(Integer id) {
     var entity = jpaRepository.findById(id);
-    return entity.map(getMapper());
+    return entity.map(productMapper::toDomain);
   }
 
   @Override
   public List<Product> findAll() {
-    return jpaRepository.findAll().stream().map(getMapper()).collect(Collectors.toList());
+    return jpaRepository.findAll().stream()
+        .map(productMapper::toDomain)
+        .collect(Collectors.toList());
   }
 
   @Override
   public Product save(Product product) {
-    ProductEntity entity =
-        ProductMapper.INSTANCE.toEntity(product, new CycleAvoidingMappingContext());
-    return ProductMapper.INSTANCE.toDomain(
-        jpaRepository.save(entity), new CycleAvoidingMappingContext());
+    ProductEntity entity = productMapper.toEntity(product);
+    return productMapper.toDomain(jpaRepository.save(entity));
   }
 
   @Override
@@ -46,10 +45,6 @@ public class ProductRepositoryImpl implements ProductRepository {
 
   @Override
   public List<Product> findAllById(Set<Integer> ids) {
-    return jpaRepository.findAllById(ids).stream().map(getMapper()).toList();
-  }
-
-  private Function<ProductEntity, Product> getMapper() {
-    return product -> ProductMapper.INSTANCE.toDomain(product, new CycleAvoidingMappingContext());
+    return jpaRepository.findAllById(ids).stream().map(productMapper::toDomain).toList();
   }
 }

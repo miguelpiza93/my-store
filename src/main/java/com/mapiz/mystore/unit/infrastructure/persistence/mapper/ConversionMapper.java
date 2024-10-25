@@ -1,19 +1,32 @@
 package com.mapiz.mystore.unit.infrastructure.persistence.mapper;
 
+import com.mapiz.mystore.shared.CycleAvoidingMappingContext;
 import com.mapiz.mystore.unit.domain.Conversion;
+import com.mapiz.mystore.unit.domain.Unit;
 import com.mapiz.mystore.unit.infrastructure.persistence.entity.ConversionEntity;
-import org.mapstruct.Mapper;
-import org.mapstruct.Mapping;
-import org.mapstruct.factory.Mappers;
+import org.mapstruct.*;
 
-@Mapper
+@Mapper(componentModel = "spring")
 public abstract class ConversionMapper {
 
-  public static final ConversionMapper INSTANCE = Mappers.getMapper(ConversionMapper.class);
+  @Mappings({
+    @Mapping(target = "fromUnit", ignore = true),
+    @Mapping(target = "toUnit", ignore = true)
+  })
+  public abstract Conversion entityToModel(
+      ConversionEntity entity, @Context CycleAvoidingMappingContext context);
 
-  @Mapping(target = "fromUnit", ignore = true)
-  @Mapping(target = "toUnit.isFractional", source = "toUnit.fractional")
-  @Mapping(target = "toUnit.isBaseUnit", source = "toUnit.baseUnit")
-  @Mapping(target = "toUnit.unitConversions", ignore = true)
-  public abstract Conversion entityToModel(ConversionEntity entity);
+  @AfterMapping
+  public void postMapping(ConversionEntity entity, @MappingTarget Conversion target) {
+    var toUnitEntity = entity.getToUnit();
+    var toUnit =
+        Unit.builder()
+            .id(toUnitEntity.getId())
+            .name(toUnitEntity.getName())
+            .symbol(toUnitEntity.getSymbol())
+            .isFractional(toUnitEntity.isFractional())
+            .isBaseUnit(toUnitEntity.isBaseUnit())
+            .build();
+    target.setToUnit(toUnit);
+  }
 }

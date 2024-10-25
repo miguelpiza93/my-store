@@ -13,17 +13,18 @@ import org.springframework.stereotype.Component;
 @RequiredArgsConstructor
 public class VendorRepositoryImpl implements VendorRepository {
 
+  private final VendorMapper vendorMapper;
   private final JpaVendorRepository jpaRepository;
 
   @Override
   public Optional<Vendor> findById(Integer vendorId) {
-    return jpaRepository.findById(vendorId).map(VendorMapper.INSTANCE::entityToModel);
+    return jpaRepository.findById(vendorId).map(vendorMapper::entityToModel);
   }
 
   @Override
   public Vendor save(Vendor vendor) {
-    var entity = jpaRepository.save(VendorMapper.INSTANCE.modelToEntity(vendor));
-    return VendorMapper.INSTANCE.entityToModel(entity);
+    var entity = jpaRepository.save(vendorMapper.modelToEntity(vendor));
+    return vendorMapper.entityToModel(entity);
   }
 
   @Override
@@ -33,6 +34,6 @@ public class VendorRepositoryImpl implements VendorRepository {
 
   @Override
   public List<Vendor> findAll() {
-    return jpaRepository.findAll().stream().map(VendorMapper.INSTANCE::entityToModel).toList();
+    return jpaRepository.findAll().stream().map(vendorMapper::entityToModel).toList();
   }
 }

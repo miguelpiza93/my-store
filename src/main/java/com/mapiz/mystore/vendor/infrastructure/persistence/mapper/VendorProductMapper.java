@@ -1,26 +1,79 @@
 package com.mapiz.mystore.vendor.infrastructure.persistence.mapper;
 
+import com.mapiz.mystore.product.domain.Product;
+import com.mapiz.mystore.product.infrastructure.persistence.ProductEntity;
 import com.mapiz.mystore.product.infrastructure.persistence.mapper.ProductMapper;
-import com.mapiz.mystore.shared.CycleAvoidingMappingContext;
 import com.mapiz.mystore.vendor.application.dto.VendorProductResponse;
 import com.mapiz.mystore.vendor.domain.VendorProduct;
 import com.mapiz.mystore.vendor.infrastructure.persistence.entity.VendorProductEntity;
-import org.mapstruct.Context;
-import org.mapstruct.Mapper;
-import org.mapstruct.Mapping;
-import org.mapstruct.factory.Mappers;
+import org.mapstruct.*;
+import org.springframework.beans.factory.annotation.Autowired;
 
-@Mapper(uses = {ProductMapper.class, VendorProductUnitMapper.class, VendorMapper.class})
+@Mapper(componentModel = "spring")
 public abstract class VendorProductMapper {
 
-  public static final VendorProductMapper INSTANCE = Mappers.getMapper(VendorProductMapper.class);
+  //  @Autowired protected VendorProductUnitVariantInfraMapper vendorProductUnitVariantMapper;
 
-  public abstract VendorProduct entityToModel(
-      VendorProductEntity entity, @Context CycleAvoidingMappingContext context);
+  @Autowired protected ProductMapper productMapper;
 
-  @Mapping(target = "salePrices", ignore = true)
-  public abstract VendorProductEntity modelToEntity(
-      VendorProduct model, @Context CycleAvoidingMappingContext context);
+  @Mappings({
+    @Mapping(target = "salePrices", ignore = true),
+    @Mapping(target = "product", ignore = true)
+  })
+  public abstract VendorProduct entityToModel(VendorProductEntity entity);
+
+  @Mappings({
+    @Mapping(target = "salePrices", ignore = true),
+    @Mapping(target = "product", ignore = true)
+  })
+  public abstract VendorProductEntity modelToEntity(VendorProduct model);
 
   public abstract VendorProductResponse modelToProductVendorResponse(VendorProduct productVendor);
+
+  @AfterMapping
+  public void postMappingModel(VendorProductEntity entity, @MappingTarget VendorProduct target) {
+    setProductToModel(entity, target);
+    //    setSalePricesToModel(entity, target);
+  }
+
+  @AfterMapping
+  public void postMappingEntity(VendorProduct source, @MappingTarget VendorProductEntity target) {
+    setProductToEntity(source, target);
+  }
+
+  //  private void setSalePricesToModel(VendorProductEntity entity, VendorProduct target) {
+  //    if (entity.getSalePrices() == null) {
+  //      return;
+  //    }
+  //
+  //    List<VendorProductUnitVariant> salePrices =
+  //        entity.getSalePrices().stream()
+  //            .map(vendorProductUnitVariantMapper::toDomain)
+  //            .collect(Collectors.toList());
+  //
+  //    target.setSalePrices(salePrices);
+  //  }
+
+  //  private void setSalePricesToEntity(VendorProduct source, VendorProductEntity target) {
+  //    if (source.getSalePrices() == null) {
+  //      return;
+  //    }
+  //
+  //    List<VendorProductUnitVariantEntity> salePrices =
+  //        source.getSalePrices().stream()
+  //            .map(vendorProductUnitVariantMapper::toEntity)
+  //            .collect(Collectors.toList());
+  //
+  //    target.setSalePrices(salePrices);
+  //  }
+
+  private void setProductToModel(VendorProductEntity entity, VendorProduct target) {
+    Product product = productMapper.toDomain(entity.getProduct());
+    target.setProduct(product);
+  }
+
+  private void setProductToEntity(VendorProduct source, VendorProductEntity target) {
+    ProductEntity product = productMapper.toEntity(source.getProduct());
+    target.setProduct(product);
+  }
 }

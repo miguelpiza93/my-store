@@ -1,6 +1,5 @@
 package com.mapiz.mystore.vendor.infrastructure.persistence.repository.impl;
 
-import com.mapiz.mystore.shared.CycleAvoidingMappingContext;
 import com.mapiz.mystore.vendor.domain.VendorProduct;
 import com.mapiz.mystore.vendor.domain.repository.VendorProductRepository;
 import com.mapiz.mystore.vendor.infrastructure.persistence.entity.VendorProductEntity;
@@ -17,6 +16,7 @@ import org.springframework.stereotype.Component;
 @RequiredArgsConstructor
 public class ProductVendorRepositoryImpl implements VendorProductRepository {
 
+  private final VendorProductMapper vendorProductMapper;
   private final JpaProductVendorRepository jpaRepository;
 
   @Override
@@ -46,19 +46,11 @@ public class ProductVendorRepositoryImpl implements VendorProductRepository {
 
   @Override
   public List<VendorProduct> saveAll(List<VendorProduct> list) {
-    var toSave =
-        list.stream()
-            .map(
-                vendorProduct ->
-                    VendorProductMapper.INSTANCE.modelToEntity(
-                        vendorProduct, new CycleAvoidingMappingContext()))
-            .toList();
+    var toSave = list.stream().map(vendorProductMapper::modelToEntity).toList();
     return jpaRepository.saveAll(toSave).stream().map(getMapper()).toList();
   }
 
   private Function<VendorProductEntity, VendorProduct> getMapper() {
-    return productVendor ->
-        VendorProductMapper.INSTANCE.entityToModel(
-            productVendor, new CycleAvoidingMappingContext());
+    return vendorProductMapper::entityToModel;
   }
 }

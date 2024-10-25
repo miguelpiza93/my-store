@@ -9,16 +9,16 @@ import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.factory.Mappers;
 
-@Mapper
-public abstract class VendorMapper {
+@Mapper()
+public interface VendorMapper {
 
-  public static final VendorMapper INSTANCE = Mappers.getMapper(VendorMapper.class);
-
-  @Mapping(target = "id", ignore = true)
-  public abstract Vendor commandToModel(CreateVendorCommand command);
+  VendorMapper INSTANCE = Mappers.getMapper(VendorMapper.class);
 
   @Mapping(target = "id", ignore = true)
-  public abstract UpdateVendorCommand updateRequestToCommand(UpdateVendorRequest request);
+  Vendor commandToModel(CreateVendorCommand command);
 
-  public abstract VendorResponse modelToVendorResponse(Vendor result);
+  @Mapping(target = "id", ignore = true)
+  UpdateVendorCommand updateRequestToCommand(UpdateVendorRequest request);
+
+  VendorResponse modelToVendorResponse(Vendor result);
 }

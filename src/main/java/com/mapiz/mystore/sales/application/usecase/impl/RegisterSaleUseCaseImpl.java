@@ -3,9 +3,11 @@ package com.mapiz.mystore.sales.application.usecase.impl;
 import com.mapiz.mystore.product.domain.repository.UnitStockItemRepository;
 import com.mapiz.mystore.sales.application.command.RegisterSaleCommand;
 import com.mapiz.mystore.sales.application.exception.NotEnoughStockException;
-import com.mapiz.mystore.sales.application.mapper.SaleMapper;
+import com.mapiz.mystore.sales.application.mapper.SaleLineMapper;
 import com.mapiz.mystore.sales.application.usecase.RegisterSaleUseCase;
 import com.mapiz.mystore.sales.domain.Sale;
+import com.mapiz.mystore.sales.domain.SaleLine;
+import com.mapiz.mystore.sales.domain.repository.SaleLineRepository;
 import com.mapiz.mystore.sales.domain.repository.SaleRepository;
 import com.mapiz.mystore.stock.domain.StockItem;
 import com.mapiz.mystore.stock.domain.repository.StockItemRepository;
@@ -25,67 +27,87 @@ import org.springframework.stereotype.Component;
 public class RegisterSaleUseCaseImpl implements RegisterSaleUseCase {
 
   private final SaleRepository saleRepository;
+  private final SaleLineRepository saleLineRepository;
   private final StockItemRepository stockItemRepository;
   private final UnitStockItemRepository productPriceRepository;
   private final UnitRepository unitRepository;
 
   @Override
-  public List<Integer> apply(RegisterSaleCommand command) {
-    var items = command.getItems().stream().map(SaleMapper.INSTANCE::commandItemToModel).toList();
-
-    var stockItemsByProductId = getStockItemsByVendorProductId(items);
-    var unitsById = getUnitsById(items);
-
-    validateStockAvailability(stockItemsByProductId, items);
-
-    var updatedItems =
-        items.stream()
-            .map(
-                item ->
-                    enrichSale(
-                        item,
-                        stockItemsByProductId,
-                        unitsById.get(item.getVendorProductVariant().getUnit().getId())))
-            .toList();
-
-    var saved = saleRepository.saveAll(updatedItems);
-    stockItemRepository.saveAll(
-        stockItemsByProductId.values().stream().flatMap(List::stream).toList());
-    return saved.stream().map(Sale::getId).toList();
+  public Integer apply(RegisterSaleCommand command) {
+    var savedSale = saveSale();
+    saveLines(command, savedSale);
+    return 0;
   }
 
-  private Map<Integer, Unit> getUnitsById(List<Sale> sales) {
+  private Sale saveSale() {
+    return saleRepository.save(Sale.builder().createdAt(Instant.now()).status("CLOSED").build());
+  }
+
+  private void saveLines(RegisterSaleCommand command, Sale savedSale) {
+    var lines =
+        command.getItems().stream().map(SaleLineMapper.INSTANCE::commandItemToModel).toList();
+    var stockItemsByVendorProductId = getStockItemsByVendorProductId(lines);
+    var unitsById = getUnitsById(lines);
+
+    validateStockAvailability(stockItemsByVendorProductId, lines);
+    var linesToSave = getLinesToSave(lines, stockItemsByVendorProductId, unitsById, savedSale);
+    saleLineRepository.saveAll(linesToSave);
+    stockItemRepository.saveAll(
+        stockItemsByVendorProductId.values().stream().flatMap(List::stream).toList());
+  }
+
+  private List<SaleLine> getLinesToSave(
+      List<SaleLine> lines,
+      Map<Integer, List<StockItem>> stockItemsByVendorProductId,
+      Map<Integer, Unit> unitsById,
+      Sale savedSale) {
+    return lines.stream()
+        .map(
+            line ->
+                enrichSale(
+                    line,
+                    stockItemsByVendorProductId,
+                    unitsById.get(line.getVendorProductVariant().getUnit().getId()),
+                    savedSale))
+        .toList();
+  }
+
+  private Map<Integer, Unit> getUnitsById(List<SaleLine> lines) {
     var unitIds =
-        sales.stream()
-            .map(sale -> sale.getVendorProductVariant().getUnit().getId())
+        lines.stream()
+            .map(line -> line.getVendorProductVariant().getUnit().getId())
             .collect(Collectors.toSet());
     var units = unitRepository.findAllById(unitIds);
     return units.stream().collect(Collectors.toMap(Unit::getId, unit -> unit));
   }
 
-  private Sale enrichSale(
-      Sale sale, Map<Integer, List<StockItem>> stockItemsByVendorProductId, Unit unit) {
+  private SaleLine enrichSale(
+      SaleLine line,
+      Map<Integer, List<StockItem>> stockItemsByVendorProductId,
+      Unit unit,
+      Sale savedSale) {
+    line.getVendorProductVariant().setUnit(unit);
     var vendorProductStock =
-        stockItemsByVendorProductId.get(sale.getVendorProductVariant().getVendorProduct().getId());
-    var totalCost = calculateTotalCost(vendorProductStock, sale);
+        stockItemsByVendorProductId.get(line.getVendorProductVariant().getVendorProduct().getId());
+    var totalCost = calculateTotalCost(vendorProductStock, line);
     var price = getSalePriceFromStock(vendorProductStock, unit);
-    sale.setCost(totalCost);
-    sale.setPrice(price);
-    sale.setCreatedAt(Instant.now());
-    return sale;
+    line.setCost(totalCost);
+    line.setUnitPrice(price);
+    line.setSale(savedSale);
+    return line;
   }
 
-  private BigDecimal calculateTotalCost(List<StockItem> stockAvailable, Sale sale) {
+  private BigDecimal calculateTotalCost(List<StockItem> stockAvailable, SaleLine line) {
     BigDecimal totalCost = BigDecimal.ZERO;
-    BigDecimal saleQuantity = sale.getBaseQuantity();
+    BigDecimal lineQuantity = line.getBaseQuantity();
     for (var productStock : stockAvailable) {
-      var deductedQuantity = productStock.deductQuantity(saleQuantity);
+      var deductedQuantity = productStock.deductQuantity(lineQuantity);
       var cost =
           BigDecimalUtils.multiply(
               deductedQuantity, productStock.getPurchaseOrderLine().getCostPerBaseUnit());
       totalCost = BigDecimalUtils.add(totalCost, cost);
-      saleQuantity = BigDecimalUtils.subtract(saleQuantity, deductedQuantity);
-      if (BigDecimalUtils.compare(saleQuantity, BigDecimal.ZERO) <= 0) {
+      lineQuantity = BigDecimalUtils.subtract(lineQuantity, deductedQuantity);
+      if (BigDecimalUtils.compare(lineQuantity, BigDecimal.ZERO) <= 0) {
         break;
       }
     }
@@ -93,7 +115,7 @@ public class RegisterSaleUseCaseImpl implements RegisterSaleUseCase {
   }
 
   private void validateStockAvailability(
-      Map<Integer, List<StockItem>> stockItemsByProductId, List<Sale> items) {
+      Map<Integer, List<StockItem>> stockItemsByProductId, List<SaleLine> items) {
     List<String> insufficientStockMessages =
         items.stream()
             .filter(item -> isStockInsufficient(stockItemsByProductId, item))
@@ -106,13 +128,13 @@ public class RegisterSaleUseCaseImpl implements RegisterSaleUseCase {
   }
 
   private boolean isStockInsufficient(
-      Map<Integer, List<StockItem>> stockItemsByProductId, Sale item) {
+      Map<Integer, List<StockItem>> stockItemsByProductId, SaleLine item) {
     BigDecimal totalStock = getTotalStockForProduct(stockItemsByProductId, item);
     return BigDecimalUtils.compare(totalStock, item.getQuantity()) < 0;
   }
 
   private String buildInsufficientStockMessage(
-      Map<Integer, List<StockItem>> stockItemsByProductId, Sale item) {
+      Map<Integer, List<StockItem>> stockItemsByProductId, SaleLine item) {
     BigDecimal totalStock = getTotalStockForProduct(stockItemsByProductId, item);
     return String.format(
         "Vendor Product Variant id: %d, Wanted: %s, Have: %s",
@@ -120,7 +142,7 @@ public class RegisterSaleUseCaseImpl implements RegisterSaleUseCase {
   }
 
   private BigDecimal getTotalStockForProduct(
-      Map<Integer, List<StockItem>> stockItemsByProductId, Sale item) {
+      Map<Integer, List<StockItem>> stockItemsByProductId, SaleLine item) {
     return stockItemsByProductId
         .get(item.getVendorProductVariant().getVendorProduct().getId())
         .stream()
@@ -137,7 +159,7 @@ public class RegisterSaleUseCaseImpl implements RegisterSaleUseCase {
     return productPrice.getSalePrice();
   }
 
-  private Map<Integer, List<StockItem>> getStockItemsByVendorProductId(List<Sale> items) {
+  private Map<Integer, List<StockItem>> getStockItemsByVendorProductId(List<SaleLine> items) {
     var vendorProductIds =
         items.stream()
             .map(item -> item.getVendorProductVariant().getVendorProduct().getId())

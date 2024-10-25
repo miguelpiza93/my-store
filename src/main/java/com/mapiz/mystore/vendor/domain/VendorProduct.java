@@ -5,12 +5,15 @@ import com.mapiz.mystore.unit.domain.Unit;
 import com.mapiz.mystore.util.BigDecimalUtils;
 import java.math.BigDecimal;
 import java.util.List;
+import java.util.Objects;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 @Builder
 @AllArgsConstructor
+@NoArgsConstructor
 @Data
 public class VendorProduct {
   private Integer id;
@@ -20,28 +23,31 @@ public class VendorProduct {
   private List<VendorProductUnitVariant> salePrices;
 
   public List<VendorProductUnitVariant> getSalePrices() {
-    initPrices();
-    return salePrices;
+    return Objects.nonNull(salePrices)
+        ? salePrices
+        : this.product.getAllUnits().stream().map(this::initProductVariant).toList();
   }
 
-  private void initPrices() {
-    this.product
-        .getReferenceUnit()
-        .getUnitConversions()
-        .forEach(conversion -> addPriceForUnit(conversion.getToUnit()));
-    addPriceForUnit(this.product.getReferenceUnit());
+  private VendorProductUnitVariant initProductVariant(Unit unit) {
+    return VendorProductUnitVariant.builder()
+        .unit(unit)
+        .salePrice(BigDecimalUtils.valueOf(BigDecimal.ZERO))
+        .build();
   }
 
-  private void addPriceForUnit(Unit unit) {
-    var isConfigured =
-        this.salePrices.stream().anyMatch(price -> price.getUnit().getId().equals(unit.getId()));
-    if (isConfigured) {
-      return;
-    }
-    this.salePrices.add(
-        VendorProductUnitVariant.builder()
-            .unit(unit)
-            .salePrice(BigDecimalUtils.valueOf(BigDecimal.ZERO))
-            .build());
+  @Override
+  public String toString() {
+    return "VendorProduct{"
+        + "id="
+        + id
+        + ", vendor="
+        + vendor
+        + ", product="
+        + product
+        + ", price="
+        + price
+        + "Prices"
+        + salePrices
+        + '}';
   }
 }

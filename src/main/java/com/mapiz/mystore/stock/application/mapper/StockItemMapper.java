@@ -7,9 +7,9 @@ import org.mapstruct.Mapping;
 import org.mapstruct.Mappings;
 import org.mapstruct.factory.Mappers;
 
-@Mapper
-public abstract class StockItemMapper {
-  public static final StockItemMapper INSTANCE = Mappers.getMapper(StockItemMapper.class);
+@Mapper()
+public interface StockItemMapper {
+  StockItemMapper INSTANCE = Mappers.getMapper(StockItemMapper.class);
 
   @Mappings({
     @Mapping(target = "vendorProductId", source = "vendorProduct.id"),
@@ -17,9 +17,9 @@ public abstract class StockItemMapper {
     @Mapping(target = "vendorId", source = "vendorProduct.vendor.id"),
     @Mapping(target = "fullDescription", expression = "java(getFullDescription(summary))")
   })
-  public abstract StockItemSummaryResponse modelToResponse(StockItemSummary summary);
+  StockItemSummaryResponse modelToResponse(StockItemSummary summary);
 
-  protected String getFullDescription(StockItemSummary summary) {
+  default String getFullDescription(StockItemSummary summary) {
     String format = "%s %s - %s";
     var product = summary.getVendorProduct().getProduct();
     var vendor = summary.getVendorProduct().getVendor();

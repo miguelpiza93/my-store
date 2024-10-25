@@ -2,6 +2,7 @@ package com.mapiz.mystore.vendor.infrastructure.persistence.entity;
 
 import com.mapiz.mystore.product.infrastructure.persistence.ProductEntity;
 import jakarta.persistence.*;
+import java.math.BigDecimal;
 import java.util.List;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -31,7 +32,7 @@ public class VendorProductEntity {
   @JoinColumn(name = "product_id", nullable = false)
   private ProductEntity product;
 
-  private double price;
+  private BigDecimal price;
 
   @OneToMany(mappedBy = "vendorProduct", fetch = FetchType.LAZY)
   private List<VendorProductUnitVariantEntity> salePrices;

@@ -6,18 +6,15 @@ import com.mapiz.mystore.vendor.application.dto.CreateVendorResponse;
 import com.mapiz.mystore.vendor.domain.Vendor;
 import com.mapiz.mystore.vendor.infrastructure.persistence.entity.VendorEntity;
 import org.mapstruct.Mapper;
-import org.mapstruct.factory.Mappers;
 
-@Mapper
-public abstract class VendorMapper {
+@Mapper(componentModel = "spring")
+public interface VendorMapper {
 
-  public static final VendorMapper INSTANCE = Mappers.getMapper(VendorMapper.class);
+  VendorEntity modelToEntity(Vendor model);
 
-  public abstract VendorEntity modelToEntity(Vendor model);
+  Vendor entityToModel(VendorEntity entity);
 
-  public abstract Vendor entityToModel(VendorEntity entity);
+  CreateVendorCommand requestToCommand(CreateVendorRequest request);
 
-  public abstract CreateVendorCommand requestToCommand(CreateVendorRequest request);
-
-  public abstract CreateVendorResponse modelToCreateVendorResponse(Vendor result);
+  CreateVendorResponse modelToCreateVendorResponse(Vendor result);
 }

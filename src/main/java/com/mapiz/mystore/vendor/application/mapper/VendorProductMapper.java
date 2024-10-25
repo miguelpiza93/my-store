@@ -9,9 +9,9 @@ import org.mapstruct.Mappings;
 import org.mapstruct.factory.Mappers;
 
 @Mapper(uses = {VendorProductUnitVariantMapper.class, UnitMapper.class})
-public abstract class VendorProductMapper {
+public interface VendorProductMapper {
 
-  public static final VendorProductMapper INSTANCE = Mappers.getMapper(VendorProductMapper.class);
+  VendorProductMapper INSTANCE = Mappers.getMapper(VendorProductMapper.class);
 
   @Mappings({
     @Mapping(target = "referenceUnit", source = "product.referenceUnit.name"),
@@ -20,5 +20,5 @@ public abstract class VendorProductMapper {
     @Mapping(target = "vendorName", source = "vendor.name"),
     @Mapping(target = "units", source = "product.allUnits")
   })
-  public abstract VendorProductDetailResponse modelToDetailResponse(VendorProduct vendorProduct);
+  VendorProductDetailResponse modelToDetailResponse(VendorProduct vendorProduct);
 }

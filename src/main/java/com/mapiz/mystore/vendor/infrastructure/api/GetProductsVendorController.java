@@ -15,14 +15,14 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping(BASE_PATH)
 public class GetProductsVendorController {
 
+  private final VendorProductMapper vendorProductMapper;
   private final GetProductsVendorUseCase getProductsVendorUseCase;
 
   @GetMapping("/{id}/products")
   public @ResponseBody ResponseEntity<List<VendorProductResponse>> getProductsVendor(
       @PathVariable Integer id) {
     var result = getProductsVendorUseCase.apply(id);
-    var response =
-        result.stream().map(VendorProductMapper.INSTANCE::modelToProductVendorResponse).toList();
+    var response = result.stream().map(vendorProductMapper::modelToProductVendorResponse).toList();
     return ResponseEntity.ok(response);
   }
 }

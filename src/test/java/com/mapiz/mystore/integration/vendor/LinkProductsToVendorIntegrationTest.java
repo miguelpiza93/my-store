@@ -9,6 +9,7 @@ import com.mapiz.mystore.integration.BaseIntegrationTest;
 import com.mapiz.mystore.product.application.dto.ProductResponse;
 import com.mapiz.mystore.product.infrastructure.persistence.ProductEntity;
 import com.mapiz.mystore.product.infrastructure.persistence.repository.JpaProductRepository;
+import com.mapiz.mystore.util.BigDecimalUtils;
 import com.mapiz.mystore.vendor.application.dto.LinkProductsToVendorRequest;
 import com.mapiz.mystore.vendor.application.dto.VendorProductResponse;
 import com.mapiz.mystore.vendor.infrastructure.EndpointConstant;
@@ -52,13 +53,13 @@ class LinkProductsToVendorIntegrationTest extends BaseIntegrationTest {
                 .id(1)
                 .vendor(savedVendor)
                 .product(savedProducts.get(0))
-                .price(1.0)
+                .price(BigDecimalUtils.valueOf(1.0))
                 .build(),
             VendorProductEntity.builder()
                 .id(2)
                 .vendor(savedVendor)
                 .product(savedProducts.get(1))
-                .price(2.0)
+                .price(BigDecimalUtils.valueOf(1.0))
                 .build());
     when(productVendorRepository.findByVendorId(vendorId)).thenReturn(linkedProducts);
     when(productVendorRepository.saveAll(any()))
@@ -68,13 +69,13 @@ class LinkProductsToVendorIntegrationTest extends BaseIntegrationTest {
                     .id(1)
                     .vendor(savedVendor)
                     .product(savedProducts.get(0))
-                    .price(10.0)
+                    .price(BigDecimalUtils.valueOf(10.0))
                     .build(),
                 VendorProductEntity.builder()
                     .id(2)
                     .vendor(savedVendor)
                     .product(savedProducts.get(1))
-                    .price(20.0)
+                    .price(BigDecimalUtils.valueOf(20.0))
                     .build()));
 
     // Act & Assert

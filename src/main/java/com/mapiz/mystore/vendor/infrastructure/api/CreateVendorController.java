@@ -16,13 +16,14 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping(EndpointConstant.BASE_PATH)
 public class CreateVendorController {
 
+  private final VendorMapper vendorMapper;
   private final CreateVendorUseCase createVendorUseCase;
 
   @PostMapping
   public @ResponseBody ResponseEntity<CreateVendorResponse> createVendor(
       @Valid @RequestBody CreateVendorRequest request) {
-    var result = createVendorUseCase.apply(VendorMapper.INSTANCE.requestToCommand(request));
-    var response = VendorMapper.INSTANCE.modelToCreateVendorResponse(result);
+    var result = createVendorUseCase.apply(vendorMapper.requestToCommand(request));
+    var response = vendorMapper.modelToCreateVendorResponse(result);
     return ResponseEntity.status(HttpStatus.CREATED).body(response);
   }
 }

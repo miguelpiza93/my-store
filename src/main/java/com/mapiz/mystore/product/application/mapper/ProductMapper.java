@@ -10,15 +10,15 @@ import org.mapstruct.Mapping;
 import org.mapstruct.factory.Mappers;
 
 @Mapper(uses = VendorProductUnitVariantMapper.class)
-public abstract class ProductMapper {
+public interface ProductMapper {
 
-  public static final ProductMapper INSTANCE = Mappers.getMapper(ProductMapper.class);
+  ProductMapper INSTANCE = Mappers.getMapper(ProductMapper.class);
 
-  public abstract CreateProductCommand requestToCommand(CreateProductRequest request);
+  CreateProductCommand requestToCommand(CreateProductRequest request);
 
   @Mapping(source = "referenceUnitId", target = "referenceUnit.id")
   @Mapping(target = "id", ignore = true)
-  public abstract Product commandToModel(CreateProductCommand command);
+  Product commandToModel(CreateProductCommand command);
 
-  public abstract ProductResponse modelToResponse(Product product);
+  ProductResponse modelToResponse(Product product);
 }

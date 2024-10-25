@@ -1,11 +1,10 @@
 package com.mapiz.mystore.stock.infrastructure.persistence.repository.impl;
 
 import com.mapiz.mystore.product.domain.repository.UnitStockItemRepository;
-import com.mapiz.mystore.shared.CycleAvoidingMappingContext;
 import com.mapiz.mystore.stock.infrastructure.persistence.repository.JpaUnitStockItemRepository;
 import com.mapiz.mystore.vendor.domain.VendorProductUnitVariant;
 import com.mapiz.mystore.vendor.infrastructure.persistence.entity.VendorProductUnitVariantEntity;
-import com.mapiz.mystore.vendor.infrastructure.persistence.mapper.VendorProductUnitMapper;
+import com.mapiz.mystore.vendor.infrastructure.persistence.mapper.VendorProductUnitVariantMapper;
 import java.util.Optional;
 import java.util.function.Function;
 import lombok.RequiredArgsConstructor;
@@ -15,14 +14,14 @@ import org.springframework.stereotype.Component;
 @RequiredArgsConstructor
 public class UnitStockItemRepositoryImpl implements UnitStockItemRepository {
 
+  private final VendorProductUnitVariantMapper vendorProductUnitVariantInfraMapper;
   private final JpaUnitStockItemRepository jpaProductPriceRepository;
 
   @Override
   public VendorProductUnitVariant save(VendorProductUnitVariant productPrice) {
-    var productPriceEntity =
-        VendorProductUnitMapper.INSTANCE.toEntity(productPrice, new CycleAvoidingMappingContext());
-    return VendorProductUnitMapper.INSTANCE.toDomain(
-        jpaProductPriceRepository.save(productPriceEntity), new CycleAvoidingMappingContext());
+    var productPriceEntity = vendorProductUnitVariantInfraMapper.toEntity(productPrice);
+    return vendorProductUnitVariantInfraMapper.toDomain(
+        jpaProductPriceRepository.save(productPriceEntity));
   }
 
   @Override
@@ -33,8 +32,7 @@ public class UnitStockItemRepositoryImpl implements UnitStockItemRepository {
         .map(getMapper());
   }
 
-  private static Function<VendorProductUnitVariantEntity, VendorProductUnitVariant> getMapper() {
-    return productPrice ->
-        VendorProductUnitMapper.INSTANCE.toDomain(productPrice, new CycleAvoidingMappingContext());
+  private Function<VendorProductUnitVariantEntity, VendorProductUnitVariant> getMapper() {
+    return vendorProductUnitVariantInfraMapper::toDomain;
   }
 }

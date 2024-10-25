@@ -2,21 +2,38 @@ package com.mapiz.mystore.purchaseorder.infrastructure.persistence.mapper;
 
 import com.mapiz.mystore.purchaseorder.domain.PurchaseOrderLine;
 import com.mapiz.mystore.purchaseorder.infrastructure.persistence.entity.PurchaseOrderLineEntity;
-import com.mapiz.mystore.shared.CycleAvoidingMappingContext;
+import com.mapiz.mystore.vendor.domain.VendorProduct;
+import com.mapiz.mystore.vendor.infrastructure.persistence.entity.VendorProductEntity;
 import com.mapiz.mystore.vendor.infrastructure.persistence.mapper.VendorProductMapper;
-import org.mapstruct.Context;
-import org.mapstruct.Mapper;
-import org.mapstruct.factory.Mappers;
+import org.mapstruct.*;
+import org.springframework.beans.factory.annotation.Autowired;
 
-@Mapper(uses = {VendorProductMapper.class})
+@Mapper(componentModel = "spring")
 public abstract class PurchaseOrderLineMapper {
 
-  public static final PurchaseOrderLineMapper INSTANCE =
-      Mappers.getMapper(PurchaseOrderLineMapper.class);
+  @Autowired protected VendorProductMapper vendorProductMapper;
 
-  public abstract PurchaseOrderLineEntity modelToEntity(
-      PurchaseOrderLine purchaseOrderLine, @Context CycleAvoidingMappingContext context);
+  @Mapping(target = "vendorProduct", ignore = true)
+  public abstract PurchaseOrderLineEntity modelToEntity(PurchaseOrderLine purchaseOrderLine);
 
-  public abstract PurchaseOrderLine entityToModel(
-      PurchaseOrderLineEntity save, @Context CycleAvoidingMappingContext context);
+  @Mappings({
+    @Mapping(target = "purchaseOrder", ignore = true),
+    @Mapping(target = "vendorProduct", ignore = true),
+  })
+  public abstract PurchaseOrderLine entityToModel(PurchaseOrderLineEntity save);
+
+  @AfterMapping
+  public void postMappingModel(
+      PurchaseOrderLineEntity source, @MappingTarget PurchaseOrderLine target) {
+    VendorProduct vendorProduct = vendorProductMapper.entityToModel(source.getVendorProduct());
+    target.setVendorProduct(vendorProduct);
+  }
+
+  @AfterMapping
+  public void postMappingEntity(
+      PurchaseOrderLine source, @MappingTarget PurchaseOrderLineEntity target) {
+    VendorProductEntity vendorProduct =
+        vendorProductMapper.modelToEntity(source.getVendorProduct());
+    target.setVendorProduct(vendorProduct);
+  }
 }

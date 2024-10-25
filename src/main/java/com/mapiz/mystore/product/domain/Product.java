@@ -41,4 +41,20 @@ public class Product {
     result.add(referenceUnit);
     return result;
   }
+
+  @Override
+  public String toString() {
+    return "Product{"
+        + "id="
+        + id
+        + ", name='"
+        + name
+        + '\''
+        + ", description='"
+        + description
+        + '\''
+        + ", referenceUnit="
+        + referenceUnit.getName()
+        + '}';
+  }
 }

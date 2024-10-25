@@ -2,11 +2,12 @@ package com.mapiz.mystore.unit.domain;
 
 import java.math.BigDecimal;
 import java.util.List;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
+import lombok.*;
 
-@Getter
+@Data
 @AllArgsConstructor
+@NoArgsConstructor
+@Builder
 public class Unit {
   private Integer id;
   private String name;
@@ -24,5 +25,10 @@ public class Unit {
         .filter(conversion -> conversion.getToUnit().isBaseUnit())
         .findFirst()
         .orElseThrow(() -> new RuntimeException("Base conversion not found"));
+  }
+
+  @Override
+  public String toString() {
+    return "Unit{" + "id=" + id + ", name='" + name + '\'' + ", symbol='" + symbol + '\'' + '}';
   }
 }

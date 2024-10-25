@@ -3,9 +3,9 @@ package com.mapiz.mystore.unit.domain;
 import java.math.BigDecimal;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
-import lombok.Getter;
+import lombok.Data;
 
-@Getter
+@Data
 @AllArgsConstructor
 @Builder
 public class Conversion {
