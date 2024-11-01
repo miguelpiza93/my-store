@@ -28,7 +28,7 @@ CREATE TABLE IF NOT EXISTS vendor_products (
     id INTEGER NOT NULL DEFAULT nextval('vendor_product_sequence') PRIMARY KEY,
     vendor_id INTEGER NOT NULL,
     product_id INTEGER NOT NULL,
-    price DOUBLE PRECISION NOT NULL,
+    price DECIMAL(10, 2) NOT NULL,
     CONSTRAINT fk_vendor FOREIGN KEY (vendor_id) REFERENCES vendors(id) ON DELETE CASCADE,
     CONSTRAINT fk_product FOREIGN KEY (product_id) REFERENCES Products(id) ON DELETE CASCADE
 );
