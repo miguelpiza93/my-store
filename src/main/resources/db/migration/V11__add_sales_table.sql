@@ -6,7 +6,6 @@ START WITH 1
 CREATE TABLE sales (
     id INTEGER NOT NULL DEFAULT nextval('sales_sequence') PRIMARY KEY,
     status VARCHAR(100) NOT NULL,
-    total DECIMAL(10, 2) NOT NULL,
     created_at TIMESTAMP NOT NULL
 );
 

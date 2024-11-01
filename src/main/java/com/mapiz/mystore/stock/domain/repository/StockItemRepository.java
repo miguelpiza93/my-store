@@ -1,6 +1,7 @@
 package com.mapiz.mystore.stock.domain.repository;
 
 import com.mapiz.mystore.stock.domain.StockItem;
+import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
 
@@ -13,7 +14,7 @@ public interface StockItemRepository {
 
   void save(StockItem stockItem);
 
-  List<StockItem> findByVendorProductIds(List<Integer> vendorProductIds);
+  List<StockItem> findByVendorProductIds(Collection<Integer> vendorProductIds);
 
   List<StockItem> findAllAvailable();
 }

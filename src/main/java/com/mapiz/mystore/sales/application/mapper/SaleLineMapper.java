@@ -3,6 +3,7 @@ package com.mapiz.mystore.sales.application.mapper;
 import com.mapiz.mystore.sales.application.command.RegisterSaleCommand;
 import com.mapiz.mystore.sales.application.command.RegisterSaleCommandItem;
 import com.mapiz.mystore.sales.application.dto.request.RegisterSaleRequest;
+import com.mapiz.mystore.sales.application.dto.request.RegisterSaleResponseItem;
 import com.mapiz.mystore.sales.domain.SaleLine;
 import com.mapiz.mystore.shared.BigDecimalMapper;
 import org.mapstruct.Mapper;
@@ -28,4 +29,10 @@ public interface SaleLineMapper {
     @Mapping(target = "quantity", source = "quantity")
   })
   SaleLine commandItemToModel(RegisterSaleCommandItem registerSaleCommandItem);
+
+  @Mappings({
+    @Mapping(target = "unitId", source = "vendorProductVariant.unit.id"),
+    @Mapping(target = "vendorProductId", source = "vendorProductVariant.vendorProduct.id")
+  })
+  RegisterSaleResponseItem lineToItem(SaleLine line);
 }

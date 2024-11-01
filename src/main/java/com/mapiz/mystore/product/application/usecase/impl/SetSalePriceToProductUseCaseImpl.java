@@ -3,7 +3,7 @@ package com.mapiz.mystore.product.application.usecase.impl;
 import com.mapiz.mystore.product.application.exception.InvalidUnitForProductException;
 import com.mapiz.mystore.product.application.exception.ProductNotFoundException;
 import com.mapiz.mystore.product.application.usecase.SetSalePriceToProductUseCase;
-import com.mapiz.mystore.product.domain.repository.UnitStockItemRepository;
+import com.mapiz.mystore.product.domain.repository.VendorProductUnitVariantRepository;
 import com.mapiz.mystore.stock.application.command.SetSalePriceToStockProductCommand;
 import com.mapiz.mystore.unit.domain.Unit;
 import com.mapiz.mystore.vendor.domain.VendorProduct;
@@ -18,7 +18,7 @@ import org.springframework.stereotype.Component;
 public class SetSalePriceToProductUseCaseImpl implements SetSalePriceToProductUseCase {
 
   private final VendorProductRepository productVendorRepository;
-  private final UnitStockItemRepository unitStockItemRepository;
+  private final VendorProductUnitVariantRepository vendorProductUnitVariantRepository;
 
   @Override
   public void accept(SetSalePriceToStockProductCommand command) {
@@ -35,13 +35,13 @@ public class SetSalePriceToProductUseCaseImpl implements SetSalePriceToProductUs
                 () ->
                     new InvalidUnitForProductException(
                         command.getProductId(), command.getUnitId()));
-    var productPrice = getProductPrice(command, vendorProduct, unitInUse);
-    unitStockItemRepository.save(productPrice);
+    var vendorProductUnitVariant = getProductPrice(command, vendorProduct, unitInUse);
+    vendorProductUnitVariantRepository.save(vendorProductUnitVariant);
   }
 
   private VendorProductUnitVariant getProductPrice(
       SetSalePriceToStockProductCommand command, VendorProduct vendorProduct, Unit unitInUse) {
-    return unitStockItemRepository
+    return vendorProductUnitVariantRepository
         .findByVendorProductIdAndUnitId(vendorProduct.getId(), unitInUse.getId())
         .map(existingProductPrice -> updateSalePrice(existingProductPrice, command.getSalePrice()))
         .orElseGet(() -> buildNewProductPrice(vendorProduct, unitInUse, command.getSalePrice()));

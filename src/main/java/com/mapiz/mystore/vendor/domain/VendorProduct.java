@@ -29,6 +29,12 @@ public class VendorProduct {
         .orElseGet(this::getInitialSalePricesList);
   }
 
+  public Optional<VendorProductUnitVariant> getVariant(int unitId) {
+    return getSalePrices().stream()
+        .filter(variant -> variant.getUnit().getId() == unitId)
+        .findFirst();
+  }
+
   private List<VendorProductUnitVariant> completeWithDefaults(
       List<VendorProductUnitVariant> salePrices) {
     var configuredPricesMap =

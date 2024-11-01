@@ -4,6 +4,7 @@ import com.mapiz.mystore.stock.domain.StockItem;
 import com.mapiz.mystore.stock.domain.repository.StockItemRepository;
 import com.mapiz.mystore.stock.infrastructure.persistence.mapper.StockItemMapper;
 import com.mapiz.mystore.stock.infrastructure.persistence.repository.JpaStockItemRepository;
+import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
 import lombok.RequiredArgsConstructor;
@@ -38,7 +39,7 @@ public class StockItemRepositoryImpl implements StockItemRepository {
   }
 
   @Override
-  public List<StockItem> findByVendorProductIds(List<Integer> ids) {
+  public List<StockItem> findByVendorProductIds(Collection<Integer> ids) {
     return jpaStockItemRepository.findByVendorProductIds(ids).stream()
         .map(stockItemMapper::entityToModel)
         .toList();

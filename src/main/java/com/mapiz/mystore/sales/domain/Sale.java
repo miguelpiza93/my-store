@@ -1,6 +1,5 @@
 package com.mapiz.mystore.sales.domain;
 
-import java.math.BigDecimal;
 import java.time.Instant;
 import java.util.List;
 import lombok.AllArgsConstructor;
@@ -19,6 +18,4 @@ public class Sale {
   private Instant createdAt;
 
   private List<SaleLine> lines;
-
-  private BigDecimal total;
 }

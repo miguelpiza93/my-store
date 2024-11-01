@@ -4,10 +4,12 @@ import com.mapiz.mystore.util.BigDecimalUtils;
 import com.mapiz.mystore.vendor.domain.VendorProductUnitVariant;
 import java.math.BigDecimal;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 
 @AllArgsConstructor
 @Data
+@Builder
 public class SaleLine {
 
   private Integer id;

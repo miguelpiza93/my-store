@@ -1,7 +1,6 @@
 package com.mapiz.mystore.sales.infrastructure.persistence.entity;
 
 import jakarta.persistence.*;
-import java.math.BigDecimal;
 import java.time.Instant;
 import java.util.List;
 import lombok.AllArgsConstructor;
@@ -25,8 +24,6 @@ public class SaleEntity {
   private List<SaleLineEntity> lines;
 
   private String status;
-
-  private BigDecimal total;
 
   @Column(name = "created_at")
   private Instant createdAt;

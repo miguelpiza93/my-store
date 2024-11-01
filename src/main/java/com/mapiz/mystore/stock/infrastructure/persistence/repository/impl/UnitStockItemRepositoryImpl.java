@@ -1,6 +1,6 @@
 package com.mapiz.mystore.stock.infrastructure.persistence.repository.impl;
 
-import com.mapiz.mystore.product.domain.repository.UnitStockItemRepository;
+import com.mapiz.mystore.product.domain.repository.VendorProductUnitVariantRepository;
 import com.mapiz.mystore.stock.infrastructure.persistence.repository.JpaUnitStockItemRepository;
 import com.mapiz.mystore.vendor.domain.VendorProductUnitVariant;
 import com.mapiz.mystore.vendor.infrastructure.persistence.entity.VendorProductUnitVariantEntity;
@@ -12,15 +12,15 @@ import org.springframework.stereotype.Component;
 
 @Component
 @RequiredArgsConstructor
-public class UnitStockItemRepositoryImpl implements UnitStockItemRepository {
+public class UnitStockItemRepositoryImpl implements VendorProductUnitVariantRepository {
 
   private final VendorProductUnitVariantMapper vendorProductUnitVariantInfraMapper;
   private final JpaUnitStockItemRepository jpaProductPriceRepository;
 
   @Override
-  public VendorProductUnitVariant save(VendorProductUnitVariant productPrice) {
+  public void save(VendorProductUnitVariant productPrice) {
     var productPriceEntity = vendorProductUnitVariantInfraMapper.toEntity(productPrice);
-    return vendorProductUnitVariantInfraMapper.toDomain(
+    vendorProductUnitVariantInfraMapper.toDomain(
         jpaProductPriceRepository.save(productPriceEntity));
   }
 

@@ -12,6 +12,7 @@ import com.mapiz.mystore.sales.application.dto.request.RegisterSaleRequest;
 import com.mapiz.mystore.sales.application.dto.request.RegisterSaleResponse;
 import com.mapiz.mystore.sales.application.dto.request.SaleItemRequest;
 import com.mapiz.mystore.sales.infrastructure.EndpointConstant;
+import com.mapiz.mystore.sales.infrastructure.persistence.repository.JpaSaleLineRepository;
 import com.mapiz.mystore.sales.infrastructure.persistence.repository.JpaSaleRepository;
 import com.mapiz.mystore.shared.ApiError;
 import com.mapiz.mystore.stock.infrastructure.persistence.entity.StockItemEntity;
@@ -30,6 +31,7 @@ import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 class RegisterSaleIntegrationTest extends BaseIntegrationTest {
 
   @SpyBean private JpaSaleRepository saleRepository;
+  @SpyBean private JpaSaleLineRepository saleLineRepository;
   @SpyBean private JpaStockItemRepository stockItemRepository;
 
   @Test
@@ -79,7 +81,7 @@ class RegisterSaleIntegrationTest extends BaseIntegrationTest {
     var expectedApiError =
         new ApiError(
             "bad_request",
-            "Product id: "
+            "Vendor Product id: "
                 + SAUSAGE_ID
                 + ", Wanted: "
                 + quantity
@@ -135,19 +137,18 @@ class RegisterSaleIntegrationTest extends BaseIntegrationTest {
       String expectedTotal)
       throws JsonProcessingException, UnsupportedEncodingException {
 
-    var ids = getSavedId(result);
-    var sale = saleRepository.findById(ids).orElseThrow();
+    var sale = getResponse(result);
 
     assertEquals(1, sale.getLines().size());
     var line = sale.getLines().get(0);
-    assertEquals(line.getVendorProductVariant().getUnit().getId(), unitId);
-    assertEquals(line.getVendorProductVariant().getVendorProduct().getId(), vendorProductId);
+    assertEquals(line.getUnitId(), unitId);
+    assertEquals(line.getVendorProductId(), vendorProductId);
     assertEquals(line.getQuantity(), quantity);
     assertEquals(BigDecimalUtils.valueOf(line.getCost()), BigDecimalUtils.valueOf(expectedCost));
     assertEquals(
         BigDecimalUtils.valueOf(line.getUnitPrice()), BigDecimalUtils.valueOf(expectedPrice));
-    assertEquals(BigDecimalUtils.valueOf(sale.getTotal()), BigDecimalUtils.valueOf(expectedTotal));
     assertNotNull(sale.getCreatedAt());
+    assertEquals(BigDecimalUtils.valueOf(expectedTotal), sale.getTotal());
   }
 
   private void assertStockIsEmptyForVendorProduct(int vendorProductId) {
@@ -172,10 +173,9 @@ class RegisterSaleIntegrationTest extends BaseIntegrationTest {
     assertEquals(expectedRemainingQuantity, sumQuantity);
   }
 
-  private Integer getSavedId(MvcResult result)
+  private RegisterSaleResponse getResponse(MvcResult result)
       throws JsonProcessingException, UnsupportedEncodingException {
-    return objectMapper
-        .readValue(result.getResponse().getContentAsString(), RegisterSaleResponse.class)
-        .getSaleId();
+    return objectMapper.readValue(
+        result.getResponse().getContentAsString(), RegisterSaleResponse.class);
   }
 }

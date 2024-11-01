@@ -5,6 +5,7 @@ import static com.mapiz.mystore.sales.infrastructure.EndpointConstant.BASE_PATH;
 import com.mapiz.mystore.sales.application.dto.request.RegisterSaleRequest;
 import com.mapiz.mystore.sales.application.dto.request.RegisterSaleResponse;
 import com.mapiz.mystore.sales.application.mapper.SaleLineMapper;
+import com.mapiz.mystore.sales.application.mapper.SaleMapper;
 import com.mapiz.mystore.sales.application.usecase.RegisterSaleUseCase;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -26,8 +27,8 @@ public class RegisterSaleController {
   public ResponseEntity<RegisterSaleResponse> registerSale(
       @Valid @RequestBody RegisterSaleRequest request) {
     var command = SaleLineMapper.INSTANCE.requestToCommand(request);
-    var saleIds = useCase.apply(command);
-    var response = new RegisterSaleResponse(saleIds);
-    return ResponseEntity.status(HttpStatus.CREATED).body(response);
+    var savedSale = useCase.apply(command);
+    return ResponseEntity.status(HttpStatus.CREATED)
+        .body(SaleMapper.INSTANCE.modelToResponse(savedSale));
   }
 }

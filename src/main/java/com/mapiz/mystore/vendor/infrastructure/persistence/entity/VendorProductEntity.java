@@ -34,6 +34,6 @@ public class VendorProductEntity {
 
   private BigDecimal price;
 
-  @OneToMany(mappedBy = "vendorProduct", fetch = FetchType.LAZY)
+  @OneToMany(mappedBy = "vendorProduct", fetch = FetchType.EAGER)
   private List<VendorProductUnitVariantEntity> salePrices;
 }

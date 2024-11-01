@@ -12,13 +12,14 @@ import org.springframework.stereotype.Component;
 @RequiredArgsConstructor
 public class SaleLineRepositoryImpl implements SaleLineRepository {
 
+  private final SaleLineMapper SaleLineMapper;
   private final JpaSaleLineRepository jpaSaleLineRepository;
 
   @Override
   public List<SaleLine> saveAll(List<SaleLine> models) {
-    var entities = models.stream().map(SaleLineMapper.INSTANCE::modelToEntity).toList();
+    var entities = models.stream().map(SaleLineMapper::modelToEntity).toList();
     return jpaSaleLineRepository.saveAll(entities).stream()
-        .map(SaleLineMapper.INSTANCE::entityToModel)
+        .map(SaleLineMapper::entityToModel)
         .toList();
   }
 }
