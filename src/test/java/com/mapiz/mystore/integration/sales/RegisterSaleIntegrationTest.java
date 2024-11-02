@@ -65,7 +65,7 @@ class RegisterSaleIntegrationTest extends BaseIntegrationTest {
     var result = executePostRequest(request);
 
     assertSalePersistedWithExpectedValues(
-        result, EGG_ID, quantityOfCartons, CARTON_ID, "21000.0", "12000.0", "24000.0");
+        result, EGG_ID, quantityOfCartons, CARTON_ID, "21600.0", "12000.0", "24000.0");
 
     var expectedRemainingQuantity =
         BigDecimalUtils.subtract(
@@ -144,9 +144,9 @@ class RegisterSaleIntegrationTest extends BaseIntegrationTest {
     assertEquals(line.getUnitId(), unitId);
     assertEquals(line.getVendorProductId(), vendorProductId);
     assertEquals(line.getQuantity(), quantity);
-    assertEquals(BigDecimalUtils.valueOf(line.getCost()), BigDecimalUtils.valueOf(expectedCost));
+    assertEquals(BigDecimalUtils.valueOf(expectedCost), BigDecimalUtils.valueOf(line.getCost()));
     assertEquals(
-        BigDecimalUtils.valueOf(line.getUnitPrice()), BigDecimalUtils.valueOf(expectedPrice));
+        BigDecimalUtils.valueOf(expectedPrice), BigDecimalUtils.valueOf(line.getUnitPrice()));
     assertNotNull(sale.getCreatedAt());
     assertEquals(BigDecimalUtils.valueOf(expectedTotal), sale.getTotal());
   }

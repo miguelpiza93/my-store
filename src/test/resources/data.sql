@@ -48,7 +48,7 @@ values
 
 INSERT INTO stock_items(purchase_order_line_id, quantity)
 values
-(1, 30),
+(1, 27),
 (2, 30),
 (3, 120),
 (4, 60),
