@@ -22,23 +22,17 @@ public class StockItemSummary {
     this.items.add(stock);
   }
 
-  public BigDecimal getRawQuantity() {
-    return items.stream()
-        .map(StockItem::getPurchaseOrderLine)
-        .map(PurchaseOrderLine::getQuantity)
-        .reduce(BigDecimal.ZERO, BigDecimalUtils::add);
-  }
-
   public BigDecimal getWeightedCost() {
     List<PurchaseOrderLine> purchaseOrderLines = getPurchaseOrderLines();
     BigDecimal totalCost = getTotalCost(purchaseOrderLines);
-    BigDecimal totalQuantity = this.getRawQuantity();
+    BigDecimal totalQuantityInOrder = this.getQuantityFromOrder();
 
-    if (totalQuantity.equals(BigDecimal.ZERO)) {
+    if (totalQuantityInOrder.equals(BigDecimal.ZERO)) {
       return BigDecimal.ZERO;
     }
 
-    BigDecimal weightedCostInReferenceUnit = BigDecimalUtils.divide(totalCost, totalQuantity);
+    BigDecimal weightedCostInReferenceUnit =
+        BigDecimalUtils.divide(totalCost, totalQuantityInOrder);
     BigDecimal baseConversionFactor =
         vendorProduct.getProduct().getReferenceUnit().getBaseConversion().getConversionFactor();
 
@@ -46,11 +40,7 @@ public class StockItemSummary {
   }
 
   public BigDecimal getQuantity() {
-    BigDecimal referenceQuantity = this.getRawQuantity();
-    BigDecimal conversionFactor =
-        vendorProduct.getProduct().getReferenceUnit().getBaseConversion().getConversionFactor();
-
-    return BigDecimalUtils.multiply(referenceQuantity, conversionFactor);
+    return items.stream().map(StockItem::getQuantity).reduce(BigDecimal.ZERO, BigDecimalUtils::add);
   }
 
   private BigDecimal getTotalCost(List<PurchaseOrderLine> purchaseOrderLines) {
@@ -61,5 +51,12 @@ public class StockItemSummary {
 
   private List<PurchaseOrderLine> getPurchaseOrderLines() {
     return this.items.stream().map(StockItem::getPurchaseOrderLine).toList();
+  }
+
+  private BigDecimal getQuantityFromOrder() {
+    return items.stream()
+        .map(StockItem::getPurchaseOrderLine)
+        .map(PurchaseOrderLine::getQuantity)
+        .reduce(BigDecimal.ZERO, BigDecimalUtils::add);
   }
 }
