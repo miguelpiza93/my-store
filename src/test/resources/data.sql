@@ -14,16 +14,16 @@ values
 
 INSERT INTO vendor_products(vendor_id, product_id, price)
 values
-(1, 1, 8500),
-(2, 2, 30000),
-(3, 3, 2500)
+(1, 1, 8500),-- Huevos Kike
+(2, 2, 30000),-- Leche Alqueria
+(3, 3, 2500) -- Salchicha Zenu
 ;
 
 INSERT INTO vendor_product_unit_variants(vendor_product_id, unit_id, sale_price)
 values
-(1, 2, 500.0),
-(1, 1, 12000.0),
-(3, 2, 3000.0)
+(1, 2, 500.0),-- Huevos Kike x unidad
+(1, 1, 12000.0), -- Huevos kike x panal
+(3, 2, 3000.0) -- Salchicha Zenu x unidad
 ;
 
 INSERT INTO purchase_orders(status, created_at, estimated_delivery_date, vendor_id, total)
@@ -54,4 +54,14 @@ values
 (4, 60),
 (5, 12),
 (6, 5)
+;
+
+INSERT INTO sales(status, created_at)
+values
+('CLOSED', NOW())
+;
+
+INSERT INTO sale_lines(sale_id, vendor_product_unit_variant_id, quantity, unit_price, total, cost)
+values
+(1, 1, 3, 500, 1500, 900) -- Vendidas 3 unidades de huevos kike
 ;

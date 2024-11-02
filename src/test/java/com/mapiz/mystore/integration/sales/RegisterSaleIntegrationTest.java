@@ -9,8 +9,8 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.mapiz.mystore.integration.BaseIntegrationTest;
 import com.mapiz.mystore.sales.application.dto.request.RegisterSaleRequest;
-import com.mapiz.mystore.sales.application.dto.request.RegisterSaleResponse;
 import com.mapiz.mystore.sales.application.dto.request.SaleItemRequest;
+import com.mapiz.mystore.sales.application.dto.response.RegisterSaleResponse;
 import com.mapiz.mystore.sales.infrastructure.EndpointConstant;
 import com.mapiz.mystore.sales.infrastructure.persistence.repository.JpaSaleLineRepository;
 import com.mapiz.mystore.sales.infrastructure.persistence.repository.JpaSaleRepository;

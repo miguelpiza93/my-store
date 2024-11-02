@@ -3,7 +3,7 @@ package com.mapiz.mystore.sales.infrastructure.api;
 import static com.mapiz.mystore.sales.infrastructure.EndpointConstant.BASE_PATH;
 
 import com.mapiz.mystore.sales.application.dto.request.RegisterSaleRequest;
-import com.mapiz.mystore.sales.application.dto.request.RegisterSaleResponse;
+import com.mapiz.mystore.sales.application.dto.response.RegisterSaleResponse;
 import com.mapiz.mystore.sales.application.mapper.SaleLineMapper;
 import com.mapiz.mystore.sales.application.mapper.SaleMapper;
 import com.mapiz.mystore.sales.application.usecase.RegisterSaleUseCase;

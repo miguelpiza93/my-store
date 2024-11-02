@@ -1,4 +1,4 @@
-package com.mapiz.mystore.sales.application.dto.request;
+package com.mapiz.mystore.sales.application.dto.response;
 
 import com.mapiz.mystore.util.BigDecimalUtils;
 import java.math.BigDecimal;

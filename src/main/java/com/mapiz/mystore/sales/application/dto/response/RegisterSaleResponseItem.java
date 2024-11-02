@@ -1,4 +1,4 @@
-package com.mapiz.mystore.sales.application.dto.request;
+package com.mapiz.mystore.sales.application.dto.response;
 
 import java.math.BigDecimal;
 import lombok.AllArgsConstructor;
