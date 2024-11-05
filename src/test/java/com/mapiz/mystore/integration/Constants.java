@@ -34,10 +34,10 @@ public class Constants {
   public static final int MILK_ID = 2;
   public static final String MILK_NAME = "Leche";
   public static final String MILK_DESCRIPTION = "Entera";
-  public static final int SAUSAGE_ID = 3;
+  public static final int SAUSAGE_ID = 6;
   public static final String SAUSAGE_NAME = "Salchicha";
   public static final String SAUSAGE_DESCRIPTION = "x6";
-  public static final int NEXT_AVAILABLE_ID = 4;
+  public static final int NEXT_AVAILABLE_ID = 7;
 
   // PRODUCT VENDOR CONSTANTS
   public static final int KIKES_EGGS = 1;

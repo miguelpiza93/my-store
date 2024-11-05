@@ -40,7 +40,7 @@ class RegisterSaleIntegrationTest extends BaseIntegrationTest {
     var result = executePostRequest(request);
 
     assertSalePersistedWithExpectedValues(
-        result, SAUSAGE_ID, UNITS_OF_SAUSAGES_IN_STOCK, UNIT_ID, "12500.0", "3000.0", "15000.0");
+        result, ZENU_SAUSAGES, UNITS_OF_SAUSAGES_IN_STOCK, UNIT_ID, "12500.0", "3000.0", "15000.0");
 
     assertStockIsEmptyForVendorProduct(ZENU_SAUSAGES);
   }
@@ -52,7 +52,7 @@ class RegisterSaleIntegrationTest extends BaseIntegrationTest {
     var result = executePostRequest(request);
 
     assertSalePersistedWithExpectedValues(
-        result, EGG_ID, quantity, UNIT_ID, "900.0", "500.0", "1500.0");
+        result, KIKES_EGGS, quantity, UNIT_ID, "900.0", "500.0", "1500.0");
 
     var expectedRemainingQuantity = BigDecimalUtils.subtract(UNITS_OF_EGGS_IN_STOCK, quantity);
     assertRemainingStockForVendorProduct(KIKES_EGGS, expectedRemainingQuantity);
@@ -65,7 +65,7 @@ class RegisterSaleIntegrationTest extends BaseIntegrationTest {
     var result = executePostRequest(request);
 
     assertSalePersistedWithExpectedValues(
-        result, EGG_ID, quantityOfCartons, CARTON_ID, "21600.0", "12000.0", "24000.0");
+        result, KIKES_EGGS, quantityOfCartons, CARTON_ID, "21600.0", "12000.0", "24000.0");
 
     var expectedRemainingQuantity =
         BigDecimalUtils.subtract(
@@ -77,12 +77,12 @@ class RegisterSaleIntegrationTest extends BaseIntegrationTest {
   @Test
   void testRegisterSaleWithoutEnoughStock() throws Exception {
     var quantity = BigDecimalUtils.add(UNITS_OF_SAUSAGES_IN_STOCK, BigDecimal.ONE);
-    var request = createSaleRequest(SAUSAGE_ID, quantity, UNIT_ID);
+    var request = createSaleRequest(ZENU_SAUSAGES, quantity, UNIT_ID);
     var expectedApiError =
         new ApiError(
             "bad_request",
             "Vendor Product id: "
-                + SAUSAGE_ID
+                + ZENU_SAUSAGES
                 + ", Wanted: "
                 + quantity
                 + ", Have: "
@@ -141,9 +141,9 @@ class RegisterSaleIntegrationTest extends BaseIntegrationTest {
 
     assertEquals(1, sale.getLines().size());
     var line = sale.getLines().get(0);
-    assertEquals(line.getUnitId(), unitId);
-    assertEquals(line.getVendorProductId(), vendorProductId);
-    assertEquals(line.getQuantity(), quantity);
+    assertEquals(unitId, line.getUnitId());
+    assertEquals(vendorProductId, line.getVendorProductId());
+    assertEquals(quantity, line.getQuantity());
     assertEquals(BigDecimalUtils.valueOf(expectedCost), BigDecimalUtils.valueOf(line.getCost()));
     assertEquals(
         BigDecimalUtils.valueOf(expectedPrice), BigDecimalUtils.valueOf(line.getUnitPrice()));

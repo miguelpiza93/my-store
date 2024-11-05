@@ -1,7 +1,5 @@
 INSERT INTO products(name, description, reference_unit)
 values
-('Huevos', 'AA', 1),
-('Leche', 'Entera', 7),
 ('Salchicha', 'x6', 2)
 ;
 
@@ -16,7 +14,7 @@ INSERT INTO vendor_products(vendor_id, product_id, price)
 values
 (1, 1, 8500),-- Huevos Kike
 (2, 2, 30000),-- Leche Alqueria
-(3, 3, 2500) -- Salchicha Zenu
+(3, 6, 2500) -- Salchicha Zenu
 ;
 
 INSERT INTO vendor_product_unit_variants(vendor_product_id, unit_id, sale_price)
