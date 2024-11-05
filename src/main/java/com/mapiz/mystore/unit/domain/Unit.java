@@ -14,11 +14,11 @@ public class Unit {
   private String symbol;
   private boolean isFractional;
   private boolean isBaseUnit;
-  private List<Conversion> unitConversions;
+  private List<UnitConversion> unitConversions;
 
-  public Conversion getBaseConversion() {
+  public UnitConversion getBaseConversion() {
     if (isBaseUnit) {
-      return Conversion.builder().conversionFactor(BigDecimal.ONE).build();
+      return UnitConversion.builder().conversionFactor(BigDecimal.ONE).build();
     }
 
     return unitConversions.stream()

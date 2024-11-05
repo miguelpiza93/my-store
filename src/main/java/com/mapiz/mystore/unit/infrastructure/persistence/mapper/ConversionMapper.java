@@ -1,9 +1,9 @@
 package com.mapiz.mystore.unit.infrastructure.persistence.mapper;
 
 import com.mapiz.mystore.shared.CycleAvoidingMappingContext;
-import com.mapiz.mystore.unit.domain.Conversion;
 import com.mapiz.mystore.unit.domain.Unit;
-import com.mapiz.mystore.unit.infrastructure.persistence.entity.ConversionEntity;
+import com.mapiz.mystore.unit.domain.UnitConversion;
+import com.mapiz.mystore.unit.infrastructure.persistence.entity.UnitConversionEntity;
 import org.mapstruct.*;
 
 @Mapper(componentModel = "spring")
@@ -13,11 +13,11 @@ public abstract class ConversionMapper {
     @Mapping(target = "fromUnit", ignore = true),
     @Mapping(target = "toUnit", ignore = true)
   })
-  public abstract Conversion entityToModel(
-      ConversionEntity entity, @Context CycleAvoidingMappingContext context);
+  public abstract UnitConversion entityToModel(
+      UnitConversionEntity entity, @Context CycleAvoidingMappingContext context);
 
   @AfterMapping
-  public void postMapping(ConversionEntity entity, @MappingTarget Conversion target) {
+  public void postMapping(UnitConversionEntity entity, @MappingTarget UnitConversion target) {
     var toUnitEntity = entity.getToUnit();
     var toUnit =
         Unit.builder()

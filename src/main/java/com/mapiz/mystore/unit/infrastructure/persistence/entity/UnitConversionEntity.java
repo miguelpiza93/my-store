@@ -14,7 +14,7 @@ import org.hibernate.annotations.FetchMode;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class ConversionEntity {
+public class UnitConversionEntity {
   @Id
   @SequenceGenerator(
       name = "unit_conversion_sequence",

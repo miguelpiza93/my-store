@@ -1,7 +1,7 @@
 package com.mapiz.mystore.product.domain;
 
-import com.mapiz.mystore.unit.domain.Conversion;
 import com.mapiz.mystore.unit.domain.Unit;
+import com.mapiz.mystore.unit.domain.UnitConversion;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -26,14 +26,14 @@ public class Product {
 
     return referenceUnit.getUnitConversions().stream()
         .filter(conversion -> conversion.getToUnit().getId() == unitId)
-        .map(Conversion::getToUnit)
+        .map(UnitConversion::getToUnit)
         .findFirst();
   }
 
   public List<Unit> getAllUnits() {
     var result =
         referenceUnit.getUnitConversions().stream()
-            .map(Conversion::getToUnit)
+            .map(UnitConversion::getToUnit)
             .collect(
                 Collectors.toCollection(
                     () -> new ArrayList<>(referenceUnit.getUnitConversions().size() + 1)));

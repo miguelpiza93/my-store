@@ -8,7 +8,7 @@ import lombok.Data;
 @Data
 @AllArgsConstructor
 @Builder
-public class Conversion {
+public class UnitConversion {
   private Long id;
   private Unit fromUnit;
   private Unit toUnit;

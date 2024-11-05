@@ -24,5 +24,5 @@ public class UnitEntity {
   private boolean isBaseUnit;
 
   @OneToMany(mappedBy = "fromUnit", fetch = FetchType.EAGER)
-  private List<ConversionEntity> unitConversions;
+  private List<UnitConversionEntity> unitConversions;
 }

@@ -1,8 +1,8 @@
 package com.mapiz.mystore.unit.infrastructure.persistence.mapper;
 
 import com.mapiz.mystore.shared.CycleAvoidingMappingContext;
-import com.mapiz.mystore.unit.domain.Conversion;
 import com.mapiz.mystore.unit.domain.Unit;
+import com.mapiz.mystore.unit.domain.UnitConversion;
 import com.mapiz.mystore.unit.infrastructure.persistence.entity.UnitEntity;
 import java.util.List;
 import org.mapstruct.*;
@@ -34,7 +34,7 @@ public abstract class UnitMapper {
     }
 
     var context = new CycleAvoidingMappingContext();
-    List<Conversion> conversions =
+    List<UnitConversion> conversions =
         entity.getUnitConversions().stream()
             .map(conversion -> conversionMapper.entityToModel(conversion, context))
             .peek(item -> item.setFromUnit(target))
