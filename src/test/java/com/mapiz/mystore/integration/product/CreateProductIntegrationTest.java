@@ -1,6 +1,6 @@
 package com.mapiz.mystore.integration.product;
 
-import static com.mapiz.mystore.integration.Constants.NEXT_AVAILABLE_ID;
+import static com.mapiz.mystore.integration.Constants.NEXT_AVAILABLE_PRODUCT_ID;
 import static com.mapiz.mystore.integration.Constants.UNIT_ID;
 import static org.mockito.Mockito.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
@@ -37,7 +37,7 @@ class CreateProductIntegrationTest extends BaseIntegrationTest {
     // Act & Assert
     var expectedProduct =
         ProductResponse.builder()
-            .id(NEXT_AVAILABLE_ID)
+            .id(NEXT_AVAILABLE_PRODUCT_ID)
             .name(PRODUCT_NAME)
             .description(PRODUCT_DESC)
             .build();

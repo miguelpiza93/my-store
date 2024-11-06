@@ -8,4 +8,6 @@ public interface UnitRepository {
   List<Unit> findAll();
 
   List<Unit> findAllById(Set<Integer> unitIds);
+
+  Unit save(Unit unit);
 }

@@ -1,6 +1,6 @@
 package com.mapiz.mystore.unit.infrastructure.api;
 
-import static com.mapiz.mystore.unit.infrastructure.EndpointConstant.UNIT_BASE_PATH;
+import static com.mapiz.mystore.unit.infrastructure.EndpointConstant.BASE_PATH;
 
 import com.mapiz.mystore.unit.application.dto.UnitResponse;
 import com.mapiz.mystore.unit.application.mapper.UnitMapper;
@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RequiredArgsConstructor
 @RestController
-@RequestMapping(UNIT_BASE_PATH)
+@RequestMapping(BASE_PATH)
 public class GetUnitsController {
 
   private final GetUnitsUseCase getUnitsUseCase;

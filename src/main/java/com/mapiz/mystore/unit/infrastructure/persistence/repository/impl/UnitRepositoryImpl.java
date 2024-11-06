@@ -25,4 +25,10 @@ public class UnitRepositoryImpl implements UnitRepository {
   public List<Unit> findAllById(Set<Integer> unitIds) {
     return jpaUnitRepository.findAllById(unitIds).stream().map(unitMapper::entityToModel).toList();
   }
+
+  @Override
+  public Unit save(Unit unit) {
+    var savedEntity = jpaUnitRepository.save(unitMapper.modelToEntity(unit));
+    return unitMapper.entityToModel(savedEntity);
+  }
 }

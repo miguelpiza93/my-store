@@ -13,8 +13,7 @@ public class Constants {
   public static final String UNIT_NAME = "Unit";
   public static final int HALF_CARTON_ID = 3;
   public static final String HALF_CARTON_NAME = "Half Carton";
-  public static final int MILK_PACK_ID = 7;
-  public static final String MILK_PACK_NAME = "Milk Pack";
+  public static final int NEXT_AVAILABLE_UNIT_ID = 8;
 
   // CONVERSION CONSTANTS
   public static final BigDecimal UNITS_PER_CARTON = BigDecimalUtils.valueOf(30);
@@ -37,7 +36,7 @@ public class Constants {
   public static final int SAUSAGE_ID = 6;
   public static final String SAUSAGE_NAME = "Salchicha";
   public static final String SAUSAGE_DESCRIPTION = "x6";
-  public static final int NEXT_AVAILABLE_ID = 7;
+  public static final int NEXT_AVAILABLE_PRODUCT_ID = 7;
 
   // PRODUCT VENDOR CONSTANTS
   public static final int KIKES_EGGS = 1;

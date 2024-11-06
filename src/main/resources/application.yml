@@ -1,3 +1,6 @@
+application:
+  title: My Store
+  version: 1.0
 spring:
   profiles:
     active: @spring.profiles.active@
