@@ -11,7 +11,8 @@ public abstract class ConversionMapper {
 
   @Mappings({
     @Mapping(target = "fromUnit", ignore = true),
-    @Mapping(target = "toUnit", ignore = true)
+    @Mapping(target = "toUnit", ignore = true),
+    @Mapping(target = "product", ignore = true)
   })
   public abstract UnitConversion entityToModel(
       UnitConversionEntity entity, @Context CycleAvoidingMappingContext context);

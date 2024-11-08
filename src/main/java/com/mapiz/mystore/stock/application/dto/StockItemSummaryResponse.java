@@ -15,4 +15,5 @@ public class StockItemSummaryResponse {
   private String fullDescription;
   private BigDecimal quantity;
   private BigDecimal weightedCost;
+  private String baseUnitSymbol;
 }

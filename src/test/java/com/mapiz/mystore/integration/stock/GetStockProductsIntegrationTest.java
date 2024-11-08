@@ -35,6 +35,7 @@ class GetStockProductsIntegrationTest extends BaseIntegrationTest {
                 .vendorId(KIKES_ID)
                 .quantity(UNITS_OF_EGGS_IN_STOCK)
                 .weightedCost(BigDecimalUtils.valueOf("354.2"))
+                .baseUnitSymbol(UNIT_SYMBOL)
                 .build(),
             StockItemSummaryResponse.builder()
                 .vendorProductId(ZENU_SAUSAGES)
@@ -44,6 +45,7 @@ class GetStockProductsIntegrationTest extends BaseIntegrationTest {
                 .vendorId(ZENU_ID)
                 .quantity(UNITS_OF_SAUSAGES_IN_STOCK)
                 .weightedCost(BigDecimal.valueOf(2500.0))
+                .baseUnitSymbol(UNIT_SYMBOL)
                 .build(),
             StockItemSummaryResponse.builder()
                 .vendorProductId(ALQUERIA_MILKS)
@@ -53,6 +55,7 @@ class GetStockProductsIntegrationTest extends BaseIntegrationTest {
                     FULL_DESCRIPTION_FORMAT.formatted(MILK_NAME, MILK_DESCRIPTION, ALQUERIA_NAME))
                 .quantity(UNITS_OF_MILK_IN_STOCK)
                 .weightedCost(BigDecimalUtils.valueOf(5000.0))
+                .baseUnitSymbol(UNIT_SYMBOL)
                 .build());
 
     // Act & Assert

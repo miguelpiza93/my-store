@@ -18,7 +18,7 @@ public class Unit {
 
   public UnitConversion getBaseConversion() {
     if (isBaseUnit) {
-      return UnitConversion.builder().conversionFactor(BigDecimal.ONE).build();
+      return UnitConversion.builder().toUnit(this).conversionFactor(BigDecimal.ONE).build();
     }
 
     return unitConversions.stream()
