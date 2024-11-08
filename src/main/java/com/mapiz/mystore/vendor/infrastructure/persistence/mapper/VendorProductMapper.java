@@ -4,7 +4,6 @@ import com.mapiz.mystore.product.domain.Product;
 import com.mapiz.mystore.product.infrastructure.persistence.ProductEntity;
 import com.mapiz.mystore.product.infrastructure.persistence.mapper.ProductMapper;
 import com.mapiz.mystore.unit.domain.Unit;
-import com.mapiz.mystore.unit.domain.UnitConversion;
 import com.mapiz.mystore.unit.infrastructure.persistence.mapper.UnitMapper;
 import com.mapiz.mystore.vendor.application.dto.VendorProductResponse;
 import com.mapiz.mystore.vendor.domain.VendorProduct;
@@ -32,7 +31,10 @@ public abstract class VendorProductMapper {
   })
   public abstract VendorProductEntity modelToEntity(VendorProduct model);
 
-  @Mapping(target = "product.baseUnitSymbol", ignore = true)
+  @Mappings({
+    @Mapping(target = "product.referenceUnitSymbol", ignore = true),
+    @Mapping(target = "product.isFractionalUnit", ignore = true)
+  })
   public abstract VendorProductResponse modelToProductVendorResponse(VendorProduct productVendor);
 
   @AfterMapping
@@ -44,13 +46,14 @@ public abstract class VendorProductMapper {
   @AfterMapping
   public void postMappingResponse(
       VendorProduct source, @MappingTarget VendorProductResponse target) {
-    var baseUnitSymbol =
-        Optional.ofNullable(source.getProduct().getReferenceUnit())
-            .map(Unit::getBaseConversion)
-            .map(UnitConversion::getToUnit)
-            .map(Unit::getSymbol)
-            .orElse(null);
-    target.getProduct().setBaseUnitSymbol(baseUnitSymbol);
+    var referenceUnit = Optional.ofNullable(source.getProduct().getReferenceUnit());
+    var referenceUnitSymbol = referenceUnit.map(Unit::getSymbol).orElse(null);
+
+    var isFractionalUnit = referenceUnit.map(Unit::isFractional).orElse(false);
+
+    target.getProduct().setFractionalUnit(isFractionalUnit);
+
+    target.getProduct().setReferenceUnitSymbol(referenceUnitSymbol);
   }
 
   private void setPrices(VendorProductEntity entity, VendorProduct target) {

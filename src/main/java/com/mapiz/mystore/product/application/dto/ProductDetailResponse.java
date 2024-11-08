@@ -8,5 +8,6 @@ import lombok.experimental.SuperBuilder;
 @SuperBuilder
 @Data
 public class ProductDetailResponse extends ProductResponse {
-  private String baseUnitSymbol;
+  private String referenceUnitSymbol;
+  private boolean isFractionalUnit;
 }
