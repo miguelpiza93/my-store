@@ -1,10 +1,10 @@
 package com.mapiz.mystore.product.application.dto;
 
 import lombok.AllArgsConstructor;
-import lombok.Builder;
 import lombok.Data;
+import lombok.experimental.SuperBuilder;
 
-@Builder
+@SuperBuilder
 @AllArgsConstructor
 @Data
 public class ProductResponse {

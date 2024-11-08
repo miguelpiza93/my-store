@@ -5,7 +5,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import com.mapiz.mystore.integration.BaseIntegrationTest;
-import com.mapiz.mystore.product.application.dto.ProductResponse;
+import com.mapiz.mystore.product.application.dto.ProductDetailResponse;
 import com.mapiz.mystore.product.infrastructure.persistence.ProductEntity;
 import com.mapiz.mystore.product.infrastructure.persistence.repository.JpaProductRepository;
 import com.mapiz.mystore.util.BigDecimalUtils;
@@ -91,7 +91,7 @@ class LinkProductsToVendorIntegrationTest extends BaseIntegrationTest {
             VendorProductResponse.builder()
                 .id(1)
                 .product(
-                    ProductResponse.builder()
+                    ProductDetailResponse.builder()
                         .id(1)
                         .name("Product 1")
                         .description("Description 1")
@@ -101,7 +101,7 @@ class LinkProductsToVendorIntegrationTest extends BaseIntegrationTest {
             VendorProductResponse.builder()
                 .id(2)
                 .product(
-                    ProductResponse.builder()
+                    ProductDetailResponse.builder()
                         .id(2)
                         .name("Product 2")
                         .description("Description 2")
