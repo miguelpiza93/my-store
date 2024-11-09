@@ -1,8 +1,7 @@
 package com.mapiz.mystore.stock.application.usecase.impl;
 
-import com.mapiz.mystore.purchaseorder.application.exception.PurchaseOrderNotFoundException;
-import com.mapiz.mystore.purchaseorder.domain.PurchaseOrder;
-import com.mapiz.mystore.purchaseorder.domain.repository.PurchaseOrderRepository;
+import com.mapiz.mystore.purchaseorder.domain.PurchaseOrderLine;
+import com.mapiz.mystore.purchaseorder.domain.repository.PurchaseOrderLineRepository;
 import com.mapiz.mystore.stock.application.usecase.AddProductsToStockUseCase;
 import com.mapiz.mystore.stock.domain.StockItem;
 import com.mapiz.mystore.stock.domain.repository.StockItemRepository;
@@ -14,23 +13,21 @@ import org.springframework.stereotype.Component;
 @RequiredArgsConstructor
 public class AddProductsToStockUseCaseImpl implements AddProductsToStockUseCase {
 
-  private final PurchaseOrderRepository purchaseOrderRepository;
+  private final PurchaseOrderLineRepository purchaseOrderLineRepository;
   private final StockItemRepository stockItemRepository;
 
   @Override
   public void accept(Integer purchaseOrderId) {
-    var purchaseOrder = getPurchaseOrder(purchaseOrderId);
-    var newStockItems = getNewStockItems(purchaseOrder);
+    var purchaseOrderLines = getPurchaseOrderLines(purchaseOrderId);
+    var newStockItems = getNewStockItems(purchaseOrderLines);
     stockItemRepository.saveAll(newStockItems);
   }
 
-  private PurchaseOrder getPurchaseOrder(Integer purchaseOrderId) {
-    return purchaseOrderRepository
-        .findById(purchaseOrderId)
-        .orElseThrow(() -> new PurchaseOrderNotFoundException(purchaseOrderId));
+  private List<PurchaseOrderLine> getPurchaseOrderLines(Integer purchaseOrderId) {
+    return purchaseOrderLineRepository.findByPurchaseOrderId(purchaseOrderId);
   }
 
-  private List<StockItem> getNewStockItems(PurchaseOrder purchaseOrder) {
-    return purchaseOrder.getPurchaseOrderLines().stream().map(StockItem::new).toList();
+  private List<StockItem> getNewStockItems(List<PurchaseOrderLine> purchaseOrderLines) {
+    return purchaseOrderLines.stream().map(StockItem::new).toList();
   }
 }

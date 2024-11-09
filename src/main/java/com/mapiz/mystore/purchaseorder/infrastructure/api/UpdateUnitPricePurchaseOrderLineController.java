@@ -1,6 +1,6 @@
 package com.mapiz.mystore.purchaseorder.infrastructure.api;
 
-import static com.mapiz.mystore.purchaseorder.infrastructure.EndpointConstant.PURCHASE_ORDER_BASE_PATH;
+import static com.mapiz.mystore.purchaseorder.infrastructure.EndpointConstant.BASE_PATH;
 
 import com.mapiz.mystore.purchaseorder.application.command.UpdateUnitPricePurchaseOrderLineCommand;
 import com.mapiz.mystore.purchaseorder.application.dto.PurchaseOrderResponse;
@@ -11,7 +11,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping(PURCHASE_ORDER_BASE_PATH)
+@RequestMapping(BASE_PATH)
 @RequiredArgsConstructor
 public class UpdateUnitPricePurchaseOrderLineController {
 

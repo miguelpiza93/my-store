@@ -33,4 +33,11 @@ public class PurchaseOrderLineRepositoryImpl implements PurchaseOrderLineReposit
   public void save(PurchaseOrderLine line) {
     jpaRepository.save(purchaseOrderLineMapper.modelToEntity(line));
   }
+
+  @Override
+  public List<PurchaseOrderLine> findByPurchaseOrderId(Integer purchaseOrderId) {
+    return jpaRepository.findByPurchaseOrderId(purchaseOrderId).stream()
+        .map(purchaseOrderLineMapper::entityToModel)
+        .toList();
+  }
 }

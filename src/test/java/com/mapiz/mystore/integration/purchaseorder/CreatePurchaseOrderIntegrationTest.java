@@ -35,7 +35,7 @@ class CreatePurchaseOrderIntegrationTest extends BaseIntegrationTest {
     var result =
         mockMvc
             .perform(
-                MockMvcRequestBuilders.post(EndpointConstant.PURCHASE_ORDER_BASE_PATH)
+                MockMvcRequestBuilders.post(EndpointConstant.BASE_PATH)
                     .content(objectMapper.writeValueAsString(request))
                     .contentType(MediaType.APPLICATION_JSON))
             .andExpect(status().isCreated())

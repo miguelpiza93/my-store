@@ -8,12 +8,12 @@ import lombok.experimental.UtilityClass;
 public class Constants {
   // UNIT CONSTANTS
   public static final int CARTON_ID = 1;
-  public static final String CARTON_NAME = "Carton";
+  public static final String CARTON_NAME = "Panal";
   public static final int UNIT_ID = 2;
-  public static final String UNIT_NAME = "Unit";
-  public static final String UNIT_SYMBOL = "U";
+  public static final String UNIT_NAME = "Unidad";
+  public static final String UNIT_SYMBOL = "und";
   public static final int HALF_CARTON_ID = 3;
-  public static final String HALF_CARTON_NAME = "Half Carton";
+  public static final String HALF_CARTON_NAME = "Medio Panal";
   public static final int NEXT_AVAILABLE_UNIT_ID = 8;
 
   // CONVERSION CONSTANTS

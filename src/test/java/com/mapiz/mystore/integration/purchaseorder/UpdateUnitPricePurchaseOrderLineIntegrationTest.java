@@ -31,8 +31,7 @@ class UpdateUnitPricePurchaseOrderLineIntegrationTest extends BaseIntegrationTes
     // Act & Assert
     mockMvc
         .perform(
-            MockMvcRequestBuilders.patch(
-                    EndpointConstant.PURCHASE_ORDER_BASE_PATH + "/1/lines/" + lineToUpdateId)
+            MockMvcRequestBuilders.patch(EndpointConstant.BASE_PATH + "/1/lines/" + lineToUpdateId)
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(objectMapper.writeValueAsString(request)))
         .andExpect(status().isOk());
@@ -59,8 +58,7 @@ class UpdateUnitPricePurchaseOrderLineIntegrationTest extends BaseIntegrationTes
 
     mockMvc
         .perform(
-            MockMvcRequestBuilders.patch(
-                    EndpointConstant.PURCHASE_ORDER_BASE_PATH + "/1/lines/" + lineToUpdateId)
+            MockMvcRequestBuilders.patch(EndpointConstant.BASE_PATH + "/1/lines/" + lineToUpdateId)
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(objectMapper.writeValueAsString(request)))
         .andExpect(status().isNotFound())

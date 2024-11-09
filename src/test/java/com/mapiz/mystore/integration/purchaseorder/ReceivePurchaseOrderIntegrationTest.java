@@ -11,15 +11,18 @@ import com.mapiz.mystore.purchaseorder.domain.PurchaseOrderStatus;
 import com.mapiz.mystore.purchaseorder.infrastructure.EndpointConstant;
 import com.mapiz.mystore.purchaseorder.infrastructure.persistence.entity.PurchaseOrderEntity;
 import com.mapiz.mystore.purchaseorder.infrastructure.persistence.entity.PurchaseOrderLineEntity;
+import com.mapiz.mystore.purchaseorder.infrastructure.persistence.repository.JpaPurchaseOrderLineRepository;
 import com.mapiz.mystore.purchaseorder.infrastructure.persistence.repository.JpaPurchaseOrderRepository;
 import com.mapiz.mystore.shared.ApiError;
 import com.mapiz.mystore.stock.infrastructure.persistence.entity.StockItemEntity;
 import com.mapiz.mystore.stock.infrastructure.persistence.repository.JpaStockItemRepository;
 import com.mapiz.mystore.util.BigDecimalUtils;
 import java.math.BigDecimal;
+import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.mock.mockito.SpyBean;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -30,6 +33,8 @@ class ReceivePurchaseOrderIntegrationTest extends BaseIntegrationTest {
   @SpyBean private JpaPurchaseOrderRepository purchaseOrderRepository;
 
   @SpyBean private JpaStockItemRepository stockItemRepository;
+
+  @Autowired private JpaPurchaseOrderLineRepository purchaseOrderLineRepository;
 
   @Test
   void testReceivePurchaseOrderWhenStockIsEmpty() throws Exception {
@@ -77,7 +82,7 @@ class ReceivePurchaseOrderIntegrationTest extends BaseIntegrationTest {
   }
 
   private String getReceiveUrl(int purchaseOrderId) {
-    return EndpointConstant.PURCHASE_ORDER_BASE_PATH + "/" + purchaseOrderId + "/receive";
+    return EndpointConstant.BASE_PATH + "/" + purchaseOrderId + "/receive";
   }
 
   private void verifyDataSaved(
@@ -87,10 +92,11 @@ class ReceivePurchaseOrderIntegrationTest extends BaseIntegrationTest {
         purchaseOrderRepository.findById(purchaseOrderId).orElseThrow();
     assertEquals(PurchaseOrderStatus.RECEIVED.name(), savedOrder.getStatus());
 
+    List<PurchaseOrderLineEntity> lines =
+        purchaseOrderLineRepository.findByPurchaseOrderId(purchaseOrderId);
+
     var productsId =
-        savedOrder.getPurchaseOrderLines().stream()
-            .map(line -> line.getVendorProduct().getProduct().getId())
-            .toList();
+        lines.stream().map(line -> line.getVendorProduct().getProduct().getId()).toList();
 
     Map<Integer, BigDecimal> quantitiesByProductId =
         stockItemRepository.findAll().stream()
@@ -105,7 +111,7 @@ class ReceivePurchaseOrderIntegrationTest extends BaseIntegrationTest {
                     BigDecimalUtils::add));
 
     // 2. Verificar que los items de stock se han guardado correctamente
-    for (PurchaseOrderLineEntity line : savedOrder.getPurchaseOrderLines()) {
+    for (PurchaseOrderLineEntity line : lines) {
       var expectedQuantity =
           expectedQuantitiesByProductId.getOrDefault(
               line.getVendorProduct().getProduct().getId(), BigDecimal.ZERO);
@@ -113,6 +119,7 @@ class ReceivePurchaseOrderIntegrationTest extends BaseIntegrationTest {
           expectedQuantity,
           quantitiesByProductId.getOrDefault(
               line.getVendorProduct().getProduct().getId(), BigDecimal.ZERO));
+      assertEquals(purchaseOrderId, line.getPurchaseOrder().getId());
     }
 
     verify(purchaseOrderRepository, times(1)).save(any(PurchaseOrderEntity.class));

@@ -10,4 +10,6 @@ public interface PurchaseOrderLineRepository {
   Optional<PurchaseOrderLine> findById(Integer purchaseOrderLineId);
 
   void save(PurchaseOrderLine line);
+
+  List<PurchaseOrderLine> findByPurchaseOrderId(Integer purchaseOrderId);
 }
