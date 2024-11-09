@@ -8,6 +8,7 @@ import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
+import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
 import org.springframework.web.servlet.resource.NoResourceFoundException;
 
 @RestControllerAdvice
@@ -29,7 +30,11 @@ public class ErrorHandler {
     return ResponseEntity.status(apiError.status()).body(apiError);
   }
 
-  @ExceptionHandler({BadRequestError.class, NoResourceFoundException.class})
+  @ExceptionHandler({
+    BadRequestError.class,
+    NoResourceFoundException.class,
+    MethodArgumentTypeMismatchException.class
+  })
   public ResponseEntity<ApiError> handleBadRequest(Exception e) {
     log.warn("handleBadRequest: ", e);
     ApiError apiError = new ApiError("bad_request", e.getMessage(), BAD_REQUEST.value());

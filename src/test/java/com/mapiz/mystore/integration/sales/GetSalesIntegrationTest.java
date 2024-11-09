@@ -6,6 +6,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 import com.mapiz.mystore.integration.BaseIntegrationTest;
 import com.mapiz.mystore.sales.application.dto.response.SaleSummary;
+import com.mapiz.mystore.sales.domain.GroupOptions;
 import com.mapiz.mystore.sales.infrastructure.EndpointConstant;
 import com.mapiz.mystore.util.BigDecimalUtils;
 import org.junit.jupiter.api.Test;
@@ -19,7 +20,9 @@ class GetSalesIntegrationTest extends BaseIntegrationTest {
     // Act & Assert
     var result =
         mockMvc
-            .perform(MockMvcRequestBuilders.get(EndpointConstant.BASE_PATH))
+            .perform(
+                MockMvcRequestBuilders.get(
+                    EndpointConstant.BASE_PATH + "?groupBy=" + GroupOptions.DAY))
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON))
             .andReturn();
