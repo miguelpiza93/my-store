@@ -2,8 +2,8 @@ package com.mapiz.mystore.sales.application.usecase.impl;
 
 import com.mapiz.mystore.sales.application.dto.response.SaleSummary;
 import com.mapiz.mystore.sales.application.mapper.SaleMapper;
-import com.mapiz.mystore.sales.application.usecase.BaseGroupingStrategyUseCase;
 import com.mapiz.mystore.sales.application.usecase.GetSalesUseCase;
+import com.mapiz.mystore.sales.application.usecase.base.BaseGroupingStrategyUseCase;
 import com.mapiz.mystore.sales.domain.GroupOptions;
 import com.mapiz.mystore.sales.domain.repository.SaleRepository;
 import com.mapiz.mystore.util.BigDecimalUtils;

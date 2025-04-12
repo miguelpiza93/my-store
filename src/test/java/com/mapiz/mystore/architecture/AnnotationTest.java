@@ -26,6 +26,8 @@ public class AnnotationTest extends BaseArchitectureTest {
         .that()
         .resideInAPackage("..usecase..")
         .and()
+        .resideOutsideOfPackage("..usecase..base..")
+        .and()
         .haveSimpleNameEndingWith("UseCase")
         .should()
         .beInterfaces()

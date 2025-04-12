@@ -1,6 +1,7 @@
-package com.mapiz.mystore.sales.application.usecase;
+package com.mapiz.mystore.sales.application.usecase.base;
 
 import com.mapiz.mystore.sales.application.dto.response.SaleSummary;
+import com.mapiz.mystore.sales.application.usecase.GroupingStrategyUseCase;
 import java.time.Instant;
 import java.util.List;
 import java.util.Map;

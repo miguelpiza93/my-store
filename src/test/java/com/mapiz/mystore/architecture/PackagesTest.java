@@ -25,6 +25,18 @@ public class PackagesTest extends BaseArchitectureTest {
   }
 
   @Test
+  void testBaseUseCasePackageMustContainBaseUseCase() {
+    classes()
+        .that()
+        .resideInAPackage("..usecase.base..")
+        .should()
+        .haveSimpleNameEndingWith("UseCase")
+        .andShould()
+        .haveSimpleNameStartingWith("Base")
+        .check(this.javaClasses);
+  }
+
+  @Test
   void testInfrastructureRepositoryPackageMustContainJpaRepositoryOrRepositoryImpl() {
     classes()
         .that()

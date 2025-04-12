@@ -1,6 +1,6 @@
 package com.mapiz.mystore.sales.application.usecase.impl;
 
-import com.mapiz.mystore.sales.application.usecase.BaseGroupingStrategyUseCase;
+import com.mapiz.mystore.sales.application.usecase.base.BaseGroupingStrategyUseCase;
 import java.time.Instant;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
